@@ -1,0 +1,8 @@
+﻿namespace PenielBikeControle.Models
+{
+    public class TipoItemVenda
+    {
+        public int Id { get; set; }
+        public string Descricao { get; set; }
+    }
+}
