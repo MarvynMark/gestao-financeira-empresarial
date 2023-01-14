@@ -1,7 +1,21 @@
+using PenielBikeControle.Data;
+using PenielBikeControle.Repositories;
+using PenielBikeControle.Repositories.Iterfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//builder.Services.AddTransient<VendaRepository>();
+builder.Services.AddScoped<IVendaRepository, VendaRepository>();
+builder.Services.AddDbContext<DataContext>();
+
+
+
+
+
+
+//builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

@@ -7,5 +7,15 @@
         public Cliente Cliente { get; set; }
         public Vendedor Vendedor { get; set; }
         public IList<ItemVenda> ItensDaVenda { get; set; }
+
+        public Venda() { }
+        public Venda(int id, DateTime data, Cliente cliente, Vendedor vendedor, IList<ItemVenda> itensDaVenda)
+        {
+            Id = id;
+            Data = data;
+            Cliente = cliente;
+            Vendedor = vendedor;
+            ItensDaVenda = itensDaVenda;
+        }
     }
 }

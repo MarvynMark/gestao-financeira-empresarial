@@ -1,6 +1,9 @@
-﻿namespace PenielBikeControle.Repositories.Iterfaces
+﻿using PenielBikeControle.Models;
+
+namespace PenielBikeControle.Repositories.Iterfaces
 {
-    public class IVendaRepository
+    public interface IVendaRepository
     {
+        void Salvar(Venda venda);
     }
 }
