@@ -1,60 +1,50 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PenielBikeControle.Models;
-using PenielBikeControle.Repositories;
-using PenielBikeControle.Repositories.Iterfaces;
 
 namespace PenielBikeControle.Controllers
 {
-    public class VendaController : Controller
+    public class ClientesController : Controller
     {
-        private readonly IVendaRepository _vendaRepository;
-        public VendaController(IVendaRepository vendaRepository)
-        {
-            _vendaRepository = vendaRepository;
-        }
-
-        // GET: VendaController
+        // GET: ClienteController
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: VendaController/Details/5
+        // GET: ClienteController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: VendaController/Create
+        // GET: ClienteController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: VendaController/Create
+        // POST: ClienteController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Venda venda)
+        public ActionResult Create(IFormCollection collection)
         {
             try
             {
-                _vendaRepository.Salvar(venda);
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception e)
+            catch
             {
                 return View();
             }
         }
 
-        // GET: VendaController/Edit/5
+        // GET: ClienteController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: VendaController/Edit/5
+        // POST: ClienteController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -69,13 +59,13 @@ namespace PenielBikeControle.Controllers
             }
         }
 
-        // GET: VendaController/Delete/5
+        // GET: ClienteController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: VendaController/Delete/5
+        // POST: ClienteController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
@@ -88,20 +78,6 @@ namespace PenielBikeControle.Controllers
             {
                 return View();
             }
-        }
-
-        
-        public ActionResult Cadastro()
-        {
-            try
-            {
-                return View();
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            
         }
     }
 }

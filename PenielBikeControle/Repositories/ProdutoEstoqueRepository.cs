@@ -4,14 +4,14 @@ using PenielBikeControle.Repositories.Iterfaces;
 
 namespace PenielBikeControle.Repositories
 {
-    public class ClienteRepository : IClienteRepository
+    public class ProdutoEstoqueRepository : IProdutoEstoqueRepository
     {
         private readonly DataContext _context;
-        public ClienteRepository(DataContext context) => _context = context;
+        public ProdutoEstoqueRepository(DataContext context) => _context = context;
 
-        public void Salvar(Cliente cliente)
+        public void Salvar(ProdutoEstoque produto)
         {
-            _context.Clientes.Add(cliente);
+            _context.ProdutosEstoque.Add(produto);
             _context.SaveChanges();
         }
     }

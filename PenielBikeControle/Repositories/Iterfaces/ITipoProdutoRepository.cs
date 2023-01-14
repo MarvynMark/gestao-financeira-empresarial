@@ -2,8 +2,8 @@
 
 namespace PenielBikeControle.Repositories.Iterfaces
 {
-    public interface IItemVendaRepository
+    public interface ITipoProdutoRepository
     {
-        void Salvar(ItemVenda itemVenda);
+        void Salvar(TipoProduto tipoProduto);
     }
 }

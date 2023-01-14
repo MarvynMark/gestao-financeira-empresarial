@@ -11,8 +11,8 @@ using PenielBikeControle.Data;
 namespace PenielBikeControle.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230114132428_CreateColumnItemVenda")]
-    partial class CreateColumnItemVenda
+    [Migration("20230114212620_MudancaNaEstruturaDeEntidades")]
+    partial class MudancaNaEstruturaDeEntidades
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,7 +44,7 @@ namespace PenielBikeControle.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cliente");
+                    b.ToTable("Clientes");
                 });
 
             modelBuilder.Entity("PenielBikeControle.Models.ItemVenda", b =>
@@ -52,6 +52,31 @@ namespace PenielBikeControle.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<int>("ProdutoEstoqueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VendaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProdutoEstoqueId");
+
+                    b.HasIndex("VendaId");
+
+                    b.ToTable("ItensVenda");
+                });
+
+            modelBuilder.Entity("PenielBikeControle.Models.ProdutoEstoque", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Marca")
                         .IsRequired()
@@ -65,28 +90,26 @@ namespace PenielBikeControle.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<double>("Preco")
+                    b.Property<double>("PrecoCusto")
                         .HasColumnType("double");
 
-                    b.Property<int>("Quantidade")
+                    b.Property<double>("PrecoFinal")
+                        .HasColumnType("double");
+
+                    b.Property<int>("QtdeEmEstoque")
                         .HasColumnType("int");
 
-                    b.Property<int>("TipoItemVendaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VendaId")
+                    b.Property<int>("TipoProdutoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TipoItemVendaId");
+                    b.HasIndex("TipoProdutoId");
 
-                    b.HasIndex("VendaId");
-
-                    b.ToTable("ItemVenda");
+                    b.ToTable("ProdutosEstoque");
                 });
 
-            modelBuilder.Entity("PenielBikeControle.Models.TipoItemVenda", b =>
+            modelBuilder.Entity("PenielBikeControle.Models.TipoProduto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,7 +121,7 @@ namespace PenielBikeControle.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoItemVenda");
+                    b.ToTable("TiposProduto");
                 });
 
             modelBuilder.Entity("PenielBikeControle.Models.Venda", b =>
@@ -112,6 +135,9 @@ namespace PenielBikeControle.Migrations
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<double>("DescontoTotal")
+                        .HasColumnType("double");
 
                     b.Property<int>("VendedorId")
                         .HasColumnType("int");
@@ -148,14 +174,14 @@ namespace PenielBikeControle.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vendedor");
+                    b.ToTable("Vendedores");
                 });
 
             modelBuilder.Entity("PenielBikeControle.Models.ItemVenda", b =>
                 {
-                    b.HasOne("PenielBikeControle.Models.TipoItemVenda", "TipoItemVenda")
+                    b.HasOne("PenielBikeControle.Models.ProdutoEstoque", "ProdutoEstoque")
                         .WithMany()
-                        .HasForeignKey("TipoItemVendaId")
+                        .HasForeignKey("ProdutoEstoqueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -165,9 +191,20 @@ namespace PenielBikeControle.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TipoItemVenda");
+                    b.Navigation("ProdutoEstoque");
 
                     b.Navigation("Venda");
+                });
+
+            modelBuilder.Entity("PenielBikeControle.Models.ProdutoEstoque", b =>
+                {
+                    b.HasOne("PenielBikeControle.Models.TipoProduto", "TipoProduto")
+                        .WithMany()
+                        .HasForeignKey("TipoProdutoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TipoProduto");
                 });
 
             modelBuilder.Entity("PenielBikeControle.Models.Venda", b =>

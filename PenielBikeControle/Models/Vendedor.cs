@@ -8,6 +8,7 @@
         public string Cpf { get; set; }
         public string Endereco { get; set; }
 
+        public Vendedor() { }
         public Vendedor(int id, string nome, DateOnly dataDeNascimento, string cpf, string endereco)
         {
             Id = id;

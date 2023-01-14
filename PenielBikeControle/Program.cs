@@ -6,16 +6,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-//builder.Services.AddTransient<VendaRepository>();
 builder.Services.AddScoped<IVendaRepository, VendaRepository>();
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IVendedorRepository, VendedorReposytory>();
+builder.Services.AddScoped<IItemVendaRepository, ItemVendaRepository>();
+builder.Services.AddScoped<ITipoProdutoRepository, TipoProdutoRepository>();
+builder.Services.AddScoped<IProdutoEstoqueRepository, ProdutoEstoqueRepository>();
 builder.Services.AddDbContext<DataContext>();
 
-
-
-
-
-
-//builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
