@@ -1,70 +1,74 @@
-﻿@model PenielBikeControle.Models.ProdutoEstoque
+﻿@model PenielBikeControle.Models.ViewModels.ProdutoEstoqueViewModel
 
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Cadastro De Produto</title>
+    <title>Cadastro De Produtos</title>
 </head>
 <body>
 
-<h4>ProdutoEstoque</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CadastroDeProduto">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control" />
-                <span asp-validation-for="Nome" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Marca" class="control-label"></label>
-                <input asp-for="Marca" class="form-control" />
-                <span asp-validation-for="Marca" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Modelo" class="control-label"></label>
-                <input asp-for="Modelo" class="form-control" />
-                <span asp-validation-for="Modelo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
-                <input asp-for="Descricao" class="form-control" />
-                <span asp-validation-for="Descricao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PrecoCusto" class="control-label"></label>
-                <input asp-for="PrecoCusto" class="form-control" />
-                <span asp-validation-for="PrecoCusto" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PrecoFinal" class="control-label"></label>
-                <input asp-for="PrecoFinal" class="form-control" />
-                <span asp-validation-for="PrecoFinal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="QtdeEmEstoque" class="control-label"></label>
-                <input asp-for="QtdeEmEstoque" class="form-control" />
-                <span asp-validation-for="QtdeEmEstoque" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <h4>ProdutoEstoque</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Produto.Id" class="control-label"></label>
+                    <input asp-for="Produto.Id" class="form-control" />
+                    <span asp-validation-for="Produto.Id" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Produto.Nome" class="control-label"></label>
+                    <input asp-for="Produto.Nome" class="form-control" />
+                    <span asp-validation-for="Produto.Nome" class="text-danger"></span>
+                </div>
+                <div class="col-md-12 form-group">
+                    <label asp-for="TipoDeProdutoId" class="control-label"></label>
+                    <select asp-for="TipoDeProdutoId" class="form-control form-control-sm" asp-items="Model.ListaTiposDeProduto"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Produto.Marca" class="control-label"></label>
+                    <input asp-for="Produto.Marca" class="form-control" />
+                    <span asp-validation-for="Produto.Marca" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Produto.Modelo" class="control-label"></label>
+                    <input asp-for="Produto.Modelo" class="form-control" />
+                    <span asp-validation-for="Produto.Modelo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Produto.Descricao" class="control-label"></label>
+                    <input asp-for="Produto.Descricao" class="form-control" />
+                    <span asp-validation-for="Produto.Descricao" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Produto.PrecoCusto" class="control-label"></label>
+                    <input asp-for="Produto.PrecoCusto" class="form-control" />
+                    <span asp-validation-for="Produto.PrecoCusto" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Produto.PrecoFinal" class="control-label"></label>
+                    <input asp-for="Produto.PrecoFinal" class="form-control" />
+                    <span asp-validation-for="Produto.PrecoFinal" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Produto.QtdeEmEstoque" class="control-label"></label>
+                    <input asp-for="Produto.QtdeEmEstoque" class="form-control" />
+                    <span asp-validation-for="Produto.QtdeEmEstoque" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
 
 </body>
 </html>

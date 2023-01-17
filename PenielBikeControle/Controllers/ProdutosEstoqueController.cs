@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PenielBikeControle.Models;
+using PenielBikeControle.Models.ViewModels;
 using PenielBikeControle.Repositories.Iterfaces;
 
 namespace PenielBikeControle.Controllers
@@ -8,9 +10,11 @@ namespace PenielBikeControle.Controllers
     public class ProdutosEstoqueController : Controller
     {
         private readonly IProdutoEstoqueRepository _protudoEstoqueReposirory;
-        public ProdutosEstoqueController(IProdutoEstoqueRepository produtoEstoqueRepository)
+        private readonly ITipoProdutoRepository _tipoProdutoEstoqueRepository;
+        public ProdutosEstoqueController(IProdutoEstoqueRepository produtoEstoqueRepository, ITipoProdutoRepository tipoProdutoRepository)
         {
-                _protudoEstoqueReposirory = produtoEstoqueRepository;
+            _protudoEstoqueReposirory = produtoEstoqueRepository;
+            _tipoProdutoEstoqueRepository = tipoProdutoRepository;
         }
         // GET: CadastroDeProdutoController
         public ActionResult Index()
@@ -27,18 +31,38 @@ namespace PenielBikeControle.Controllers
         // GET: CadastroDeProdutoController/Create
         public ActionResult Create()
         {
-            return View();
+            ProdutoEstoqueViewModel produtoEstoqueViewModel = new ProdutoEstoqueViewModel();
+            produtoEstoqueViewModel.Produto = new ProdutoEstoque();
+            produtoEstoqueViewModel.ListaTiposDeProduto = _tipoProdutoEstoqueRepository.GetAll().Select(x => new SelectListItem 
+            {
+                Value = x.Id.ToString(),
+                Text = x.Descricao
+            });
+
+
+            return View("CadastroDeProduto", produtoEstoqueViewModel);
         }
 
         // POST: CadastroDeProdutoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ProdutoEstoque produtoEstoque)
+        public ActionResult Create(ProdutoEstoqueViewModel produtoEstoqueViewModel)
         {
             try
             {
+                ProdutoEstoque produtoEstoque = new ProdutoEstoque();
+                var tipoProduto = _tipoProdutoEstoqueRepository.GetById(produtoEstoqueViewModel.TipoDeProdutoId);
+
+                produtoEstoque.Descricao = produtoEstoqueViewModel.Produto.Descricao;
+                produtoEstoque.TipoProduto = tipoProduto;
+                produtoEstoque.PrecoFinal = produtoEstoqueViewModel.Produto.PrecoFinal;
+                produtoEstoque.Modelo = produtoEstoqueViewModel.Produto.Modelo;
+                produtoEstoque.Marca = produtoEstoqueViewModel.Produto.Marca;
+                produtoEstoque.Nome = produtoEstoqueViewModel.Produto.Nome;
+                produtoEstoque.QtdeEmEstoque = produtoEstoqueViewModel.Produto.QtdeEmEstoque;
+
                 _protudoEstoqueReposirory.Salvar(produtoEstoque);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create));
             }
             catch
             {

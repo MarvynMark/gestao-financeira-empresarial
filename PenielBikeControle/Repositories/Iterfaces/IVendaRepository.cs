@@ -4,6 +4,7 @@ namespace PenielBikeControle.Repositories.Iterfaces
 {
     public interface IVendaRepository
     {
-        void Salvar(Venda venda);
+        Venda Salvar(Venda venda);
+        Venda GetById(int id);
     }
 }

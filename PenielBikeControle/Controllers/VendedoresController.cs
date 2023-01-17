@@ -5,40 +5,40 @@ using PenielBikeControle.Repositories.Iterfaces;
 
 namespace PenielBikeControle.Controllers
 {
-    public class ClientesController : Controller
+    public class VendedoresController : Controller
     {
-        private readonly IClienteRepository _clienteRepository;
-        public ClientesController(IClienteRepository clienteRepository)
+        private readonly IVendedorRepository _vendedorRepository;
+        public VendedoresController(IVendedorRepository vendedorRepository)
         {
-            _clienteRepository = clienteRepository;
+            _vendedorRepository = vendedorRepository;
         }
 
-        // GET: ClienteController
+        // GET: VendedoresController
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: ClienteController/Details/5
+        // GET: VendedoresController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: ClienteController/Create
+        // GET: VendedoresController/Create
         public ActionResult Create()
         {
-            return View("Cadastro");
+            return View("CreateVendedor");
         }
 
-        // POST: ClienteController/Create
+        // POST: VendedoresController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateCliente(Cliente cliente)
+        public ActionResult CreateVendedor(Vendedor vendedor)
         {
             try
             {
-                _clienteRepository.Salvar(cliente);
+                _vendedorRepository.Salvar(vendedor);
                 return RedirectToAction(nameof(Create));
             }
             catch
@@ -47,13 +47,13 @@ namespace PenielBikeControle.Controllers
             }
         }
 
-        // GET: ClienteController/Edit/5
+        // GET: VendedoresController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: ClienteController/Edit/5
+        // POST: VendedoresController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -68,13 +68,13 @@ namespace PenielBikeControle.Controllers
             }
         }
 
-        // GET: ClienteController/Delete/5
+        // GET: VendedoresController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: ClienteController/Delete/5
+        // POST: VendedoresController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

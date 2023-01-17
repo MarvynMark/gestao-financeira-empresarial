@@ -14,5 +14,18 @@ namespace PenielBikeControle.Repositories
             _context.TiposProduto.Add(tipoProduto);
             _context.SaveChanges();
         }
+        public IList<TipoProduto> GetAll()
+        {
+            var listaDeTiposDeProduto = _context.TiposProduto.ToList();
+            if (listaDeTiposDeProduto.Any())
+                return listaDeTiposDeProduto;
+            else
+                return new List<TipoProduto>();
+        }
+
+        public TipoProduto GetById(int id)
+        {
+            return _context.TiposProduto.SingleOrDefault(x => x.Id == id);
+        }
     }
 }
