@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PenielBikeControle.Data;
 using PenielBikeControle.Models;
 using PenielBikeControle.Models.ViewModels;
 using PenielBikeControle.Repositories;
@@ -12,14 +13,16 @@ namespace PenielBikeControle.Controllers
 {
     public class VendasController : Controller
     {
+        private readonly DataContext _dataContext;
         private readonly IVendaRepository _vendaRepository;
         private readonly IProdutoEstoqueRepository _protudoEstoqueRepository;
         private readonly IClienteRepository _clienteRepository;
         private readonly IVendedorRepository _vendedorRepository;
         private readonly IItemVendaRepository _itemVendaRepository;
 
-        public VendasController(IVendaRepository vendaRepository, IProdutoEstoqueRepository protudoEstoqueRepository, IClienteRepository clienteRepository, IVendedorRepository vendedorRepository, IItemVendaRepository itemVendaRepository)
+        public VendasController(DataContext dataContext, IVendaRepository vendaRepository, IProdutoEstoqueRepository protudoEstoqueRepository, IClienteRepository clienteRepository, IVendedorRepository vendedorRepository, IItemVendaRepository itemVendaRepository)
         {
+            _dataContext = dataContext;
             _vendaRepository = vendaRepository;
             _protudoEstoqueRepository = protudoEstoqueRepository;
             _clienteRepository = clienteRepository;
@@ -69,37 +72,39 @@ namespace PenielBikeControle.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(VendaViewModel vendaViewModel)
         {
-            try
+            using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
             {
-                Venda venda = new Venda();
-                List<ItemVenda> itensDaVenda = new List<ItemVenda>();
-                var vendedor = _vendedorRepository.GetAll();
-                venda.DescontoTotal = vendaViewModel.Venda.DescontoTotal;
-                venda.Vendedor = _vendedorRepository.GetById(vendaViewModel.VendedorId);
-                venda.Cliente = _clienteRepository.GetById(vendaViewModel.ClienteId);
-                venda.Data = vendaViewModel.Venda.Data;
-                venda.DescontoTotal = vendaViewModel.Venda.DescontoTotal;
-
-                var vendaSalva = _vendaRepository.Salvar(venda);
-
-                if (vendaSalva != null)
+                try
                 {
-                    foreach (var item in vendaViewModel.ProtudoEstoqueIds)
+                    Venda venda = new Venda();
+                    venda.DescontoTotal = vendaViewModel.Venda.DescontoTotal;
+                    venda.VendedorId = vendaViewModel.VendedorId;
+                    venda.ClienteId = vendaViewModel.ClienteId;
+                    venda.Data = vendaViewModel.Venda.Data;
+                    venda.DescontoTotal = vendaViewModel.Venda.DescontoTotal;
+
+                    var vendaSalva = _vendaRepository.Salvar(venda);
+
+                    if (vendaSalva != null)
                     {
-                        var itemVenda = new ItemVenda
+                        foreach (var item in vendaViewModel.ProtudoEstoqueIds)
                         {
-                            ProdutoEstoqueId = int.Parse(item),
-                            VendaId = vendaSalva.Id
-                        };
-                        _itemVendaRepository.Salvar(itemVenda);   
+                            var itemVenda = new ItemVenda
+                            {
+                                ProdutoEstoqueId = int.Parse(item),
+                                VendaId = vendaSalva.Id
+                            };
+                            _itemVendaRepository.Salvar(itemVenda);
+                        }
                     }
+                    dtContextTransaction.Commit();
+                    return RedirectToAction(nameof(Create));
                 }
-                
-                return RedirectToAction(nameof(Create));
-            }
-            catch (Exception e)
-            {
-                return View();
+                catch (Exception e)
+                {
+                    dtContextTransaction.Rollback();
+                    return View();
+                }
             }
         }
 

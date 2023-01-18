@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using PenielBikeControle.Data;
 using PenielBikeControle.Models;
 using PenielBikeControle.Repositories.Iterfaces;
@@ -13,16 +14,13 @@ namespace PenielBikeControle.Repositories
         public Venda Salvar(Venda venda)
         {
             _context.Vendas.Add(venda);
-            var idVenda = _context.SaveChanges(); // TODO: Mudar o commit da transação para a controller, após fazer todo o processo. E adicionar rollback no catch caso falha
-            if (idVenda > 0)
-                return venda;
-            else
-                return null;
+            _context.SaveChanges();
+            return venda;
         }
 
         public Venda GetById(int id)
         {
-            return _context.Vendas.SingleOrDefault(x => x.Id == id);
+            return _context.Vendas.Include(x => x.Vendedor).Include(c => c.Cliente).Include(i => i.ItensDaVenda).SingleOrDefault(x => x.Id == id);
         }
     }
 }

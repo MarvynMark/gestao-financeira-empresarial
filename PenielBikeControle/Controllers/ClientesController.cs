@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PenielBikeControle.Data;
 using PenielBikeControle.Models;
 using PenielBikeControle.Repositories.Iterfaces;
 
@@ -7,10 +8,12 @@ namespace PenielBikeControle.Controllers
 {
     public class ClientesController : Controller
     {
+        private readonly DataContext _dataContext;
         private readonly IClienteRepository _clienteRepository;
-        public ClientesController(IClienteRepository clienteRepository)
+        public ClientesController(DataContext dataContext, IClienteRepository clienteRepository)
         {
             _clienteRepository = clienteRepository;
+            _dataContext = dataContext; 
         }
 
         // GET: ClienteController
@@ -36,14 +39,19 @@ namespace PenielBikeControle.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateCliente(Cliente cliente)
         {
-            try
+            using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
             {
-                _clienteRepository.Salvar(cliente);
-                return RedirectToAction(nameof(Create));
-            }
-            catch
-            {
-                return View();
+                try
+                {
+                    _clienteRepository.Salvar(cliente);
+                    dtContextTransaction.Commit();
+                    return RedirectToAction(nameof(Create));
+                }
+                catch
+                {
+                    dtContextTransaction.Rollback();
+                    return View();
+                }
             }
         }
 

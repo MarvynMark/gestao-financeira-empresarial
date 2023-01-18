@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PenielBikeControle.Data;
 using PenielBikeControle.Models;
 using PenielBikeControle.Models.ViewModels;
 using PenielBikeControle.Repositories.Iterfaces;
@@ -9,6 +10,7 @@ namespace PenielBikeControle.Controllers
 {
     public class ProdutosEstoqueController : Controller
     {
+        private readonly DataContext _dataContext;
         private readonly IProdutoEstoqueRepository _protudoEstoqueReposirory;
         private readonly ITipoProdutoRepository _tipoProdutoEstoqueRepository;
         public ProdutosEstoqueController(IProdutoEstoqueRepository produtoEstoqueRepository, ITipoProdutoRepository tipoProdutoRepository)
@@ -48,26 +50,28 @@ namespace PenielBikeControle.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProdutoEstoqueViewModel produtoEstoqueViewModel)
         {
-            try
+            using (var dtContexTransaction = _dataContext.Database.BeginTransaction())
             {
-                ProdutoEstoque produtoEstoque = new ProdutoEstoque();
-                var tipoProduto = _tipoProdutoEstoqueRepository.GetById(produtoEstoqueViewModel.TipoDeProdutoId);
+                try
+                {
+                    ProdutoEstoque produtoEstoque = new ProdutoEstoque();
+                    produtoEstoque.Descricao = produtoEstoqueViewModel.Produto.Descricao;
+                    produtoEstoque.TipoProdutoId = produtoEstoqueViewModel.TipoDeProdutoId;
+                    produtoEstoque.PrecoFinal = produtoEstoqueViewModel.Produto.PrecoFinal;
+                    produtoEstoque.Modelo = produtoEstoqueViewModel.Produto.Modelo;
+                    produtoEstoque.Marca = produtoEstoqueViewModel.Produto.Marca;
+                    produtoEstoque.Nome = produtoEstoqueViewModel.Produto.Nome;
+                    produtoEstoque.QtdeEmEstoque = produtoEstoqueViewModel.Produto.QtdeEmEstoque;
 
-                produtoEstoque.Descricao = produtoEstoqueViewModel.Produto.Descricao;
-                produtoEstoque.TipoProduto = tipoProduto;
-                produtoEstoque.PrecoFinal = produtoEstoqueViewModel.Produto.PrecoFinal;
-                produtoEstoque.Modelo = produtoEstoqueViewModel.Produto.Modelo;
-                produtoEstoque.Marca = produtoEstoqueViewModel.Produto.Marca;
-                produtoEstoque.Nome = produtoEstoqueViewModel.Produto.Nome;
-                produtoEstoque.QtdeEmEstoque = produtoEstoqueViewModel.Produto.QtdeEmEstoque;
-
-                _protudoEstoqueReposirory.Salvar(produtoEstoque);
-                return RedirectToAction(nameof(Create));
-            }
-            catch
-            {
-                
-                return View();
+                    _protudoEstoqueReposirory.Salvar(produtoEstoque);
+                    dtContexTransaction.Commit();
+                    return RedirectToAction(nameof(Create));
+                }
+                catch
+                {
+                    dtContexTransaction.Rollback();
+                    return View();
+                }
             }
         }
 

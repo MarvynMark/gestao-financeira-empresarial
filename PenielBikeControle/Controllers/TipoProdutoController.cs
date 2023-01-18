@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PenielBikeControle.Data;
 using PenielBikeControle.Models;
 using PenielBikeControle.Repositories.Iterfaces;
 
@@ -7,10 +8,12 @@ namespace PenielBikeControle.Controllers
 {
     public class TipoProdutoController : Controller
     {
+        private readonly DataContext _dataContext;
         private readonly ITipoProdutoRepository _tipoProdutoRepository;
 
-        public TipoProdutoController(ITipoProdutoRepository tipoProdutoRepository)
+        public TipoProdutoController(DataContext dataContext, ITipoProdutoRepository tipoProdutoRepository)
         {
+            _dataContext = dataContext;
             _tipoProdutoRepository = tipoProdutoRepository;
         }
 
@@ -37,14 +40,19 @@ namespace PenielBikeControle.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateTipoProduto(TipoProduto tipoProduto)
         {
-            try
+            using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
             {
-                _tipoProdutoRepository.Salvar(tipoProduto);
-                return RedirectToAction(nameof(Create));
-            }
-            catch
-            {
-                return View();
+                try
+                {
+                    _tipoProdutoRepository.Salvar(tipoProduto);
+                    dtContextTransaction.Commit();
+                    return RedirectToAction(nameof(Create));
+                }
+                catch
+                {
+                    dtContextTransaction.Rollback();
+                    return View();
+                }
             }
         }
 
