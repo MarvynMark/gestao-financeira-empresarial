@@ -6,20 +6,21 @@ using PenielBikeControle.Repositories.Iterfaces;
 
 namespace PenielBikeControle.Controllers
 {
-    public class VendedoresController : Controller
+    public class FuncionariosController : Controller
     {
         private readonly DataContext _dataContext;
-        private readonly IVendedorRepository _vendedorRepository;
-        public VendedoresController(DataContext dataContext, IVendedorRepository vendedorRepository)
+        private readonly IFuncionarioRepository _funcionarioRepository;
+        public FuncionariosController(DataContext dataContext, IFuncionarioRepository funcionarioRepository)
         {
-            _vendedorRepository = vendedorRepository;
+            _funcionarioRepository = funcionarioRepository;
             _dataContext = dataContext;
         }
 
         // GET: VendedoresController
         public ActionResult Index()
         {
-            return View();
+            var funcionarios = _funcionarioRepository.GetAll();
+            return View("ListaFuncionarios", funcionarios);
         }
 
         // GET: VendedoresController/Details/5
@@ -29,23 +30,23 @@ namespace PenielBikeControle.Controllers
         }
 
         // GET: VendedoresController/Create
-        public ActionResult Create()
+        public ActionResult Cadastro()
         {
-            return View("CreateVendedor");
+            return View("CadastroFuncionarios");
         }
 
         // POST: VendedoresController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateVendedor(Vendedor vendedor)
+        public ActionResult Cadastro(Funcionario funcionario)
         {
             using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
             {
                 try
                 {
-                    _vendedorRepository.Salvar(vendedor);
+                    _funcionarioRepository.Salvar(funcionario);
                     dtContextTransaction.Commit();
-                    return RedirectToAction(nameof(Create));
+                    return RedirectToAction(nameof(Cadastro));
                 }
                 catch
                 {

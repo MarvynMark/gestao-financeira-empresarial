@@ -1,0 +1,77 @@
+﻿@model IEnumerable<PenielBikeControle.Models.Venda>
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Lista de Vendas</title>
+</head>
+<body>
+    <p>
+        <a asp-action="Cadastro">Cadastrar Venda</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Data)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ClienteId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FuncionarioId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DescontoTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VendaPaga)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProdutoEstoqueEntregue)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Data)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Funcionario.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DescontoTotal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VendaPaga)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProdutoEstoqueEntregue)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

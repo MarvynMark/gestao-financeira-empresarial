@@ -18,9 +18,18 @@ namespace PenielBikeControle.Repositories
             return venda;
         }
 
+        public IList<Venda> GetAll()
+        {
+            var vendas = _context.Vendas.Include(c => c.Cliente).Include(v => v.Funcionario).Include(i => i.ItensDaVenda).ToList();
+            if (vendas.Any())
+                return vendas;
+            else
+                return new List<Venda>();
+        }
+
         public Venda GetById(int id)
         {
-            return _context.Vendas.Include(x => x.Vendedor).Include(c => c.Cliente).Include(i => i.ItensDaVenda).SingleOrDefault(x => x.Id == id);
+            return _context.Vendas.Include(x => x.Funcionario).Include(c => c.Cliente).Include(i => i.ItensDaVenda).SingleOrDefault(x => x.Id == id);
         }
     }
 }

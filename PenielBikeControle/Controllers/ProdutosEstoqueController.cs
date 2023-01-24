@@ -11,17 +11,19 @@ namespace PenielBikeControle.Controllers
     public class ProdutosEstoqueController : Controller
     {
         private readonly DataContext _dataContext;
-        private readonly IProdutoEstoqueRepository _protudoEstoqueReposirory;
-        private readonly ITipoProdutoRepository _tipoProdutoEstoqueRepository;
-        public ProdutosEstoqueController(IProdutoEstoqueRepository produtoEstoqueRepository, ITipoProdutoRepository tipoProdutoRepository)
+        private readonly IProdutoEstoqueRepository _produtoEstoqueReposirory;
+        private readonly ITipoProdEstoqRepository _tipoProdutoEstoqueRepository;
+        public ProdutosEstoqueController(DataContext dataContext, IProdutoEstoqueRepository produtoEstoqueRepository, ITipoProdEstoqRepository tipoProdutoRepository)
         {
-            _protudoEstoqueReposirory = produtoEstoqueRepository;
+            _produtoEstoqueReposirory = produtoEstoqueRepository;
             _tipoProdutoEstoqueRepository = tipoProdutoRepository;
+            _dataContext = dataContext;
         }
         // GET: CadastroDeProdutoController
         public ActionResult Index()
         {
-            return View();
+            var produtos = _produtoEstoqueReposirory.GetAll();
+            return View("ListaProdEstoq", produtos);
         }
 
         // GET: CadastroDeProdutoController/Details/5
@@ -31,7 +33,7 @@ namespace PenielBikeControle.Controllers
         }
 
         // GET: CadastroDeProdutoController/Create
-        public ActionResult Create()
+        public ActionResult Cadastro()
         {
             ProdutoEstoqueViewModel produtoEstoqueViewModel = new ProdutoEstoqueViewModel();
             produtoEstoqueViewModel.Produto = new ProdutoEstoque();
@@ -42,13 +44,13 @@ namespace PenielBikeControle.Controllers
             });
 
 
-            return View("CadastroDeProduto", produtoEstoqueViewModel);
+            return View("CadastroProdEstoq", produtoEstoqueViewModel);
         }
 
         // POST: CadastroDeProdutoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ProdutoEstoqueViewModel produtoEstoqueViewModel)
+        public ActionResult Cadastro(ProdutoEstoqueViewModel produtoEstoqueViewModel)
         {
             using (var dtContexTransaction = _dataContext.Database.BeginTransaction())
             {
@@ -57,15 +59,16 @@ namespace PenielBikeControle.Controllers
                     ProdutoEstoque produtoEstoque = new ProdutoEstoque();
                     produtoEstoque.Descricao = produtoEstoqueViewModel.Produto.Descricao;
                     produtoEstoque.TipoProdutoId = produtoEstoqueViewModel.TipoDeProdutoId;
+                    produtoEstoque.PrecoCusto = produtoEstoqueViewModel.Produto.PrecoCusto;
                     produtoEstoque.PrecoFinal = produtoEstoqueViewModel.Produto.PrecoFinal;
                     produtoEstoque.Modelo = produtoEstoqueViewModel.Produto.Modelo;
                     produtoEstoque.Marca = produtoEstoqueViewModel.Produto.Marca;
                     produtoEstoque.Nome = produtoEstoqueViewModel.Produto.Nome;
                     produtoEstoque.QtdeEmEstoque = produtoEstoqueViewModel.Produto.QtdeEmEstoque;
 
-                    _protudoEstoqueReposirory.Salvar(produtoEstoque);
+                    _produtoEstoqueReposirory.Salvar(produtoEstoque);
                     dtContexTransaction.Commit();
-                    return RedirectToAction(nameof(Create));
+                    return RedirectToAction(nameof(Cadastro));
                 }
                 catch
                 {

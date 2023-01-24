@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PenielBikeControle.Data;
 
@@ -10,9 +11,10 @@ using PenielBikeControle.Data;
 namespace PenielBikeControle.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230122191221_EdicaoNaEstruturaDeEntidades")]
+    partial class EdicaoNaEstruturaDeEntidades
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,30 +43,6 @@ namespace PenielBikeControle.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clientes");
-                });
-
-            modelBuilder.Entity("PenielBikeControle.Models.Funcionario", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Cpf")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateOnly>("DataDeNascimento")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Endereco")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Funcionarios");
                 });
 
             modelBuilder.Entity("PenielBikeControle.Models.ItemVenda", b =>
@@ -190,22 +168,46 @@ namespace PenielBikeControle.Migrations
                     b.Property<double>("DescontoTotal")
                         .HasColumnType("double");
 
-                    b.Property<int>("FuncionarioId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("ProdutoEstoqueEntregue")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("VendaPaga")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int>("VendedorId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteId");
 
-                    b.HasIndex("FuncionarioId");
+                    b.HasIndex("VendedorId");
 
                     b.ToTable("Vendas");
+                });
+
+            modelBuilder.Entity("PenielBikeControle.Models.Vendedor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Cpf")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateOnly>("DataDeNascimento")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Endereco")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Vendedores");
                 });
 
             modelBuilder.Entity("PenielBikeControle.Models.ItemVenda", b =>
@@ -263,15 +265,15 @@ namespace PenielBikeControle.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PenielBikeControle.Models.Funcionario", "Funcionario")
+                    b.HasOne("PenielBikeControle.Models.Vendedor", "Vendedor")
                         .WithMany()
-                        .HasForeignKey("FuncionarioId")
+                        .HasForeignKey("VendedorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cliente");
 
-                    b.Navigation("Funcionario");
+                    b.Navigation("Vendedor");
                 });
 
             modelBuilder.Entity("PenielBikeControle.Models.Cliente", b =>

@@ -3,7 +3,7 @@
     public class ProdutoEstoque
     {
         public int Id { get; set; }
-        public TipoProduto TipoProduto { get; set; }
+        public TipoProdutoEstoque TipoProduto { get; set; }
         public int TipoProdutoId { get; set; }
         public string Nome { get; set; }
         public string? Marca { get; set; }
@@ -15,7 +15,7 @@
 
         public ProdutoEstoque() { }
 
-        public ProdutoEstoque(int id, TipoProduto tipoProduto, string nome, string? marca, string? modelo, string? descricao, double precoCusto, double precoFinal, int qtdeEmEstoque, int tipoProdutoId)
+        public ProdutoEstoque(int id, TipoProdutoEstoque tipoProduto, string nome, string? marca, string? modelo, string? descricao, double precoCusto, double precoFinal, int qtdeEmEstoque, int tipoProdutoId)
         {
             Id = id;
             TipoProduto = tipoProduto;

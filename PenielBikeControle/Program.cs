@@ -8,10 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IVendaRepository, VendaRepository>();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-builder.Services.AddScoped<IVendedorRepository, VendedorReposytory>();
+builder.Services.AddScoped<IFuncionarioRepository, FuncionarioReposytory>();
 builder.Services.AddScoped<IItemVendaRepository, ItemVendaRepository>();
-builder.Services.AddScoped<ITipoProdutoRepository, TipoProdutoRepository>();
+builder.Services.AddScoped<ITipoProdEstoqRepository, TipoProdEstoqRepository>();
 builder.Services.AddScoped<IProdutoEstoqueRepository, ProdutoEstoqueRepository>();
+builder.Services.AddScoped<IProdutoClienteRepository, ProdutoClienteRepository>();
 builder.Services.AddDbContext<DataContext>();
 
 

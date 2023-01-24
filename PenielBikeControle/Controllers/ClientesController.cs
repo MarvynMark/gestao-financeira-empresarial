@@ -19,7 +19,8 @@ namespace PenielBikeControle.Controllers
         // GET: ClienteController
         public ActionResult Index()
         {
-            return View();
+            var clientes = _clienteRepository.GetAll();
+            return View("ListaClientes", clientes);
         }
 
         // GET: ClienteController/Details/5
@@ -29,15 +30,15 @@ namespace PenielBikeControle.Controllers
         }
 
         // GET: ClienteController/Create
-        public ActionResult Create()
+        public ActionResult Cadastro()
         {
-            return View("Cadastro");
+            return View("CadastroClientes");
         }
 
         // POST: ClienteController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateCliente(Cliente cliente)
+        public ActionResult Cadastro(Cliente cliente)
         {
             using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
             {
@@ -45,7 +46,7 @@ namespace PenielBikeControle.Controllers
                 {
                     _clienteRepository.Salvar(cliente);
                     dtContextTransaction.Commit();
-                    return RedirectToAction(nameof(Create));
+                    return RedirectToAction(nameof(Cadastro));
                 }
                 catch
                 {

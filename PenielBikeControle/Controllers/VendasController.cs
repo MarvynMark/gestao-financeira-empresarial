@@ -1,13 +1,10 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PenielBikeControle.Data;
 using PenielBikeControle.Models;
 using PenielBikeControle.Models.ViewModels;
-using PenielBikeControle.Repositories;
 using PenielBikeControle.Repositories.Iterfaces;
+
 
 namespace PenielBikeControle.Controllers
 {
@@ -17,24 +14,28 @@ namespace PenielBikeControle.Controllers
         private readonly IVendaRepository _vendaRepository;
         private readonly IProdutoEstoqueRepository _protudoEstoqueRepository;
         private readonly IClienteRepository _clienteRepository;
-        private readonly IVendedorRepository _vendedorRepository;
+        private readonly IFuncionarioRepository _funcionarioRepository;
         private readonly IItemVendaRepository _itemVendaRepository;
+        private readonly IProdutoClienteRepository _produtoClienteRepository;
 
-        public VendasController(DataContext dataContext, IVendaRepository vendaRepository, IProdutoEstoqueRepository protudoEstoqueRepository, IClienteRepository clienteRepository, IVendedorRepository vendedorRepository, IItemVendaRepository itemVendaRepository)
+
+        public VendasController(DataContext dataContext, IVendaRepository vendaRepository, IProdutoEstoqueRepository protudoEstoqueRepository, IClienteRepository clienteRepository, IFuncionarioRepository funcionarioRepository, IItemVendaRepository itemVendaRepository, IProdutoClienteRepository produtoClienteRepository)
         {
             _dataContext = dataContext;
             _vendaRepository = vendaRepository;
             _protudoEstoqueRepository = protudoEstoqueRepository;
             _clienteRepository = clienteRepository;
-            _vendedorRepository = vendedorRepository;
+            _funcionarioRepository = funcionarioRepository;
             _itemVendaRepository = itemVendaRepository;
+            _produtoClienteRepository = produtoClienteRepository;
         }
 
 
         // GET: VendaController
         public ActionResult Index()
         {
-            return View();
+            var vendas = _vendaRepository.GetAll();
+            return View("ListaVendas", vendas);
         }
 
         // GET: VendaController/Details/5
@@ -44,10 +45,10 @@ namespace PenielBikeControle.Controllers
         }
 
         // GET: VendaController/Create
-        public ActionResult Create()
+        public ActionResult Cadastro()
         {
             VendaViewModel vendaViewModel = new VendaViewModel();
-            
+
             vendaViewModel.ListaDeProdutos = _protudoEstoqueRepository.GetAll().Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
@@ -58,19 +59,24 @@ namespace PenielBikeControle.Controllers
                 Value = x.Id.ToString(),
                 Text = x.Nome
             });
-            vendaViewModel.ListaDeVendedores = _vendedorRepository.GetAll().Select(x => new SelectListItem
+            vendaViewModel.ListaDeFuncionarios = _funcionarioRepository.GetAll().Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Nome
             });
+            vendaViewModel.ListaProdutosCliente = _produtoClienteRepository.GetAll().Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = $"{x.Nome}, {x.Marca}, {x.Modelo}"
+            });
 
-            return View("CadastroDeVendas", vendaViewModel);
+            return View("CadastroVendas", vendaViewModel);
         }
 
         // POST: VendaController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(VendaViewModel vendaViewModel)
+        public ActionResult Cadastro(VendaViewModel vendaViewModel)
         {
             using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
             {
@@ -78,10 +84,11 @@ namespace PenielBikeControle.Controllers
                 {
                     Venda venda = new Venda();
                     venda.DescontoTotal = vendaViewModel.Venda.DescontoTotal;
-                    venda.VendedorId = vendaViewModel.VendedorId;
+                    venda.FuncionarioId = vendaViewModel.FuncionarioId;
                     venda.ClienteId = vendaViewModel.ClienteId;
                     venda.Data = vendaViewModel.Venda.Data;
-                    venda.DescontoTotal = vendaViewModel.Venda.DescontoTotal;
+                    venda.VendaPaga = vendaViewModel.Venda.VendaPaga;
+                    venda.ProdutoEstoqueEntregue = vendaViewModel.Venda.ProdutoEstoqueEntregue;
 
                     var vendaSalva = _vendaRepository.Salvar(venda);
 
@@ -92,13 +99,14 @@ namespace PenielBikeControle.Controllers
                             var itemVenda = new ItemVenda
                             {
                                 ProdutoEstoqueId = int.Parse(item),
-                                VendaId = vendaSalva.Id
+                                VendaId = vendaSalva.Id,
+                                ProdutoClienteId = vendaViewModel.ProdutoClienteId
                             };
                             _itemVendaRepository.Salvar(itemVenda);
                         }
                     }
                     dtContextTransaction.Commit();
-                    return RedirectToAction(nameof(Create));
+                    return RedirectToAction(nameof(Cadastro));
                 }
                 catch (Exception e)
                 {
@@ -148,20 +156,6 @@ namespace PenielBikeControle.Controllers
             {
                 return View();
             }
-        }
-
-        
-        public ActionResult Cadastro()
-        {
-            try
-            {
-                return View();
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            
         }
     }
 }

@@ -1,0 +1,71 @@
+﻿@model PenielBikeControle.Models.ViewModels.VendaViewModel
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Cadastro De Vendas</title>
+</head>
+<body>
+
+    <h4>Venda</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Cadastro">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="ClienteId" class="control-label"></label>
+                    <select asp-for="ClienteId" class="form-control form-control-sm" asp-items="Model.ListaDeClientes"></select>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="ProdutoClienteId" class="control-label"></label>
+                    <select asp-for="ProdutoClienteId" class="form-control form-control-sm" asp-items="Model.ListaProdutosCliente"></select>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="FuncionarioId" class="control-label"></label>
+                    <select asp-for="FuncionarioId" class="form-control form-control-sm" asp-items="Model.ListaDeFuncionarios"></select>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="ProtudoEstoqueIds" class="control-label"></label>
+                    <select asp-for="ProtudoEstoqueIds" class="form-control form-control-sm" multiple asp-items="Model.ListaDeProdutos"></select>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="Venda.DescontoTotal" class="control-label"></label>
+                    <input asp-for="Venda.DescontoTotal" class="form-control" />
+                    <span asp-validation-for="Venda.DescontoTotal" class="text-danger"></span>
+                </div>
+                
+                <div class="col-md-6 form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Venda.VendaPaga" /> 
+                        @Html.DisplayNameFor(model => model.Venda.VendaPaga)
+                    </label>
+                </div>
+                
+                <div class="col-md-6 form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Venda.ProdutoEstoqueEntregue" /> 
+                        @Html.DisplayNameFor(model => model.Venda.ProdutoEstoqueEntregue)
+                    </label>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label asp-for="Venda.Data" class="control-label"></label>
+                    <input asp-for="Venda.Data" class="form-control" />
+                    <span asp-validation-for="Venda.Data" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Cadastro" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+</body>
+</html>

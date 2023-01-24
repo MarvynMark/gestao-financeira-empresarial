@@ -1,13 +1,13 @@
 ﻿namespace PenielBikeControle.Models
 {
-    public class TipoProduto
+    public class TipoProdutoEstoque
     {
         public int Id { get; set; }
         public string Descricao { get; set; }
 
-        public TipoProduto(){ }
+        public TipoProdutoEstoque(){ }
 
-        public TipoProduto(int id, string descricao)
+        public TipoProdutoEstoque(int id, string descricao)
         {
             Id = id;
             Descricao = descricao;

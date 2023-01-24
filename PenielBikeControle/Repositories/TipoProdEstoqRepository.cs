@@ -4,26 +4,26 @@ using PenielBikeControle.Repositories.Iterfaces;
 
 namespace PenielBikeControle.Repositories
 {
-    public class TipoProdutoRepository : ITipoProdutoRepository
+    public class TipoProdEstoqRepository : ITipoProdEstoqRepository
     {
         private readonly DataContext _context;
-        public TipoProdutoRepository(DataContext context) => _context = context;
+        public TipoProdEstoqRepository(DataContext context) => _context = context;
             
-        public void Salvar(TipoProduto tipoProduto)
+        public void Salvar(TipoProdutoEstoque tipoProduto)
         {
             _context.TiposProduto.Add(tipoProduto);
             _context.SaveChanges();
         }
-        public IList<TipoProduto> GetAll()
+        public IList<TipoProdutoEstoque> GetAll()
         {
             var listaDeTiposDeProduto = _context.TiposProduto.ToList();
             if (listaDeTiposDeProduto.Any())
                 return listaDeTiposDeProduto;
             else
-                return new List<TipoProduto>();
+                return new List<TipoProdutoEstoque>();
         }
 
-        public TipoProduto GetById(int id)
+        public TipoProdutoEstoque GetById(int id)
         {
             return _context.TiposProduto.SingleOrDefault(x => x.Id == id);
         }

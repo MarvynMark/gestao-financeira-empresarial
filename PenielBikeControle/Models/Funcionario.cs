@@ -1,6 +1,6 @@
 ﻿namespace PenielBikeControle.Models
 {
-    public class Vendedor
+    public class Funcionario
     {
         public int Id { get; set; }
         public string Nome { get; set; }
@@ -8,9 +8,9 @@
         public string? Cpf { get; set; }
         public string? Endereco { get; set; }
 
-        public Vendedor() { }
+        public Funcionario() { }
 
-        public Vendedor(int id, string nome, DateOnly dataDeNascimento, string? cpf, string? endereco)
+        public Funcionario(int id, string nome, DateOnly dataDeNascimento, string? cpf, string? endereco)
         {
             Id = id;
             Nome = nome;

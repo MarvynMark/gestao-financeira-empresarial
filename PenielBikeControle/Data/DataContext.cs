@@ -20,8 +20,9 @@ namespace PenielBikeControle.Data
         public DbSet<Venda> Vendas { get; set; }
         public DbSet<ItemVenda> ItensVenda { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
-        public DbSet<Vendedor> Vendedores { get; set; }
-        public DbSet<TipoProduto> TiposProduto { get; set; }
+        public DbSet<Funcionario> Funcionarios { get; set; }
+        public DbSet<TipoProdutoEstoque> TiposProduto { get; set; }
         public DbSet<ProdutoEstoque> ProdutosEstoque { get; set; }
+        public DbSet<ProdutoCliente> ProdutosCliente { get; set; }
     }
 }

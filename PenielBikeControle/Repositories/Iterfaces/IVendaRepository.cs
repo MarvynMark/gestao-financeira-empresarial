@@ -6,5 +6,6 @@ namespace PenielBikeControle.Repositories.Iterfaces
     {
         Venda Salvar(Venda venda);
         Venda GetById(int id);
+        IList<Venda> GetAll();
     }
 }

@@ -18,7 +18,7 @@ namespace PenielBikeControle.Repositories
 
         public IList<ProdutoEstoque> GetAll()
         {
-            var listaDeProdutos = _context.ProdutosEstoque.ToList();
+            var listaDeProdutos = _context.ProdutosEstoque.Include(x => x.TipoProduto).ToList();
             if (listaDeProdutos.Any())
                 return listaDeProdutos;
             else
