@@ -25,9 +25,13 @@ namespace PenielBikeControle.Controllers
         // GET: ProdutoClienteController
         public ActionResult Index()
         {
-            var produtosCliente = _produtoClienteRepository.GetAll();
+            return View();
+        }
 
-            return View("ListaProdCli", produtosCliente);
+        public async Task<ActionResult> Lista()
+        {
+            var produtosCliente = await _produtoClienteRepository.GetAll();
+            return View(produtosCliente);
         }
 
         // GET: ProdutoClienteController/Details/5
@@ -37,20 +41,21 @@ namespace PenielBikeControle.Controllers
         }
 
         // GET: ProdutoClienteController/Create
-        public ActionResult Cadastro()
+        public async Task<ActionResult> Cadastro()
         {
             ProdutoClienteViewModel produtoClienteViewModel = new ProdutoClienteViewModel();
-            produtoClienteViewModel.ListaClientes = _clienteRepository.GetAll().Select(x => new SelectListItem {
+            var listaClientes = await _clienteRepository.GetAll();
+            produtoClienteViewModel.ListaClientes = listaClientes.Select(x => new SelectListItem {
                 Value = x.Id.ToString(),
                 Text = x.Nome
             });
-            return View("CadastroProdCli", produtoClienteViewModel);
+            return View(produtoClienteViewModel);
         }
 
         // POST: ProdutoClienteController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Cadastro(ProdutoClienteViewModel produtoClienteViewModel)
+        public async Task<ActionResult> Cadastro(ProdutoClienteViewModel produtoClienteViewModel)
         {
             using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
             {
@@ -63,7 +68,7 @@ namespace PenielBikeControle.Controllers
                     produtoCliente.Nome = produtoClienteViewModel.ProdutoCliente.Nome;
                     produtoCliente.ClienteId = produtoClienteViewModel.ClienteId;
 
-                    _produtoClienteRepository.Salvar(produtoCliente);
+                    await _produtoClienteRepository.Salvar(produtoCliente);
                     dtContextTransaction.Commit();
 
                     return RedirectToAction(nameof(Cadastro));
@@ -71,7 +76,7 @@ namespace PenielBikeControle.Controllers
                 catch
                 {
                     dtContextTransaction.Rollback();
-                    return View();
+                    return View(nameof(Cadastro));
                 }
             }
         }

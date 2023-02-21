@@ -20,8 +20,13 @@ namespace PenielBikeControle.Controllers
         // GET: TipoProdutoController
         public ActionResult Index()
         {
+            return View();
+        }
+
+         public ActionResult Lista()
+        {
             var tiposProduto = _tipoProdutoRepository.GetAll();
-            return View("ListaTiposProdEstoq", tiposProduto);
+            return View(tiposProduto);
         }
 
         // GET: TipoProdutoController/Details/5
@@ -33,7 +38,7 @@ namespace PenielBikeControle.Controllers
         // GET: TipoProdutoController/Create
         public ActionResult Cadastro()
         {
-            return View("CadastroTiposProdEstoq");
+            return View();
         }
 
         // POST: TipoProdutoController/Create

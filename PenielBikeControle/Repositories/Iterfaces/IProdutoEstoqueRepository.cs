@@ -4,8 +4,8 @@ namespace PenielBikeControle.Repositories.Iterfaces
 {
     public interface IProdutoEstoqueRepository
     {
-        void Salvar(ProdutoEstoque produtoEstoque);
-        IList<ProdutoEstoque> GetAll();
-        ProdutoEstoque GetById(int id);
+        Task Salvar(ProdutoEstoque produtoEstoque);
+        Task<IList<ProdutoEstoque>> GetAll();
+        Task<ProdutoEstoque> GetById(int id);
     }
 }

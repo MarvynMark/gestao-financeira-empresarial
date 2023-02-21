@@ -1,4 +1,5 @@
-﻿using PenielBikeControle.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PenielBikeControle.Data;
 using PenielBikeControle.Models;
 using PenielBikeControle.Repositories.Iterfaces;
 
@@ -9,23 +10,23 @@ namespace PenielBikeControle.Repositories
         private readonly DataContext _context;
         public TipoProdEstoqRepository(DataContext context) => _context = context;
             
-        public void Salvar(TipoProdutoEstoque tipoProduto)
+        public async Task Salvar(TipoProdutoEstoque tipoProduto)
         {
-            _context.TiposProduto.Add(tipoProduto);
-            _context.SaveChanges();
+            await _context.TiposProduto.AddAsync(tipoProduto);
+            await _context.SaveChangesAsync();
         }
-        public IList<TipoProdutoEstoque> GetAll()
+        public async Task<IList<TipoProdutoEstoque>> GetAll()
         {
-            var listaDeTiposDeProduto = _context.TiposProduto.ToList();
+            var listaDeTiposDeProduto = await _context.TiposProduto.ToListAsync();
             if (listaDeTiposDeProduto.Any())
                 return listaDeTiposDeProduto;
             else
                 return new List<TipoProdutoEstoque>();
         }
 
-        public TipoProdutoEstoque GetById(int id)
+        public async Task<TipoProdutoEstoque> GetById(int id)
         {
-            return _context.TiposProduto.SingleOrDefault(x => x.Id == id);
+            return await _context.TiposProduto.SingleOrDefaultAsync(x => x.Id == id);
         }
     }
 }

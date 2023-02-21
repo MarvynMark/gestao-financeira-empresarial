@@ -22,9 +22,14 @@ namespace PenielBikeControle.Controllers
         // GET: CadastroDeProdutoController
         public ActionResult Index()
         {
-            var produtos = _produtoEstoqueReposirory.GetAll();
-            return View("ListaProdEstoq", produtos);
+            return View();
         }
+        public async Task<ActionResult> Lista()
+        {
+            var produtos = await _produtoEstoqueReposirory.GetAll();
+            return View(produtos);
+        }
+
 
         // GET: CadastroDeProdutoController/Details/5
         public ActionResult Details(int id)
@@ -33,24 +38,25 @@ namespace PenielBikeControle.Controllers
         }
 
         // GET: CadastroDeProdutoController/Create
-        public ActionResult Cadastro()
+        public async Task<ActionResult> Cadastro()
         {
             ProdutoEstoqueViewModel produtoEstoqueViewModel = new ProdutoEstoqueViewModel();
             produtoEstoqueViewModel.Produto = new ProdutoEstoque();
-            produtoEstoqueViewModel.ListaTiposDeProduto = _tipoProdutoEstoqueRepository.GetAll().Select(x => new SelectListItem 
+            var listaDeProdutos = await _tipoProdutoEstoqueRepository.GetAll();
+            produtoEstoqueViewModel.ListaTiposDeProduto = listaDeProdutos.Select(x => new SelectListItem 
             {
                 Value = x.Id.ToString(),
                 Text = x.Descricao
             });
 
 
-            return View("CadastroProdEstoq", produtoEstoqueViewModel);
+            return View(produtoEstoqueViewModel);
         }
 
         // POST: CadastroDeProdutoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Cadastro(ProdutoEstoqueViewModel produtoEstoqueViewModel)
+        public async Task<ActionResult> Cadastro(ProdutoEstoqueViewModel produtoEstoqueViewModel)
         {
             using (var dtContexTransaction = _dataContext.Database.BeginTransaction())
             {
@@ -66,7 +72,7 @@ namespace PenielBikeControle.Controllers
                     produtoEstoque.Nome = produtoEstoqueViewModel.Produto.Nome;
                     produtoEstoque.QtdeEmEstoque = produtoEstoqueViewModel.Produto.QtdeEmEstoque;
 
-                    _produtoEstoqueReposirory.Salvar(produtoEstoque);
+                    await _produtoEstoqueReposirory.Salvar(produtoEstoque);
                     dtContexTransaction.Commit();
                     return RedirectToAction(nameof(Cadastro));
                 }

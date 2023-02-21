@@ -11,19 +11,19 @@ namespace PenielBikeControle.Repositories
 
         public ProdutoClienteRepository(DataContext dataContext) => _dataContext = dataContext;        
 
-        public ProdutoCliente Salvar(ProdutoCliente clienteProduto)
+        public async Task<ProdutoCliente> Salvar(ProdutoCliente clienteProduto)
         {
-            _dataContext.ProdutosCliente.Add(clienteProduto);
-            _dataContext.SaveChanges();
+            await _dataContext.ProdutosCliente.AddAsync(clienteProduto);
+            await _dataContext.SaveChangesAsync();
             return clienteProduto;
         }
-        public ProdutoCliente GetById(int id)
+        public async Task<ProdutoCliente> GetById(int id)
         {
-            return _dataContext.ProdutosCliente.Include(x => x.Cliente).SingleOrDefault(x => x.Id == id);
+            return await _dataContext.ProdutosCliente.Include(x => x.Cliente).SingleOrDefaultAsync(x => x.Id == id);
         }
-        public IList<ProdutoCliente> GetAll()
+        public async Task<IList<ProdutoCliente>> GetAll()
         {
-            return _dataContext.ProdutosCliente.Include(x => x.Cliente).ToList();
+            return await _dataContext.ProdutosCliente.Include(x => x.Cliente).ToListAsync();
         }
     }
 }

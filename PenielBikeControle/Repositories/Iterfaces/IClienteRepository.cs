@@ -4,8 +4,8 @@ namespace PenielBikeControle.Repositories.Iterfaces
 {
     public interface IClienteRepository
     {
-        void Salvar(Cliente cliente);
-        IList<Cliente> GetAll();
-        Cliente GetById(int id);
+        Task Salvar(Cliente cliente);
+        Task<IList<Cliente>> GetAll();
+        Task<Cliente> GetById(int id);
     }
 }

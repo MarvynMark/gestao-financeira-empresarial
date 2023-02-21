@@ -79,6 +79,9 @@ namespace PenielBikeControle.Migrations
                     b.Property<int>("ProdutoEstoqueId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
                     b.Property<int>("VendaId")
                         .HasColumnType("int");
 
@@ -145,6 +148,9 @@ namespace PenielBikeControle.Migrations
                         .HasColumnType("double");
 
                     b.Property<double>("PrecoFinal")
+                        .HasColumnType("double");
+
+                    b.Property<double>("PrecoMaoDeObra")
                         .HasColumnType("double");
 
                     b.Property<int>("QtdeEmEstoque")

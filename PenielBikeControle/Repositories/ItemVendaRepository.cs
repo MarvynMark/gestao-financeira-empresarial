@@ -9,10 +9,10 @@ namespace PenielBikeControle.Repositories
         private readonly DataContext _context;
         public ItemVendaRepository(DataContext context) => _context = context;
 
-        public void Salvar(ItemVenda itemVenda)
+        public async Task Salvar(ItemVenda itemVenda)
         {
-            _context.ItensVenda.Add(itemVenda);
-            _context.SaveChanges();
+            await _context.ItensVenda.AddAsync(itemVenda);
+            await _context.SaveChangesAsync();
         }
     }
 }

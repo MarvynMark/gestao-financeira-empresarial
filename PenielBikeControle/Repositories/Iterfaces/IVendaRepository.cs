@@ -4,8 +4,8 @@ namespace PenielBikeControle.Repositories.Iterfaces
 {
     public interface IVendaRepository
     {
-        Venda Salvar(Venda venda);
-        Venda GetById(int id);
-        IList<Venda> GetAll();
+        Task<Venda> Salvar(Venda venda);
+        Task<Venda> GetById(int id);
+        Task<IList<Venda>> GetAll();
     }
 }

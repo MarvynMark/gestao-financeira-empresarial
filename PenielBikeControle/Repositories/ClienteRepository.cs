@@ -1,4 +1,5 @@
-﻿using PenielBikeControle.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PenielBikeControle.Data;
 using PenielBikeControle.Models;
 using PenielBikeControle.Repositories.Iterfaces;
 
@@ -9,23 +10,23 @@ namespace PenielBikeControle.Repositories
         private readonly DataContext _context;
         public ClienteRepository(DataContext context) => _context = context;
 
-        public void Salvar(Cliente cliente)
+        public async Task Salvar(Cliente cliente)
         {
-            _context.Clientes.Add(cliente);
-            _context.SaveChanges();
+            await _context.Clientes.AddAsync(cliente);
+            await _context.SaveChangesAsync();
         }
 
-        public IList<Cliente> GetAll()
+        public async Task<IList<Cliente>> GetAll()
         {
-            var listaDeClientes = _context.Clientes.ToList();
+            var listaDeClientes = await _context.Clientes.ToListAsync();
             if (listaDeClientes.Any())
                 return listaDeClientes;
             else
                 return new List<Cliente>();
         }
-        public Cliente GetById(int id)
+        public async Task<Cliente> GetById(int id)
         {
-            return _context.Clientes.SingleOrDefault(x => x.Id == id);
+            return await _context.Clientes.SingleOrDefaultAsync(x => x.Id == id);
         }
     }
 }

@@ -34,8 +34,13 @@ namespace PenielBikeControle.Controllers
         // GET: VendaController
         public ActionResult Index()
         {
+            return View();
+        }
+
+        public ActionResult Lista()
+        {
             var vendas = _vendaRepository.GetAll();
-            return View("ListaVendas", vendas);
+            return View(vendas);
         }
 
         // GET: VendaController/Details/5
@@ -45,42 +50,46 @@ namespace PenielBikeControle.Controllers
         }
 
         // GET: VendaController/Create
-        public ActionResult Cadastro()
+        public async Task<ActionResult> Cadastro()
         {
             VendaViewModel vendaViewModel = new VendaViewModel();
-
-            vendaViewModel.ListaDeProdutos = _protudoEstoqueRepository.GetAll().Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = $"{x.Nome} - {x.Modelo} - {x.Descricao}"
-            });
-            vendaViewModel.ListaDeClientes = _clienteRepository.GetAll().Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Nome
-            });
-            vendaViewModel.ListaDeFuncionarios = _funcionarioRepository.GetAll().Select(x => new SelectListItem
+            var listaClientes = await _clienteRepository.GetAll();
+            //vendaViewModel.ListaDeProdutos = _protudoEstoqueRepository.GetAll().Select(x => new SelectListItem
+            //{
+            //    Value = x.Id.ToString(),
+            //    Text = $"{x.Nome} - {x.Modelo} - {x.Descricao}"
+            //});
+            
+            vendaViewModel.ListaDeProdutos = await _protudoEstoqueRepository.GetAll();
+            vendaViewModel.ListaDeClientes = listaClientes.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Nome
             });
-            vendaViewModel.ListaProdutosCliente = _produtoClienteRepository.GetAll().Select(x => new SelectListItem
+            var listaFuncionarios = await _funcionarioRepository.GetAll();
+            vendaViewModel.ListaDeFuncionarios = listaClientes.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Nome
+            });
+            var listaProdutosCliente = await _produtoClienteRepository.GetAll();
+            vendaViewModel.ListaProdutosCliente = listaProdutosCliente.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = $"{x.Nome}, {x.Marca}, {x.Modelo}"
             });
 
-            return View("CadastroVendas", vendaViewModel);
+            return View(vendaViewModel);
         }
 
         // POST: VendaController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Cadastro(VendaViewModel vendaViewModel)
+        public async Task<ActionResult> Cadastro(VendaViewModel vendaViewModel)
         {
             using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
             {
-                try
+                try 
                 {
                     Venda venda = new Venda();
                     venda.DescontoTotal = vendaViewModel.Venda.DescontoTotal;
@@ -90,11 +99,11 @@ namespace PenielBikeControle.Controllers
                     venda.VendaPaga = vendaViewModel.Venda.VendaPaga;
                     venda.ProdutoEstoqueEntregue = vendaViewModel.Venda.ProdutoEstoqueEntregue;
 
-                    var vendaSalva = _vendaRepository.Salvar(venda);
+                    var vendaSalva = await _vendaRepository.Salvar(venda);
 
                     if (vendaSalva != null)
                     {
-                        foreach (var item in vendaViewModel.ProtudoEstoqueIds)
+                        foreach (var item in vendaViewModel.ListaProtudoEstoqueIds)
                         {
                             var itemVenda = new ItemVenda
                             {
@@ -102,7 +111,7 @@ namespace PenielBikeControle.Controllers
                                 VendaId = vendaSalva.Id,
                                 ProdutoClienteId = vendaViewModel.ProdutoClienteId
                             };
-                            _itemVendaRepository.Salvar(itemVenda);
+                            await _itemVendaRepository.Salvar(itemVenda);
                         }
                     }
                     dtContextTransaction.Commit();
@@ -111,7 +120,7 @@ namespace PenielBikeControle.Controllers
                 catch (Exception e)
                 {
                     dtContextTransaction.Rollback();
-                    return View();
+                    return RedirectToAction(nameof(Cadastro));
                 }
             }
         }

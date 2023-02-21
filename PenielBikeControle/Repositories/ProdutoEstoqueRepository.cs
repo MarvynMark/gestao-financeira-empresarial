@@ -10,21 +10,21 @@ namespace PenielBikeControle.Repositories
         private readonly DataContext _context;
         public ProdutoEstoqueRepository(DataContext context) => _context = context;
 
-        public void Salvar(ProdutoEstoque produto)
+        public async Task Salvar(ProdutoEstoque produto)
         {
-            _context.ProdutosEstoque.Add(produto);
-            _context.SaveChanges();
+            await _context.ProdutosEstoque.AddAsync(produto);
+            await _context.SaveChangesAsync();
         }
 
-        public IList<ProdutoEstoque> GetAll()
+        public async Task<IList<ProdutoEstoque>> GetAll()
         {
-            var listaDeProdutos = _context.ProdutosEstoque.Include(x => x.TipoProduto).ToList();
+            var listaDeProdutos = await _context.ProdutosEstoque.Include(x => x.TipoProduto).ToListAsync();
             if (listaDeProdutos.Any())
                 return listaDeProdutos;
             else
                 return new List<ProdutoEstoque>();
         }
-        public ProdutoEstoque GetById(int id)
+        public async Task<ProdutoEstoque> GetById(int id)
         {
             //return (from p in _context.ProdutosEstoque
             //              join t in _context.TiposProduto
@@ -43,7 +43,7 @@ namespace PenielBikeControle.Repositories
             //                  QtdeEmEstoque = p.QtdeEmEstoque
             //              }).FirstOrDefault();
 
-            return _context.ProdutosEstoque.Include(x => x.TipoProduto).SingleOrDefault(x => x.Id == id);
+            return await _context.ProdutosEstoque.Include(x => x.TipoProduto).SingleOrDefaultAsync(x => x.Id == id);
         }
     }
 }

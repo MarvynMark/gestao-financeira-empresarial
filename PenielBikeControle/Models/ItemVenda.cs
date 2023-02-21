@@ -8,11 +8,12 @@
         public ProdutoEstoque ProdutoEstoque { get; set; }
         public int ProdutoEstoqueId { get; set; }
         public ProdutoCliente? ProdutoCliente { get; set; }
+        public int Quantidade { get; set; }
         public int? ProdutoClienteId { get; set; }
 
         public ItemVenda() { }
 
-        public ItemVenda(int id, Venda venda, int vendaId, ProdutoEstoque produtoEstoque, int produtoEstoqueId, ProdutoCliente? produtoCliente, int? produtoClienteId)
+        public ItemVenda(int id, Venda venda, int vendaId, ProdutoEstoque produtoEstoque, int produtoEstoqueId, ProdutoCliente? produtoCliente, int? produtoClienteId, int quantidade)
         {
             Id = id;
             Venda = venda;
@@ -21,6 +22,7 @@
             ProdutoEstoqueId = produtoEstoqueId;
             ProdutoCliente = produtoCliente;
             ProdutoClienteId = produtoClienteId;
+            Quantidade = quantidade;
         }
     }
 }

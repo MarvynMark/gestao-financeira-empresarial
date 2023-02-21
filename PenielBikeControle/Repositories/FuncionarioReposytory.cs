@@ -1,4 +1,5 @@
-﻿using PenielBikeControle.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PenielBikeControle.Data;
 using PenielBikeControle.Models;
 using PenielBikeControle.Repositories.Iterfaces;
 
@@ -9,22 +10,22 @@ namespace PenielBikeControle.Repositories
         private readonly DataContext _context;
         public FuncionarioReposytory(DataContext context) => _context = context;
         
-        public void Salvar(Funcionario funcionario)
+        public async Task Salvar(Funcionario funcionario)
         {
-            _context.Funcionarios.Add(funcionario);
-            _context.SaveChanges(); 
+            await _context.Funcionarios.AddAsync(funcionario);
+            await _context.SaveChangesAsync(); 
         }
-        public IList<Funcionario> GetAll()
+        public async Task<IList<Funcionario>> GetAll()
         {
-            var listaDeFuncionarios = _context.Funcionarios.ToList();
+            var listaDeFuncionarios = await _context.Funcionarios.ToListAsync();
             if (listaDeFuncionarios.Any())
                 return listaDeFuncionarios;
             else
                 return new List<Funcionario>();
         }
-        public Funcionario GetById(int id)
+        public async Task<Funcionario> GetById(int id)
         {
-            return _context.Funcionarios.SingleOrDefault(x => x.Id == id);
+            return await _context.Funcionarios.SingleOrDefaultAsync(x => x.Id == id);
         }
     }
 }

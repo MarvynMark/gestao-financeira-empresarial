@@ -1,11 +1,16 @@
-﻿namespace PenielBikeControle.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PenielBikeControle.Models
 {
     public class Venda
     {
         public int Id { get; set; }
-        public DateTime Data { get; set; }
+        public DateTime Data { get; set; } = DateTime.Now;
         public Cliente Cliente { get; set; }
         public int ClienteId { get; set; }
+
+        [Required(ErrorMessage = "Favor informar o {0}")]
+        [Display(Name = "Funcionário")]
         public Funcionario Funcionario { get; set; }
         public int FuncionarioId { get; set; }
         public IList<ItemVenda>? ItensDaVenda { get; set; }
