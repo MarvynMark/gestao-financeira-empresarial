@@ -1,26 +1,38 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PenielBikeControle.Models
 {
     public class Venda
     {
+        [Display(Name = "Código")]
         public int Id { get; set; }
-        public DateTime Data { get; set; } = DateTime.Now;
-        public Cliente Cliente { get; set; }
-        public int ClienteId { get; set; }
 
-        [Required(ErrorMessage = "Favor informar o {0}")]
-        [Display(Name = "Funcionário")]
-        public Funcionario Funcionario { get; set; }
+        [Required(ErrorMessage = "Favor informar a data da venda")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm}", ApplyFormatInEditMode=true )]
+        public DateTime Data { get; set; }
+        public int ClienteId { get; set; }
         public int FuncionarioId { get; set; }
-        public IList<ItemVenda>? ItensDaVenda { get; set; }
+
+        [Display(Name = "Venda paga")]
         public bool VendaPaga { get; set; }
+        
+        [Display(Name = "Produto entregue")]
         public bool ProdutoEstoqueEntregue { get; set; }
-        public double DescontoTotal { get; set; }
+
+        [Column(TypeName = "decimal(10,2)")]
+        [Display(Name = "Desconto")]
+        public decimal DescontoTotal { get; set; }
+        public virtual IList<ItemVenda>? ItensDaVenda { get; set; }
+        public virtual Funcionario Funcionario { get; set; }
+        public virtual Cliente Cliente { get; set; }
+        
+        //public double ValorTotal { get; set; }
 
         public Venda() { }
 
-        public Venda(int id, DateTime data, Cliente cliente, int clienteId, Funcionario funcionario, int funcionarioId, IList<ItemVenda>? itensDaVenda, bool vendaPaga, bool produtoEstoqueEntregue, double descontoTotal)
+        public Venda(int id, DateTime data, Cliente cliente, int clienteId, Funcionario funcionario, int funcionarioId, IList<ItemVenda>? itensDaVenda, bool vendaPaga, bool produtoEstoqueEntregue, decimal descontoTotal)
         {
             Id = id;
             Data = data;

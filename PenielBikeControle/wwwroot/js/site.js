@@ -1,16 +1,10 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿const tituloDaPagina = '#titulo-da-pagina';
+const tituloDaPaginaLayout = "#titulo-da-pagina-layout";
 
-// Write your JavaScript code.
-function Start() {
-    
-}
-
-Start()
-
+IniciaElementos();
 
 $(document).ready(function () {
-    $('.table').DataTable()
+    $('.table').DataTable();
 
     $(".select").select2({
         placeholder: 'Selecione...',
@@ -20,10 +14,16 @@ $(document).ready(function () {
                 return "Informação não encontrada!";
             }
         }
-
     })
     $(".select-one").select2({
         theme: "classic",
         tags: true
     })
 })
+
+function IniciaElementos() {
+    let elTituloDaPagina = $(tituloDaPagina);
+    let elTituloDaPaginaLayout = $(tituloDaPaginaLayout);
+
+    elTituloDaPaginaLayout[0].innerHTML =  elTituloDaPagina[0].value;
+}

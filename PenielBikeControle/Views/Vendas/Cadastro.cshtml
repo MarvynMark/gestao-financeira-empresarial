@@ -3,9 +3,10 @@
 <link rel="stylesheet" href="~/css/vendas/cadastro-vendas.css" />
 
 <!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
+@*<div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Venda</h1>
-</div>
+</div>*@
+<input id="titulo-da-pagina" value="Cadastro de Vendas" style="display: none;">
 <div class="row">
     <div class="col-xl-3 col-lg-3">
         <div class="card shadow mb-4">
@@ -23,18 +24,24 @@
                             <div class="col-md-12 form-group">
                                 <label asp-for="FuncionarioId" class="control-label"></label>
                                 <select asp-for="FuncionarioId" class="form-control form-control-sm select select-func" asp-items="Model.ListaDeFuncionarios"><option></option></select>
+                                <span asp-validation-for="FuncionarioId" class="text-danger"></span>
                             </div>
                             <div class="col-md-12 form-group">
                                 <label asp-for="ClienteId" class="control-label"></label>
                                 <select asp-for="ClienteId" class="form-control form-control-sm select select-cli" asp-items="Model.ListaDeClientes"><option></option></select>
+                                <span asp-validation-for="ClienteId" class="text-danger"></span>
                             </div>
                             <div class="col-md-12 form-group">
                                 <label asp-for="ProdutoClienteId" class="control-label"></label>
                                 <select asp-for="ProdutoClienteId" class="form-control form-control-sm select select-prodCli" asp-items="Model.ListaProdutosCliente"><option></option></select>
+                                <span asp-validation-for="ProdutoClienteId" class="text-danger"></span>
                             </div>
-
-
-                            <div class="col-md-12 row">
+                            <div class="col-md-12 form-group">
+                                <label asp-for="Venda.Data" class="control-label"></label>
+                                <input asp-for="Venda.Data" class="form-control" />
+                                <span asp-validation-for="Venda.Data" class="text-danger"></span>
+                            </div>
+                            <div id="checks-vendaPaga-ProdEntregue" class="col-md-12 row">
                                 <div class="col-md-6 form-group form-check">
                                     <label class="form-check-label">
                                         <input class="form-check-input" asp-for="Venda.VendaPaga" />
@@ -49,15 +56,18 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-md-12 form-group">
-                                <label asp-for="Venda.Data" class="control-label"></label>
-                                <input asp-for="Venda.Data" class="form-control" />
-                                <span asp-validation-for="Venda.Data" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-12" style="text-align: center;margin-top: 40px;">
+                            <div id="divBtnSalvar" class="col-md-12">
                                 <div class="form-group">
                                     <input id="btnSalvar" type="submit" value="Salvar Venda" class="btn btn-success" />
                                 </div>
+                            </div>
+                            <div class="col-md-12 form-group" style="display: none;">
+                                <select asp-for="QtdeProdutosInput" class="form-control form-control-sm"><option></option></select>
+                                <span asp-validation-for="QtdeProdutosInput" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input asp-for="DescontoTotal" class="form-control" />
+                                @* <span asp-validation-for="Venda.DescontoTotal" class="text-danger"></span> *@
                             </div>
                         </div>
                     </form>
@@ -69,21 +79,15 @@
     <div class="col-xl-9 col-lg-9">
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Itens de Venda</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Itens da Venda</h6>
                 <h6 class="m-0 font-weight-bold" style="color: #607d8b;">@Model.DataNaTela</h6>
             </div>
-            <div class="form-group">
+            <div id="card-itens-venda" class="form-group">
                 <div class="col-md-12">
                     <div class="row">
-                        @*<div class="col-md-6 form-group">
-                        <label asp-for="ProtudoEstoqueIds" class="control-label"></label>
-                        <select asp-for="ProtudoEstoqueIds" class="form-control form-control-sm select" asp-items="Model.ListaDeProdutos"><option></option></select>
-                        </div>*@
                         <div class="col-md-6 form-group">
                             <label asp-for="ProtudoEstoqueId" class="control-label"></label>
-                            @*<select asp-for="ProtudoEstoqueId" class="form-control form-control-sm select select-prod" asp-items="Model.ListaDeProdutos"><option></option></select>*@
-
-                            <select id="selectProduto"  class="form-control form-control-sm select select-prod">
+                            <select id="selectProduto" class="form-control form-control-sm select select-prod"><option></option>
                                 @{
                                     foreach (var prod in Model.ListaDeProdutos)
                                     {
@@ -92,7 +96,7 @@
                                 }
                             </select>
                         </div>
-                        <div class="col-md-1 form-group">
+                        <div class="col-md-2 form-group">
                             <label asp-for="Quantidade" class="control-label"></label>
                             <select id="selectQtde" asp-for="Quantidade" class="form-control form-control-sm select-one">
                                 <option>1</option>
@@ -108,20 +112,15 @@
                             </select>
                         </div>
 
-                        <div class="col-md-4 form-group">
-                            <div class="form-group" style="text-align: center;margin-top: 30px;margin-bottom: 0px;">
-                                <input id="btnAddProduto" type="submit" value="Adicionar Venda" class="btn btn-info" style="height: 30px;font-size: 14px;">
+                        <div id="divBtnAddProduto" class="col-md-4 form-group">
+                            <div class="form-group">
+                                <input id="btnAddProduto" type="submit" value="Adicionar Venda" class="btn btn-info">
                             </div>
                         </div>
-                        @*<div class="col-md-6 form-group">
-                        <label asp-for="Venda.DescontoTotal" class="control-label"></label>
-                        <input asp-for="Venda.DescontoTotal" class="form-control" />
-                        <span asp-validation-for="Venda.DescontoTotal" class="text-danger"></span>
-                        </div>*@
 
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-12 form-group table-responsive">
                             <table id="tabela-orcamento" class="table table-sm table-bordered">
-                                <thead class="thead-dark">
+                                <thead class="thead-table">
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Qtde</th>
@@ -133,37 +132,7 @@
                                         <th scope="col">...</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @* <tr>
-                                        <td class="row-table">1</td>
-                                        <td>1</td>
-                                        <td>122</td>
-                                        <td>Aro Aero, Vermelho, Aro 26</td>
-                                        <td>R$ 22,00</td>
-                                        <td>R$ 10,00</td>
-                                        <td>R$ 56,00</td>
-                                        <td class="td-remover"><a class="btn btn-danger btn-remover" href="#">remover</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="row-table">2</td>
-                                        <td>2</td>
-                                        <td>122</td>
-                                        <td>Pneu, Slim, Aro 26</td>
-                                        <td>R$ 28,00</td>
-                                        <td>R$ 10,00</td>
-                                        <td>R$ 56,00</td>
-                                        <td class="td-remover"><a class="btn btn-danger btn-remover" href="#">remover</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="row-table">3</td>
-                                        <td>2</td>
-                                        <td>122</td>
-                                        <td>Pneu, Slim, Aro 26</td>
-                                        <td>R$ 28,00</td>
-                                        <td>R$ 10,00</td>
-                                        <td>R$ 56,00</td>
-                                        <td class="td-remover"><a class="btn btn-danger btn-remover" href="#">remover</a></td>
-                                    </tr> *@
+                                <tbody class="tbody-table">
                                 </tbody>
                             </table>
                         </div>
@@ -172,10 +141,43 @@
                 </div>
             </div>
         </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Resumo da Venda</h6>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12 div-resumo">
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <div class="form-group col-md-6">
+                                <label for="subTotalVenda">SUBTOTAL</label>
+                                <input id="subTotalVenda" type="text" class="form-control bg-light small input-resumo" value="R$ 0,00" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <div class="form-group col-md-6">
+                                <label for="descontoVenda">DESCONTO</label>
+                                <input id="descontoVenda" type="text" class="form-control bg-light small input-resumo" value="R$ 0,00" disabled><span id="msgAlertaDesconto"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <div class="form-group col-md-6">
+                                <label id="lbTotalVenda" for="totalVenda">TOTAL</label>
+                                <input id="totalVenda" type="text" class="form-control bg-light small input-resumo" value="R$ 0,00" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/vendas/cadastro-vendas.js"></script>
+}

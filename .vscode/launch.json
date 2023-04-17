@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/net7.0/PenielBikeControle.dll",
+            "program": "${workspaceFolder}/PenielBikeControle/bin/Debug/net7.0/PenielBikeControle.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

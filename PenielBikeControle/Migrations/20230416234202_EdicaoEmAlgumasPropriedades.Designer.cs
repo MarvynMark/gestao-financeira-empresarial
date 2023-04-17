@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PenielBikeControle.Data;
 
@@ -10,9 +11,10 @@ using PenielBikeControle.Data;
 namespace PenielBikeControle.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230416234202_EdicaoEmAlgumasPropriedades")]
+    partial class EdicaoEmAlgumasPropriedades
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,20 +28,17 @@ namespace PenielBikeControle.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Cpf")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar(11)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateOnly>("DataDeNascimento")
                         .HasColumnType("date");
 
                     b.Property<string>("Endereco")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -53,20 +52,17 @@ namespace PenielBikeControle.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Cpf")
-                        .HasMaxLength(11)
-                        .HasColumnType("varchar(11)");
+                        .HasColumnType("longtext");
 
                     b.Property<DateOnly>("DataDeNascimento")
                         .HasColumnType("date");
 
                     b.Property<string>("Endereco")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -88,8 +84,8 @@ namespace PenielBikeControle.Migrations
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("ValorVendido")
-                        .HasColumnType("decimal(10,2)");
+                    b.Property<double>("ValorVendido")
+                        .HasColumnType("double");
 
                     b.Property<int>("VendaId")
                         .HasColumnType("int");
@@ -115,21 +111,17 @@ namespace PenielBikeControle.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Descricao")
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Marca")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Modelo")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -145,30 +137,26 @@ namespace PenielBikeControle.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Descricao")
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Marca")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Modelo")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("longtext");
 
-                    b.Property<decimal>("PrecoCusto")
-                        .HasColumnType("decimal(10,2)");
+                    b.Property<double>("PrecoCusto")
+                        .HasColumnType("double");
 
-                    b.Property<decimal>("PrecoFinal")
-                        .HasColumnType("decimal(10,2)");
+                    b.Property<double>("PrecoFinal")
+                        .HasColumnType("double");
 
-                    b.Property<decimal>("PrecoMaoDeObra")
-                        .HasColumnType("decimal(10,2)");
+                    b.Property<double>("PrecoMaoDeObra")
+                        .HasColumnType("double");
 
                     b.Property<int>("QtdeEmEstoque")
                         .HasColumnType("int");
@@ -191,8 +179,7 @@ namespace PenielBikeControle.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -211,8 +198,8 @@ namespace PenielBikeControle.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<decimal>("DescontoTotal")
-                        .HasColumnType("decimal(10,2)");
+                    b.Property<double>("DescontoTotal")
+                        .HasColumnType("double");
 
                     b.Property<int>("FuncionarioId")
                         .HasColumnType("int");

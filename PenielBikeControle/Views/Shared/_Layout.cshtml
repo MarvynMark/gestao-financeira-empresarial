@@ -177,6 +177,7 @@
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         <h6 class="collapse-header">Login Screens:</h6>
                         <a class="collapse-item" href="login.html">Login</a>
                         <a class="collapse-item" href="register.html">Register</a>
@@ -186,8 +187,27 @@
                         <a class="collapse-item" href="404.html">404 Page</a>
                         <a class="collapse-item" href="blank.html">Blank Page</a>
 
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Vendas" asp-action="Cadastro">Cadastro de Venda</a>
+                        <h6 class="collapse-header">Funcionários</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="Funcionarios" asp-action="Cadastro">Cadastro de funcionários</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Funcionarios" asp-action="Lista">Lista de funcionários</a>
+
+                        <h6 class="collapse-header">Clientes</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="Clientes" asp-action="Cadastro">Cadastro de clientes</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Clientes" asp-action="Lista">Lista de clientes</a>
+                        
+                        <h6 class="collapse-header">Produtos</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="ProdutosEstoque" asp-action="Cadastro">Cadastro de produtos</a>
+                        <a class="collapse-item" asp-area="" asp-controller="ProdutosEstoque" asp-action="Lista">Lista de produtos</a>
+                        <a class="collapse-item" asp-area="" asp-controller="TipoProdutoEstoque" asp-action="Cadastro">Cadastro de tipos de produtos</a>
+                        <a class="collapse-item" asp-area="" asp-controller="TipoProdutoEstoque" asp-action="Lista">Lista de tipos de produtos</a>
+
+                        <h6 class="collapse-header">Produtos do cliente</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="ProdutosCliente" asp-action="Cadastro">Cadastro de produtos do cliente</a>
+                        <a class="collapse-item" asp-area="" asp-controller="ProdutosCliente" asp-action="Lista">Lista de produtos do cliente</a>
+
+                        <h6 class="collapse-header">Vendas</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="Vendas" asp-action="Cadastro">Cadastro de venda</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Vendas" asp-action="Lista">Lista de venda</a>
 
                     </div>
                 </div>
@@ -234,9 +254,9 @@
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-
+                    <h1 id="titulo-da-pagina-layout" class="h3 mb-0 text-gray-800"></h1>
                     <!-- Topbar Search -->
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    @*<form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                                    aria-label="Search" aria-describedby="basic-addon2">
@@ -246,7 +266,7 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </form>*@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -499,10 +519,11 @@
     <script src="~/js/demo/chart-pie-demo.js"></script>
 
     <script src="~/js/select2.min.js"></script>
-    <script src="~/js/site.js"></script>
-    <script src="~/js/vendas/cadastro-vendas.js"></script>
+    @*<script src="~/js/site.js"></script>*@
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/maskMoney.js"></script>
  
-
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 

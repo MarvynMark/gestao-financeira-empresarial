@@ -1,3 +1,6 @@
+#tabela-orcamento {
+    /* height: 12pc; */
+}
 #tabela-orcamento_filter {
     display: none;
 }
@@ -6,6 +9,7 @@
 }
 .td-remover {
     text-align: center;
+    vertical-align: middle;
 }
 .btn-remover {
     /* width: 70px; */
@@ -17,4 +21,54 @@
 }
 .row-table {
     font-weight: bold;
+}
+.thead-table {
+    color: white;
+    background-color: #3c5c74;
+}
+.tbody-table {
+    background-color: #ffffe1;
+}
+.div-resumo {
+    text-align: -webkit-center;
+    margin-top: 20px;
+    margin-bottom: -12px;
+}
+.input-resumo {
+    text-align: center
+}
+#lbTotalVenda {
+    font-weight: bold;
+}
+#totalVenda {
+    font-weight: bold;
+}
+#msgAlertaDesconto {
+    color: red;
+}
+#card-itens-venda {
+    height: 21pc;
+}
+#checks-vendaPaga-ProdEntregue {
+    padding-left: 50px;
+    margin-top: 10px;
+}
+#divBtnSalvar {
+    text-align: center;
+    margin-top: 70px;
+    margin-bottom: 54px;
+}
+#btnSalvar {
+    width: 50%;
+}
+#divBtnAddProduto{
+    text-align: center;
+    align-self: center;
+    margin-bottom: -15px;
+}
+#divBtnAddProduto div {    
+    margin-bottom: 0px;
+}
+#btnAddProduto {
+    font-size: 14px;
 }
