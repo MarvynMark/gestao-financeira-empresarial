@@ -7,5 +7,6 @@ namespace PenielBikeControle.Repositories.Iterfaces
         Task<ProdutoCliente> Salvar(ProdutoCliente produtoCliente);
         Task<ProdutoCliente> GetById(int id);
         Task<IList<ProdutoCliente>> GetAll();
+        Task<bool> Remover(int id);
     }
 }

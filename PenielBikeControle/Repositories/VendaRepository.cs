@@ -31,5 +31,31 @@ namespace PenielBikeControle.Repositories
         {
             return await _context.Vendas.Include(x => x.Funcionario).Include(c => c.Cliente).Include(i => i.ItensDaVenda).SingleOrDefaultAsync(x => x.Id == id);
         }
+
+        public async Task<bool> Remover(int id) 
+        {
+            var venda = await _context.Vendas.SingleOrDefaultAsync(x => x.Id == id);
+
+            if (venda is not null) 
+            {
+                venda.Removido = true;
+                _context.Update(venda);
+                
+                var result = await _context.SaveChangesAsync();
+
+                if (result != 0) 
+                {
+                    return true;
+                }
+                else 
+                {
+                    return false; 
+                }
+            }
+            else 
+            {
+                return false;
+            }
+        }
     }
 }
