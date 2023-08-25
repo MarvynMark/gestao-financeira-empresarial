@@ -4,7 +4,7 @@ using PenielBikeControle.Data;
 using PenielBikeControle.Models;
 using PenielBikeControle.Models.ViewModels;
 using PenielBikeControle.Repositories.Iterfaces;
-
+using PenielBikeControle.Utils;
 
 namespace PenielBikeControle.Controllers
 {
@@ -75,16 +75,18 @@ namespace PenielBikeControle.Controllers
             //}
             using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
             {
-                try 
+                try
                 {
                     decimal descontoTotal = 0;
-                    Venda venda = new Venda();
-                    venda.DescontoTotal = vendaViewModel.Venda.DescontoTotal;
-                    venda.FuncionarioId = vendaViewModel.FuncionarioId;
-                    venda.ClienteId = vendaViewModel.ClienteId;
-                    venda.Data = vendaViewModel.Venda.Data;
-                    venda.VendaPaga = vendaViewModel.Venda.VendaPaga;
-                    venda.ProdutoEstoqueEntregue = vendaViewModel.Venda.ProdutoEstoqueEntregue;
+                    Venda venda = new()
+                    {
+                        DescontoTotal = vendaViewModel.Venda.DescontoTotal,
+                        FuncionarioId = vendaViewModel.FuncionarioId,
+                        ClienteId = vendaViewModel.ClienteId,
+                        Data = vendaViewModel.Venda.Data,
+                        VendaPaga = vendaViewModel.Venda.VendaPaga,
+                        ProdutoEstoqueEntregue = vendaViewModel.Venda.ProdutoEstoqueEntregue
+                    };
 
                     if (!String.IsNullOrEmpty(vendaViewModel.DescontoTotal))
                     {
@@ -148,31 +150,32 @@ namespace PenielBikeControle.Controllers
             }
         }
 
-        // GET: VendaController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: VendaController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [HttpDelete]
+        //[ValidateAntiForgeryToken]
+        public async Task<JsonResult> Remover(int id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var result = await _vendaRepository.Remover(id);
+                if (result)
+                {
+                    return ControllerUtils.RetornoJsonResult(true, "Sua venda foi removida com sucesso!");
+                }
+                else
+                {
+                    return ControllerUtils.RetornoJsonResult(false, "Venda não removida.");
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return ControllerUtils.RetornoJsonResult(ex);
             }
         }
 
         private async Task<VendaViewModel> PreencheViewModel()
         {
             VendaViewModel vendaViewModel = new VendaViewModel();
-            
+
             vendaViewModel.ListaDeProdutos = await _protudoEstoqueRepository.GetAll();
             var listaClientes = await _clienteRepository.GetAll();
             vendaViewModel.ListaDeClientes = listaClientes.Select(x => new SelectListItem

@@ -9,7 +9,7 @@ namespace PenielBikeControle.Models
         [Display(Name = "Código")]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Favor informar a data da venda")]
+        [Required(ErrorMessage = "Informe a data da venda")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm}", ApplyFormatInEditMode=true )]
         public DateTime Data { get; set; }
         public int ClienteId { get; set; }
