@@ -1,0 +1,8 @@
+#modalCliente .modal-dialog {
+    max-width: 30%; 
+    width: 100%; 
+}
+#modalEdicaoCliente .modal-dialog {
+    max-width: 30%; 
+    width: 100%; 
+}

@@ -4,6 +4,7 @@ namespace PenielBikeControle.Models
 {
     public class Cliente
     {
+        [Display(Name = "Código")]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Favor informar o nome do cliente")]
@@ -15,7 +16,7 @@ namespace PenielBikeControle.Models
         [Display(Name = "Data de nascimento")]
         public DateOnly DataDeNascimento { get; set; }
 
-        [StringLength(11)]
+        [StringLength(14)]
         [Display(Name = "CPF")]
         public string? Cpf { get; set; }
 
