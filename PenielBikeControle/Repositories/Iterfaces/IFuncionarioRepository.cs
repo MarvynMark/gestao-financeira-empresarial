@@ -7,5 +7,7 @@ namespace PenielBikeControle.Repositories.Iterfaces
         Task Salvar(Funcionario funcionario);
         Task<IList<Funcionario>> GetAll();
         Task<Funcionario> GetById(int id);
+        Task<bool> Remover(int id);
+        Task Editar(Funcionario funcionario);
     }
 }

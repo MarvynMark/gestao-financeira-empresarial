@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PenielBikeControle.Data;
+using PenielBikeControle.Mappers.Funcionarios;
 using PenielBikeControle.Models;
+using PenielBikeControle.Models.ViewModels;
 using PenielBikeControle.Repositories.Iterfaces;
+using PenielBikeControle.Utils;
 
 namespace PenielBikeControle.Controllers
 {
@@ -10,96 +12,108 @@ namespace PenielBikeControle.Controllers
     {
         private readonly DataContext _dataContext;
         private readonly IFuncionarioRepository _funcionarioRepository;
-        public FuncionariosController(DataContext dataContext, IFuncionarioRepository funcionarioRepository)
+        private readonly FuncionarioMapperConfiguration _mapperConfiguration;
+        public FuncionariosController(DataContext dataContext, IFuncionarioRepository funcionarioRepository, FuncionarioMapperConfiguration mapperConfiguration)
         {
             _funcionarioRepository = funcionarioRepository;
             _dataContext = dataContext;
+            _mapperConfiguration = mapperConfiguration;
         }
 
         // GET: VendedoresController
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public async Task<ActionResult> Lista()
+        public async Task<ActionResult> Index()
         {
             var funcionarios = await _funcionarioRepository.GetAll();
-            return View(funcionarios);
-        }
 
-        // GET: VendedoresController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+            var funcionarioViewModel = new FuncionarioViewModel(funcionarios, new AdicionarFuncionarioViewModel());
 
-        // GET: VendedoresController/Create
-        public ActionResult Cadastro()
-        {
-            return View();
+            return View(funcionarioViewModel);
         }
 
         // POST: VendedoresController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Cadastro(Funcionario funcionario)
+        //[ValidateAntiForgeryToken]
+        public async Task<JsonResult> Salvar(AdicionarFuncionarioViewModel funcionarioViewModel)
         {
-            using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
+            using var dtContextTransaction = _dataContext.Database.BeginTransaction();
+            try
             {
-                try
+                var funcionario = _mapperConfiguration.CreateMapper().Map<Funcionario>(funcionarioViewModel);
+
+                var (EhValido, ListaDeErros) = ControllerUtils.ValidaModel(funcionario);
+                if (!EhValido)
+                {
+                    return ControllerUtils.RetornoJsonResult(false, "Dados inválidos!", ListaDeErros);
+                }
+
+                if (funcionario.Id == 0) 
                 {
                     await _funcionarioRepository.Salvar(funcionario);
-                    dtContextTransaction.Commit();
-                    return RedirectToAction(nameof(Cadastro));
                 }
-                catch
+                else 
                 {
-                    dtContextTransaction.Rollback();
-                    return View();
+                    await _funcionarioRepository.Editar(funcionario);
+                }
+                
+                dtContextTransaction.Commit();
+                return ControllerUtils.RetornoJsonResult(true, "Funcionário salvo com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                dtContextTransaction.Rollback();
+                return ControllerUtils.RetornoJsonResult(ex);
+            }
+        }
+
+        [HttpDelete]
+        //[ValidateAntiForgeryToken]
+        public async Task<JsonResult> Remover(int id)
+        {
+            try
+            {
+                var result = await _funcionarioRepository.Remover(id);
+                if (result)
+                {
+                    return ControllerUtils.RetornoJsonResult(true, "Funcionário foi removido com sucesso!");
+                }
+                else
+                {
+                    return ControllerUtils.RetornoJsonResult(false, "Funcioário não removido.");
                 }
             }
+            catch (Exception ex)
+            {
+                return ControllerUtils.RetornoJsonResult(ex);
+            }
         }
 
-        // GET: VendedoresController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: VendedoresController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> ObterFuncionarioEdicao(int id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                var funcionario = await _funcionarioRepository.GetById(id);
 
-        // GET: VendedoresController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+                if (funcionario is not null)
+                {
+                    var viewModel = _mapperConfiguration.CreateMapper().Map<AdicionarFuncionarioViewModel>(funcionario);
 
-        // POST: VendedoresController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                    var model = new ModalPadraoCadastroViewModel
+                    {
+                        ModoEdicao = true,
+                        ParamModel = viewModel,
+                        NomePartialView = "_ModalFuncionario"
+                    };
+                    return PartialView("_ModalCadastroPadrao", model);
+                }
+
+                return ControllerUtils.RetornoJsonResult(false, "Funcionário não encontrado");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return ControllerUtils.RetornoJsonResult(ex);
             }
         }
     }
