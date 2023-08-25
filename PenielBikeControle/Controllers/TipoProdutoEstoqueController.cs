@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using PenielBikeControle.Data;
 using PenielBikeControle.Models;
+using PenielBikeControle.Models.ViewModels;
 using PenielBikeControle.Repositories.Iterfaces;
+using PenielBikeControle.Utils;
 
 namespace PenielBikeControle.Controllers
 {
@@ -18,89 +20,94 @@ namespace PenielBikeControle.Controllers
         }
 
         // GET: TipoProdutoController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
-        }
+            var tiposDeProdutos = await _tipoProdutoRepository.GetAll();
+            var viewModel = new TipoProdutoViewModel(tiposDeProdutos, new TipoProdutoEstoque());
 
-         public ActionResult Lista()
-        {
-            var tiposProduto = _tipoProdutoRepository.GetAll();
-            return View(tiposProduto);
-        }
-
-        // GET: TipoProdutoController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: TipoProdutoController/Create
-        public ActionResult Cadastro()
-        {
-            return View();
+            return View(viewModel);
         }
 
         // POST: TipoProdutoController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Cadastro(TipoProdutoEstoque tipoProduto)
+        // [ValidateAntiForgeryToken]
+        public async Task<JsonResult> Salvar(TipoProdutoEstoque tipoProduto)
         {
-            using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
+            
+            try
             {
-                try
+                if (tipoProduto is not null && !String.IsNullOrEmpty(tipoProduto.Descricao))
                 {
-                    _tipoProdutoRepository.Salvar(tipoProduto);
-                    dtContextTransaction.Commit();
-                    return RedirectToAction(nameof(Cadastro));
+                    
+                    if (tipoProduto.Id == 0) 
+                    {
+                        await _tipoProdutoRepository.Salvar(tipoProduto);
+                    }
+                    else 
+                    {
+                        await _tipoProdutoRepository.Editar(tipoProduto);
+                    }
+
+            
+                    return ControllerUtils.RetornoJsonResult(true, "Tipo de Produto salvo com sucesso!");
                 }
-                catch
+                else
                 {
-                    dtContextTransaction.Rollback();
-                    return View();
+                    return ControllerUtils.RetornoJsonResult(false, "Informe a descrição do Tipo do Produto.");
                 }
+            }
+            catch (Exception ex)
+            {
+                return ControllerUtils.RetornoJsonResult(ex);
             }
         }
 
-        // GET: TipoProdutoController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: TipoProdutoController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        [HttpDelete]
+        //[ValidateAntiForgeryToken]
+        public async Task<JsonResult> Remover(int id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var result = await _tipoProdutoRepository.Remover(id);
+                if (result)
+                {
+                    return ControllerUtils.RetornoJsonResult(true, "Tipo de Produto foi removido com sucesso!");
+                }
+                else
+                {
+                    return ControllerUtils.RetornoJsonResult(false, "Tipo de Produto não removido.");
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return ControllerUtils.RetornoJsonResult(ex);
             }
         }
 
-        // GET: TipoProdutoController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: TipoProdutoController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> ObterTipoProdutoEdicao(int id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var tipoProduto = await _tipoProdutoRepository.GetById(id);
+
+                if (tipoProduto is not null)
+                {
+                    var model = new ModalPadraoCadastroViewModel
+                    {
+                        ModoEdicao = true,
+                        ParamModel = tipoProduto,
+                        NomePartialView = "_ModalTipoProduto"
+                    };
+                    return PartialView("_ModalCadastroPadrao", model);
+                }
+
+                return ControllerUtils.RetornoJsonResult(false, "Tipo de Produto não encontrado");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return ControllerUtils.RetornoJsonResult(ex);
             }
         }
     }

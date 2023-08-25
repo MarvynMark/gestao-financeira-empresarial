@@ -1,0 +1,8 @@
+#modalTipoProduto .modal-dialog {
+    max-width: 20%; 
+    width: 100%; 
+}
+#modalEdicaoTipoProduto .modal-dialog {
+    max-width: 20%; 
+    width: 100%; 
+}
