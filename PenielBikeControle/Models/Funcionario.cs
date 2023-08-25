@@ -4,18 +4,19 @@ namespace PenielBikeControle.Models
 {
     public class Funcionario
     {
+        [Display(Name = "Código")]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Favor informar o nome do funcionário")]
+        [Required(ErrorMessage = "Informe o nome do funcionário.")]
         [StringLength(100)]
-        [Display(Name = "Funcionário")]
+        [Display(Name = "Nome")]
         public string Nome { get; set; }
 
-        [Required(ErrorMessage = "Favor informar a data de nascimento do funcionário")]
+        [Range(typeof(DateOnly), "1900-01-01", "9999-01-01", ErrorMessage = "Data de nascimento inválida.")]
         [Display(Name = "Data de nascimento")]
         public DateOnly DataDeNascimento { get; set; }
 
-        [StringLength(11)]
+        [StringLength(14)]
         [Display(Name = "CPF")]
         public string? Cpf { get; set; }
 
