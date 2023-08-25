@@ -26,24 +26,39 @@ namespace PenielBikeControle.Repositories
         }
         public async Task<ProdutoEstoque> GetById(int id)
         {
-            //return (from p in _context.ProdutosEstoque
-            //              join t in _context.TiposProduto
-            //              on p.TipoProduto.Id equals t.Id
-            //              where p.Id == id
-            //              select new ProdutoEstoque
-            //              {
-            //                  Id = p.Id,
-            //                  TipoProduto = t,
-            //                  Nome = p.Nome,
-            //                  Marca = p.Marca,
-            //                  Modelo = p.Modelo,
-            //                  Descricao = p.Descricao,
-            //                  PrecoCusto = p.PrecoCusto,
-            //                  PrecoFinal = p.PrecoFinal,
-            //                  QtdeEmEstoque = p.QtdeEmEstoque
-            //              }).FirstOrDefault();
+            return await _context.ProdutosEstoque.Include(x => x.TipoProduto).SingleOrDefaultAsync(x => x.Id == id) ?? new ProdutoEstoque();
+        }
 
-            return await _context.ProdutosEstoque.Include(x => x.TipoProduto).SingleOrDefaultAsync(x => x.Id == id);
+        public async Task Editar(ProdutoEstoque produto)
+        {
+            _context.ProdutosEstoque.Update(produto);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> Remover(int id) 
+        {
+            var produto = await _context.ProdutosEstoque.SingleOrDefaultAsync(x => x.Id == id);
+
+            if (produto is not null) 
+            {
+                produto.Removido = true;
+                _context.Update(produto);
+                
+                var result = await _context.SaveChangesAsync();
+
+                if (result != 0) 
+                {
+                    return true;
+                }
+                else 
+                {
+                    return false; 
+                }
+            }
+            else 
+            {
+                return false;
+            }
         }
     }
 }

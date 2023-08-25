@@ -1,0 +1,26 @@
+﻿#modalProduto .modal-dialog {
+    max-width: 50%; 
+    width: 100%; 
+}
+#modalEdicaoProduto .modal-dialog {
+    max-width: 50%; 
+    width: 100%; 
+}
+/* .div-btn-add-tipo-prod {
+    display: flex;
+    justify-content: flex-end;
+} */
+/* #btnAddTipoProd {
+    font-size: 14px;
+} */
+#modalTipoProduto .modal-dialog {
+    max-width: 20%; 
+    width: 100%; 
+}
+.div-botao-direita {
+    display: flex;
+    justify-content: flex-end;
+}
+/* #btnAddProduto {
+    font-size: 14px;
+} */

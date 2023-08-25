@@ -7,10 +7,11 @@ namespace PenielBikeControle.Models
 {
     public class ProdutoEstoque
     {
+        [Display(Name = "Código")]
         public int Id { get; set; }
 
         [StringLength(100)]
-        [Required(ErrorMessage = "Favor informar o nome do produto")]
+        [Required(ErrorMessage = "Informe o nome do produto.")]
         public string Nome { get; set; }
 
         [StringLength(50)]
@@ -23,12 +24,12 @@ namespace PenielBikeControle.Models
         [Display(Name = "Descrição")]
         public string? Descricao { get; set; }
 
-        [Required(ErrorMessage = "Favor informar o preço de custo do produto")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Informe o preço de custo do produto.")]
         [Column(TypeName = "decimal(10,2)")]
         [Display(Name = "Preço de custo")]
         public decimal PrecoCusto { get; set; }
 
-        [Required(ErrorMessage = "Favor informar o preço de venda do produto")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Informe o preço de venda do produto.")]
         [Column(TypeName = "decimal(10,2)")]
         [Display(Name = "Preço de venda")]
         public decimal PrecoFinal { get; set; }
@@ -37,11 +38,11 @@ namespace PenielBikeControle.Models
         [Display(Name = "Preço mão de obra")]
         public decimal? PrecoMaoDeObra { get; set; }
 
-        [Required(ErrorMessage = "Favor informar a quantidade de produtos em estoque")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Informe a quantidade de produtos em estoque.")]
         [Display(Name = "Quantidade em estoque")]
         public int QtdeEmEstoque { get; set; }
 
-        [Required(ErrorMessage = "Favor informar qual o tipo do produto")]
+        [Required(ErrorMessage = "Informe qual o tipo do produto.")]
         [Display(Name = "Tipo do produto")]
         public int TipoProdutoId { get; set; }
         public bool Removido { get; set; }
