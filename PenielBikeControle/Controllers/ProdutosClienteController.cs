@@ -5,6 +5,7 @@ using PenielBikeControle.Data;
 using PenielBikeControle.Models;
 using PenielBikeControle.Models.ViewModels;
 using PenielBikeControle.Repositories.Iterfaces;
+using PenielBikeControle.Utils;
 
 namespace PenielBikeControle.Controllers
 {
@@ -45,7 +46,8 @@ namespace PenielBikeControle.Controllers
         {
             ProdutoClienteViewModel produtoClienteViewModel = new ProdutoClienteViewModel();
             var listaClientes = await _clienteRepository.GetAll();
-            produtoClienteViewModel.ListaClientes = listaClientes.Select(x => new SelectListItem {
+            produtoClienteViewModel.ListaClientes = listaClientes.Select(x => new SelectListItem
+            {
                 Value = x.Id.ToString(),
                 Text = x.Nome
             });
@@ -102,24 +104,25 @@ namespace PenielBikeControle.Controllers
             }
         }
 
-        // GET: ProdutoClienteController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ProdutoClienteController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [HttpDelete]
+        //[ValidateAntiForgeryToken]
+        public async Task<JsonResult> Remover(int id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var result = await _produtoClienteRepository.Remover(id);
+                if (result)
+                {
+                    return ControllerUtils.RetornoJsonResult(true, "Sua venda foi removida com sucesso!");
+                }
+                else
+                {
+                    return ControllerUtils.RetornoJsonResult(false, "Venda não removida.");
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return ControllerUtils.RetornoJsonResult(ex);
             }
         }
     }
