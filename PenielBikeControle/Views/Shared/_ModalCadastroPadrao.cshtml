@@ -1,0 +1,55 @@
+﻿@model PenielBikeControle.Models.ViewModels.ModalPadraoCadastroViewModel
+
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="card shadow mb-8">
+            <div class="card-header py-3 alinhar-flex-end">
+                <div class="col-md-6">
+                    @{
+                        if (Model.ModoEdicao)
+                        {
+                            <h6 class="m-0 font-weight-bold text-primary"> <i class="fa-solid fa-pen-to-square"></i> Edição</h6>
+                        }
+                        else
+                        {
+                            <h6 class="m-0 font-weight-bold text-primary"> <i class="fa-solid fa-plus"></i> Cadastro</h6>
+                        }
+                    }
+                </div>
+
+                <div class="col-md-6 alinhar-flex-end">                    
+                    <h6 class="m-0">
+                        <a href="#" class="btn-fechar-modal">
+                            <i class="fa-solid fa-xmark" style="color: #878181;"></i>
+                        </a>
+                    </h6>
+                </div>
+            </div>
+
+            <div id="conteudoModalProduto" class="card-body">
+
+                @Html.Partial(Model.NomePartialView, Model.ParamModel)
+
+            </div>
+
+            <div class="card-footer py-3 alinhar-flex-end">
+                <div class="col-md-6">
+                    <a href="#" class="btn btn-secondary btn-icon-split btn-fechar-modal">
+                        <span class="icon text-white-50">
+                            <i class="fa-solid fa-xmark"></i>
+                        </span>
+                        <span class="text">Fechar</span>
+                    </a>
+                </div>
+                <div class="col-md-6 alinhar-flex-end">
+                    <a href="#" class="btn btn-success btn-icon-split btn-salvar">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-check"></i>
+                        </span>
+                        <span class="text">  Salvar  </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
