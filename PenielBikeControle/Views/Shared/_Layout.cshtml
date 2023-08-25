@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="~/css/sb-admin-2.min.css" />
     <link rel="stylesheet" href="~/css/select2.min.css" />
     <link rel="stylesheet" href="~/lib/vendor/datatables/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/css/sweetalert2.min.css" />
+
 </head>
 @*<body>
     <header>
@@ -103,7 +105,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">Peniel Bike</div>
             </a>
 
             <!-- Divider -->
@@ -187,28 +189,16 @@
                         <a class="collapse-item" href="404.html">404 Page</a>
                         <a class="collapse-item" href="blank.html">Blank Page</a>
 
-                        <h6 class="collapse-header">Funcionários</h6>
-                        <a class="collapse-item" asp-area="" asp-controller="Funcionarios" asp-action="Cadastro">Cadastro de funcionários</a>
-                        <a class="collapse-item" asp-area="" asp-controller="Funcionarios" asp-action="Lista">Lista de funcionários</a>
-
-                        <h6 class="collapse-header">Clientes</h6>
-                        <a class="collapse-item" asp-area="" asp-controller="Clientes" asp-action="Cadastro">Cadastro de clientes</a>
-                        <a class="collapse-item" asp-area="" asp-controller="Clientes" asp-action="Lista">Lista de clientes</a>
-                        
-                        <h6 class="collapse-header">Produtos</h6>
-                        <a class="collapse-item" asp-area="" asp-controller="ProdutosEstoque" asp-action="Cadastro">Cadastro de produtos</a>
-                        <a class="collapse-item" asp-area="" asp-controller="ProdutosEstoque" asp-action="Lista">Lista de produtos</a>
-                        <a class="collapse-item" asp-area="" asp-controller="TipoProdutoEstoque" asp-action="Cadastro">Cadastro de tipos de produtos</a>
-                        <a class="collapse-item" asp-area="" asp-controller="TipoProdutoEstoque" asp-action="Lista">Lista de tipos de produtos</a>
-
-                        <h6 class="collapse-header">Produtos do cliente</h6>
-                        <a class="collapse-item" asp-area="" asp-controller="ProdutosCliente" asp-action="Cadastro">Cadastro de produtos do cliente</a>
-                        <a class="collapse-item" asp-area="" asp-controller="ProdutosCliente" asp-action="Lista">Lista de produtos do cliente</a>
+                        <h6 class="collapse-header">Cadastros</h6>
+                        <a class="collapse-item" asp-area="" asp-controller="Funcionarios" asp-action="Index">Funcionários</a>
+                        <a class="collapse-item" asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a>
+                        <a class="collapse-item" asp-area="" asp-controller="ProdutosEstoque" asp-action="Index">Produtos</a>
+                        <a class="collapse-item" asp-area="" asp-controller="TipoProdutoEstoque" asp-action="Index">Tipos de produtos</a>
+                        <a class="collapse-item" asp-area="" asp-controller="ProdutosCliente" asp-action="Index">Produtos do cliente</a>
 
                         <h6 class="collapse-header">Vendas</h6>
                         <a class="collapse-item" asp-area="" asp-controller="Vendas" asp-action="Cadastro">Cadastro de venda</a>
                         <a class="collapse-item" asp-area="" asp-controller="Vendas" asp-action="Lista">Lista de venda</a>
-
                     </div>
                 </div>
             </li>
@@ -506,11 +496,9 @@
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @*<script src="~/lib/vendor/jquery/jquery.min.js"></script>*@
     <script src="~/lib/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="~/lib/vendor/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="~/lib/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    @*<script src="~/lib/vendor/jquery-easing/jquery.easing.min.js"></script>*@
 
     <script src="~/js/sb-admin-2.min.js"></script>
     <script src="~/lib/vendor/chart.js/Chart.min.js"></script>
@@ -519,9 +507,13 @@
     <script src="~/js/demo/chart-pie-demo.js"></script>
 
     <script src="~/js/select2.min.js"></script>
-    @*<script src="~/js/site.js"></script>*@
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/maskMoney.js"></script>
+    <script src="~/js/fontawesome-icons.js"></script>
+
+    <script src="~/js/sweetalert2.all.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/global.js" asp-append-version="true"></script>
  
     @await RenderSectionAsync("Scripts", required: false)
 </body>
