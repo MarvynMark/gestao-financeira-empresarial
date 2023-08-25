@@ -32,3 +32,17 @@ body {
 .box-page {
     background: #fff;
 }
+
+.alinhar-flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-add-modal {
+  font-size: 14px !important;
+}
+
+.div-botao-direita {
+  display: flex;
+  justify-content: flex-end;
+}
