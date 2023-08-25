@@ -13,10 +13,11 @@ namespace PenielBikeControle.Models
 
         public TipoProdutoEstoque(){ }
 
-        public TipoProdutoEstoque(int id, string descricao)
+        public TipoProdutoEstoque(int id, string descricao, bool removido)
         {
             Id = id;
             Descricao = descricao;
+            Removido = removido;
         }
     }
 }

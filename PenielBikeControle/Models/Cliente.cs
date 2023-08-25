@@ -22,11 +22,12 @@ namespace PenielBikeControle.Models
         [StringLength(255)]
         [Display(Name = "Endereço")]
         public string? Endereco { get; set; }
+        public bool Removido { get; set; }
         public virtual IList<ProdutoCliente>? ProdutosCliente { get; set; }
 
         public Cliente() { }
         
-        public Cliente(int id, string nome, DateOnly dataDeNascimento, string? cpf, string? endereco, IList<ProdutoCliente>? produtosCliente)
+        public Cliente(int id, string nome, DateOnly dataDeNascimento, string? cpf, string? endereco, IList<ProdutoCliente>? produtosCliente, bool removido)
         {
             Id = id;
             Nome = nome;
@@ -34,6 +35,7 @@ namespace PenielBikeControle.Models
             Cpf = cpf;
             Endereco = endereco;
             ProdutosCliente = produtosCliente;
+            Removido = removido;
         }
     }
 }

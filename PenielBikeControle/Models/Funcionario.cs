@@ -22,16 +22,18 @@ namespace PenielBikeControle.Models
         [StringLength(255)]
         [Display(Name = "Endereço")]
         public string? Endereco { get; set; }
+        public bool Removido { get; set; }
 
         public Funcionario() { }
 
-        public Funcionario(int id, string nome, DateOnly dataDeNascimento, string? cpf, string? endereco)
+        public Funcionario(int id, string nome, DateOnly dataDeNascimento, string? cpf, string? endereco, bool removido)
         {
             Id = id;
             Nome = nome;
             DataDeNascimento = dataDeNascimento;
             Cpf = cpf;
             Endereco = endereco;
+            Removido = removido;
         }
     }
 }

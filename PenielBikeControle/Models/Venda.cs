@@ -24,6 +24,7 @@ namespace PenielBikeControle.Models
         [Column(TypeName = "decimal(10,2)")]
         [Display(Name = "Desconto")]
         public decimal DescontoTotal { get; set; }
+        public bool Removido { get; set; }
         public virtual IList<ItemVenda>? ItensDaVenda { get; set; }
         public virtual Funcionario Funcionario { get; set; }
         public virtual Cliente Cliente { get; set; }
@@ -32,7 +33,7 @@ namespace PenielBikeControle.Models
 
         public Venda() { }
 
-        public Venda(int id, DateTime data, Cliente cliente, int clienteId, Funcionario funcionario, int funcionarioId, IList<ItemVenda>? itensDaVenda, bool vendaPaga, bool produtoEstoqueEntregue, decimal descontoTotal)
+        public Venda(int id, DateTime data, Cliente cliente, int clienteId, Funcionario funcionario, int funcionarioId, IList<ItemVenda>? itensDaVenda, bool vendaPaga, bool produtoEstoqueEntregue, decimal descontoTotal, bool removido)
         {
             Id = id;
             Data = data;
@@ -44,6 +45,7 @@ namespace PenielBikeControle.Models
             VendaPaga = vendaPaga;
             ProdutoEstoqueEntregue = produtoEstoqueEntregue;
             DescontoTotal = descontoTotal;
+            Removido = removido;
         }
     }
 }

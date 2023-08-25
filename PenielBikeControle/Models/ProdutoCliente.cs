@@ -22,10 +22,10 @@ namespace PenielBikeControle.Models
         public string? Descricao { get; set; }
         public int ClienteId { get; set; }
         public virtual Cliente Cliente { get; set; }
-
+        public bool Removido { get; set; }
         public ProdutoCliente() { }
 
-        public ProdutoCliente(string nome, string? marca, string? modelo, string? descricao, Cliente cliente, int clienteId)
+        public ProdutoCliente(string nome, string? marca, string? modelo, string? descricao, Cliente cliente, int clienteId, bool removido)
         {
             Nome = nome;
             Marca = marca;
@@ -33,6 +33,7 @@ namespace PenielBikeControle.Models
             Descricao = descricao;
             Cliente = cliente;
             ClienteId = clienteId;
+            Removido = removido;
         }
     }
 }

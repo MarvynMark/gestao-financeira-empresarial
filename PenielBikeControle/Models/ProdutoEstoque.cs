@@ -44,11 +44,12 @@ namespace PenielBikeControle.Models
         [Required(ErrorMessage = "Favor informar qual o tipo do produto")]
         [Display(Name = "Tipo do produto")]
         public int TipoProdutoId { get; set; }
+        public bool Removido { get; set; }
         public virtual TipoProdutoEstoque TipoProduto { get; set; }
 
         public ProdutoEstoque() { }
 
-        public ProdutoEstoque(int id, TipoProdutoEstoque tipoProduto, int tipoProdutoId, string nome, string? marca, string? modelo, string? descricao, decimal precoCusto, decimal precoFinal, decimal? precoMaoDeObra, int qtdeEmEstoque)
+        public ProdutoEstoque(int id, TipoProdutoEstoque tipoProduto, int tipoProdutoId, string nome, string? marca, string? modelo, string? descricao, decimal precoCusto, decimal precoFinal, decimal? precoMaoDeObra, int qtdeEmEstoque, bool removido)
         {
             Id = id;
             TipoProduto = tipoProduto;
@@ -61,6 +62,31 @@ namespace PenielBikeControle.Models
             PrecoFinal = precoFinal;
             PrecoMaoDeObra = precoMaoDeObra;
             QtdeEmEstoque = qtdeEmEstoque;
+            Removido = removido;
+        }
+
+        public string PrecoCustoStr 
+        { 
+            get
+            {
+                return PrecoCusto.ToString("C2");
+            } 
+        }
+
+        public string PrecoVendaStr 
+        { 
+            get
+            {
+                return PrecoFinal.ToString("C2");
+            } 
+        }
+
+        public string PrecoPrecoMaoDeObraStr 
+        { 
+            get
+            {
+                return PrecoMaoDeObra?.ToString("C2");
+            } 
         }
     }
 }
