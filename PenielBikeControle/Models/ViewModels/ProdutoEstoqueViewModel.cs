@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
 namespace PenielBikeControle.Models.ViewModels
 {
@@ -8,17 +7,20 @@ namespace PenielBikeControle.Models.ViewModels
     {
         public ProdutoEstoque Produto { get; set; }
 
-        public IEnumerable<SelectListItem> ListaTiposDeProduto { get; set; }
+        public IList<ProdutoEstoque>? ListaDeProdutos { get; set; }
 
-        [Required(ErrorMessage = "Favor informar o tipo do produto")]
+        public IEnumerable<SelectListItem>? ListaTiposDeProduto { get; set; }
+
+        [Range(0.01, double.MaxValue, ErrorMessage = "Informe o tipo do produto.")]
         [Display(Name = "Tipo do produto")]
         public int TipoDeProdutoId { get; set; }
 
         public ProdutoEstoqueViewModel() { }
 
-        public ProdutoEstoqueViewModel(ProdutoEstoque produto, IEnumerable<SelectListItem> listaTiposDeProduto, int tipoDeProdutoId)
+        public ProdutoEstoqueViewModel(ProdutoEstoque produto, IList<ProdutoEstoque>? listaDeProdutos, IEnumerable<SelectListItem>? listaTiposDeProduto, int tipoDeProdutoId)
         {
             Produto = produto;
+            ListaDeProdutos = listaDeProdutos;
             ListaTiposDeProduto = listaTiposDeProduto;
             TipoDeProdutoId = tipoDeProdutoId;
         }
