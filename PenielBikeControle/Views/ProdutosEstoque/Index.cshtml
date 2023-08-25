@@ -1,0 +1,138 @@
+﻿@model PenielBikeControle.Models.ViewModels.ProdutoEstoqueViewModel
+@using PenielBikeControle.Models.ViewModels
+
+@{
+    ModalPadraoCadastroViewModel modalCadastroProduto = new ()
+    {
+        Id = null,
+        ModoEdicao = false,
+        NomePartialView = "_ModalProduto",
+        ParamModel = Model
+    };
+
+    ModalPadraoCadastroViewModel modalCadastroTipoProduto = new ()
+    {
+        Id = null,
+        ModoEdicao = false,
+        NomePartialView = "~/Views/TipoProdutoEstoque/_ModalTipoProduto.cshtml",
+        ParamModel =  Model.Produto.TipoProduto
+    };
+}
+
+<link rel="stylesheet" href="~/css/paginas/produtos.css" />
+
+<input id="titulo-da-pagina" value="Produtos" style="display: none;">
+
+<div class="div-botoes form-group row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4 div-botao-direita">
+        <a href="#" id="btnAddProduto" class="btn-add-modal btn btn-info btn-icon-split" data-toggle="modal" data-target="#modalProduto">
+            <span class="icon text-white-50">
+                <i class="fa-solid fa-plus"></i>
+            </span>
+            <span class="text">Adicionar produto</span>
+        </a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto.TipoProduto.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto.Marca)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto.Modelo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto.QtdeEmEstoque)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto.PrecoCusto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto.PrecoFinal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto.PrecoMaoDeObra)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produto.Descricao)
+            </th>
+            <th style="width: 50px !important;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ListaDeProdutos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoProduto.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Marca)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Modelo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QtdeEmEstoque)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrecoCustoStr)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrecoVendaStr)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrecoPrecoMaoDeObraStr)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td class="row"> 
+                    @* <a href="#" data-id-produto="@item.Id" class="infoProduto" style="margin-right: 15px">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </a> *@
+                    <a href="#" data-id-produto="@item.Id" class="editarProduto" style="margin-right: 15px">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                    <a href="#" data-id-produto="@item.Id" class="removerProduto">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="modalProduto" class="modal fade">
+    @Html.Partial("_ModalCadastroPadrao", modalCadastroProduto)
+</div>
+
+<div id="modalEdicaoProduto" class="modal fade">
+</div>
+
+<div id="modalTipoProduto" class="modal fade">
+    @Html.Partial("_ModalCadastroPadrao", modalCadastroTipoProduto)
+</div>
+
+
+@section Scripts {
+    <script src="~/js/paginas/produtos.js" asp-append-version="true"></script>    
+}

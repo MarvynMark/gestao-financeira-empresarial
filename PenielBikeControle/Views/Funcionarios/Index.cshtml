@@ -1,0 +1,92 @@
+@model PenielBikeControle.Models.ViewModels.FuncionarioViewModel
+@using PenielBikeControle.Models.ViewModels
+
+@{
+    ModalPadraoCadastroViewModel modalCadastroFuncionario = new ()
+    {
+        Id = null,
+        ModoEdicao = false,
+        NomePartialView = "_ModalFuncionario",
+        ParamModel = Model.Funcionario
+    };
+}
+
+<link rel="stylesheet" href="~/css/paginas/funcionarios.css" />
+
+<input id="titulo-da-pagina" value="Funcionários" style="display: none;">
+
+<div class="div-botoes form-group row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4 div-botao-direita">
+        <a href="#" id="btnAddFuncionario" class="btn-add-modal btn btn-info btn-icon-split" data-toggle="modal" data-target="#modalFuncionario">
+            <span class="icon text-white-50">
+                <i class="fa-solid fa-plus"></i>
+            </span>
+            <span class="text">Adicionar Funcionário</span>
+        </a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Funcionario.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funcionario.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funcionario.Cpf)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funcionario.DataDeNascimentoStr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funcionario.Endereco)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ListaFuncionarios)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cpf)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataDeNascimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Endereco)
+                </td>
+                <td class="row"> 
+                    <a href="#" data-id-funcionario="@item.Id" class="editarFuncionario" style="margin-right: 15px">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                    <a href="#" data-id-funcionario="@item.Id" class="deletarFuncionario">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="modalFuncionario" class="div-modal modal fade">
+    @Html.Partial("_ModalCadastroPadrao", modalCadastroFuncionario)
+</div>
+
+<div id="modalEdicaoFuncionario" class="modal fade">
+</div>
+
+@section Scripts {
+    <script src="~/js/paginas/funcionarios.js" asp-append-version="true"></script>    
+}

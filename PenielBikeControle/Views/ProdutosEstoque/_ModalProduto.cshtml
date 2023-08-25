@@ -1,0 +1,86 @@
+﻿@model PenielBikeControle.Models.ViewModels.ProdutoEstoqueViewModel
+
+<!-- conteúdo modal -->
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Cadastro">
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="col-md-3 form-group">
+                    <label asp-for="TipoDeProdutoId" class="control-label"></label><br />
+                    <select asp-for="TipoDeProdutoId" class="form-control form-control-sm  select-func" asp-items="Model.ListaTiposDeProduto" ><option>Selecione...</option></select>
+                </div>
+                <div class="form-group col-md-9 div-botao-direita">
+                    <div class="form-group">
+                        <a href="#" id="btnAddTipoProd" class="btn-add-modal btn btn-info btn-icon-split" data-toggle="modal" data-target="#modalTipoProduto">
+                            <span class="icon text-white-50">
+                                <i class="fa-solid fa-plus"></i>
+                            </span>
+                            <span class="text">Adicionar tipo de produto</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-3" style="display: none;">
+                    <label asp-for="Produto.Id" class="control-label"></label>
+                    <input asp-for="Produto.Id" class="form-control" />
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Produto.Nome" class="control-label"></label>
+                    <input asp-for="Produto.Nome" class="form-control" />
+                    <span asp-validation-for="Produto.Nome" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label asp-for="Produto.Marca" class="control-label"></label>
+                    <input asp-for="Produto.Marca" class="form-control" />
+                    <span asp-validation-for="Produto.Marca" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label asp-for="Produto.Modelo" class="control-label"></label>
+                    <input asp-for="Produto.Modelo" class="form-control" />
+                    <span asp-validation-for="Produto.Modelo" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label asp-for="Produto.QtdeEmEstoque" class="control-label"></label>
+                    <input asp-for="Produto.QtdeEmEstoque" class="form-control" />
+                    <span asp-validation-for="Produto.QtdeEmEstoque" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label asp-for="Produto.PrecoCusto" class="control-label"></label>
+                    <input asp-for="Produto.PrecoCusto" class="form-control input-moeda" />
+                    <span asp-validation-for="Produto.PrecoCusto" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label asp-for="Produto.PrecoFinal" class="control-label"></label>
+                    <input asp-for="Produto.PrecoFinal" class="form-control input-moeda" />
+                    <span asp-validation-for="Produto.PrecoFinal" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label asp-for="Produto.PrecoMaoDeObra" class="control-label"></label>
+                    <input asp-for="Produto.PrecoMaoDeObra" class="form-control input-moeda" />
+                    <span asp-validation-for="Produto.PrecoMaoDeObra" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label asp-for="Produto.Descricao" class="control-label"></label>
+                    <input asp-for="Produto.Descricao" class="form-control" />
+                    <span asp-validation-for="Produto.Descricao" class="text-danger"></span>
+                </div>
+                @*<div class="form-group col-md-3">
+                <input type="submit" value="Cadastro" class="btn btn-primary" />
+                </div>*@
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
