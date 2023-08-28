@@ -18,10 +18,9 @@ namespace PenielBikeControle.Models
         public virtual ProdutoEstoque ProdutoEstoque { get; set; }
         public virtual Venda Venda { get; set; }
         public virtual ProdutoCliente? ProdutoCliente { get; set; }
-        public bool Removido { get; set; }
         public ItemVenda() { }
 
-        public ItemVenda(int id, Venda venda, int vendaId, ProdutoEstoque produtoEstoque, int produtoEstoqueId, ProdutoCliente? produtoCliente, int? produtoClienteId, int quantidade, decimal valorVendido, bool removido)
+        public ItemVenda(int id, Venda venda, int vendaId, ProdutoEstoque produtoEstoque, int produtoEstoqueId, ProdutoCliente? produtoCliente, int? produtoClienteId, int quantidade, decimal valorVendido)
         {
             Id = id;
             Venda = venda;
@@ -32,7 +31,6 @@ namespace PenielBikeControle.Models
             ProdutoClienteId = produtoClienteId;
             Quantidade = quantidade;
             ValorVendido = valorVendido;
-            Removido = removido;
         }
     }
 }
