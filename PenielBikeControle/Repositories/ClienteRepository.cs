@@ -29,7 +29,7 @@ namespace PenielBikeControle.Repositories
             return await _context.Clientes.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<bool> Remover(int id)
+        public async Task Remover(int id)
         {
             var cliente = await _context.Clientes.SingleOrDefaultAsync(x => x.Id == id);
 
@@ -40,22 +40,18 @@ namespace PenielBikeControle.Repositories
 
                 var result = await _context.SaveChangesAsync();
 
-                if (result != 0)
+                if (result == 0)
                 {
-                    return true;
-                }
-                else
-                {
-                    return false;
+                    throw new Exception("Falha ao remover cliente");
                 }
             }
             else
             {
-                return false;
+                throw new Exception("Cliente não encontrado");
             }
         }
 
-         public async Task Editar(Cliente cliente)
+        public async Task Editar(Cliente cliente)
         {
             _context.Clientes.Update(cliente);
             await _context.SaveChangesAsync();

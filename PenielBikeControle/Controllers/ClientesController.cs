@@ -69,15 +69,9 @@ namespace PenielBikeControle.Controllers
         {
             try
             {
-                var result = await _clienteRepository.Remover(id);
-                if (result)
-                {
-                    return ControllerUtils.RetornoJsonResult(true, "Seu cliente foi removido com sucesso!");
-                }
-                else
-                {
-                    return ControllerUtils.RetornoJsonResult(false, "Cliente não removido.");
-                }
+                await _clienteRepository.Remover(id);
+                
+                return ControllerUtils.RetornoJsonResult(true, "Seu cliente foi removido com sucesso!");
             }
             catch (Exception ex)
             {
