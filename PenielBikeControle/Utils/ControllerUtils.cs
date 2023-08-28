@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using System.Text;
 
 namespace PenielBikeControle.Utils
 {
@@ -84,20 +85,20 @@ namespace PenielBikeControle.Utils
 
         public static JsonResult RetornoJsonResult(Exception ex)
         {
-            string msgsErros;
+            var msgsErros = new StringBuilder();
 
-            msgsErros = $"Erro: {ex.Message}. \n";
+            msgsErros.AppendLine($"Erro: {ex.Message}. \n");
             
             if (ex.InnerException is not null)
             {
-                msgsErros += $"InnerException: {ex.InnerException.Message}";
+                msgsErros.AppendLine($"InnerException: {ex.InnerException.Message}");
             }
 
             return new JsonResult(
                         new
                         {
                             Sucesso = false,
-                            Mensagem = msgsErros,
+                            Mensagem = msgsErros.ToString(),
                         });
         }
     }
