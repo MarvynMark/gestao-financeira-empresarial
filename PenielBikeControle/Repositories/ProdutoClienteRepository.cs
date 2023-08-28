@@ -26,7 +26,7 @@ namespace PenielBikeControle.Repositories
             return await _dataContext.ProdutosCliente.Include(x => x.Cliente).ToListAsync();
         }
 
-        public async Task<bool> Remover(int id) 
+        public async Task Remover(int id) 
         {
             var produtoCliente = await _dataContext.ProdutosCliente.SingleOrDefaultAsync(x => x.Id == id);
 
@@ -37,19 +37,21 @@ namespace PenielBikeControle.Repositories
                 
                 var result = await _dataContext.SaveChangesAsync();
 
-                if (result != 0) 
+                if (result == 0) 
                 {
-                    return true;
-                }
-                else 
-                {
-                    return false; 
+                    throw new Exception("Falha ao remover produto do cliente.");
                 }
             }
             else 
             {
-                return false;
+                throw new Exception("Produto do cliente não encontrado.");
             }
+        }
+
+        public async Task Editar(ProdutoCliente produtoCliente)
+        {
+            _dataContext.Update(produtoCliente);
+            await _dataContext.SaveChangesAsync();
         }
     }
 }

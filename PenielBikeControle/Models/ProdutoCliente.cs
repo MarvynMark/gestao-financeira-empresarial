@@ -5,9 +5,10 @@ namespace PenielBikeControle.Models
 {
     public class ProdutoCliente
     {
+        [Display(Name = "Código")]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Favor informar o nome do produto do cliente")]
+        [Required(ErrorMessage = "Informe o nome do produto do cliente.")]
         [StringLength(100)]
         public string Nome { get; set; }
 
@@ -20,9 +21,12 @@ namespace PenielBikeControle.Models
         [StringLength(150)]
         [Display(Name = "Descrição")]
         public string? Descricao { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "Informe um cliente válido.")]
+        [Display(Name = "Cliente")]
         public int ClienteId { get; set; }
-        public virtual Cliente Cliente { get; set; }
         public bool Removido { get; set; }
+        public virtual Cliente Cliente { get; set; }
         public ProdutoCliente() { }
 
         public ProdutoCliente(string nome, string? marca, string? modelo, string? descricao, Cliente cliente, int clienteId, bool removido)

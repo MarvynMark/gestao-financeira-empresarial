@@ -1,0 +1,99 @@
+@model PenielBikeControle.Models.ViewModels.ProdutoClienteViewModel
+@using PenielBikeControle.Models.ViewModels
+
+@{
+    ModalPadraoCadastroViewModel modalCadastroProdutoCliente = new()
+            {
+                Id = null,
+                ModoEdicao = false,
+                NomePartialView = "_ModalProdutoCliente",
+                ParamModel = Model.ProdutoCliente
+            };
+}
+
+<link rel="stylesheet" href="~/css/paginas/produtosCliente.css" asp-append-version="true" />
+
+<input id="titulo-da-pagina" value="Produtos do Cliente" style="display: none;">
+
+<div class="div-botoes form-group row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4 div-botao-direita">
+        <a href="#" class="btn-add-modal btn btn-info btn-icon-split" data-toggle="modal"
+            data-target="#modalProdutoCliente">
+            <span class="icon text-white-50">
+                <i class="fa-solid fa-plus"></i>
+            </span>
+            <span class="text">Adicionar Produto do Cliente</span>
+        </a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProdutoCliente.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProdutoCliente.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProdutoCliente.Marca)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProdutoCliente.Modelo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProdutoCliente.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProdutoCliente.Cliente.Nome)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ProdutosCliente)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Marca)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Modelo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                </td>
+                <td class="row">
+                    <a href="#" data-id-produto-cliente="@item.Id" class="editarProdutoCliente" style="margin-right: 15px">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                    <a href="#" data-id-produto-cliente="@item.Id" class="removerProdutoCliente">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="modalProdutoCliente" class="div-modal modal fade">
+    @Html.Partial("_ModalCadastroPadrao", modalCadastroProdutoCliente)
+</div>
+
+<div id="modalEdicaoProdutoCliente" class="div-modal modal fade">
+</div>
+
+@section Scripts {
+    <script src="~/js/paginas/produtosCliente.js" asp-append-version="true"></script>
+}

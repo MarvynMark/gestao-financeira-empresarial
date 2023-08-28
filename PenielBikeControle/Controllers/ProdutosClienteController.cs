@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PenielBikeControle.Data;
+using PenielBikeControle.Mappers.ProdutosCliente;
 using PenielBikeControle.Models;
 using PenielBikeControle.Models.ViewModels;
 using PenielBikeControle.Repositories.Iterfaces;
@@ -11,97 +12,49 @@ namespace PenielBikeControle.Controllers
 {
     public class ProdutosClienteController : Controller
     {
-        private readonly DataContext _dataContext;
         private readonly IProdutoClienteRepository _produtoClienteRepository;
-        private readonly IClienteRepository _clienteRepository;
+        private readonly ProdutoClienteMapperConfiguration _mapperConfiguration;
 
-        public ProdutosClienteController(DataContext dataContext, IProdutoClienteRepository produtoClienteRepository, IClienteRepository clienteRepository)
+        public ProdutosClienteController(IProdutoClienteRepository produtoClienteRepository, ProdutoClienteMapperConfiguration mapperConfiguration)
         {
-            _dataContext = dataContext;
             _produtoClienteRepository = produtoClienteRepository;
-            _clienteRepository = clienteRepository;
+            _mapperConfiguration = mapperConfiguration;
         }
 
-
-        // GET: ProdutoClienteController
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public async Task<ActionResult> Lista()
-        {
-            var produtosCliente = await _produtoClienteRepository.GetAll();
-            return View(produtosCliente);
-        }
-
-        // GET: ProdutoClienteController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: ProdutoClienteController/Create
-        public async Task<ActionResult> Cadastro()
-        {
-            ProdutoClienteViewModel produtoClienteViewModel = new ProdutoClienteViewModel();
-            var listaClientes = await _clienteRepository.GetAll();
-            produtoClienteViewModel.ListaClientes = listaClientes.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Nome
-            });
+            var produtoClienteViewModel = _mapperConfiguration.CreateMapper().Map<ProdutoClienteViewModel>(new ProdutoCliente());
             return View(produtoClienteViewModel);
         }
 
-        // POST: ProdutoClienteController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Cadastro(ProdutoClienteViewModel produtoClienteViewModel)
-        {
-            using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
-            {
-                try
-                {
-                    ProdutoCliente produtoCliente = new ProdutoCliente();
-                    produtoCliente.Descricao = produtoClienteViewModel.ProdutoCliente.Descricao;
-                    produtoCliente.Modelo = produtoClienteViewModel.ProdutoCliente.Modelo;
-                    produtoCliente.Marca = produtoClienteViewModel.ProdutoCliente.Marca;
-                    produtoCliente.Nome = produtoClienteViewModel.ProdutoCliente.Nome;
-                    produtoCliente.ClienteId = produtoClienteViewModel.ClienteId;
-
-                    await _produtoClienteRepository.Salvar(produtoCliente);
-                    dtContextTransaction.Commit();
-
-                    return RedirectToAction(nameof(Cadastro));
-                }
-                catch
-                {
-                    dtContextTransaction.Rollback();
-                    return View(nameof(Cadastro));
-                }
-            }
-        }
-
-        // GET: ProdutoClienteController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ProdutoClienteController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        //[ValidateAntiForgeryToken]
+        public async Task<JsonResult> Salvar(ProdutoCliente produtoCliente)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var (ehValido, listaDeErros) = ControllerUtils.ValidaModel(produtoCliente);
+                if (!ehValido)
+                {
+                    return ControllerUtils.RetornoJsonResult(false, "Dados inválidos!", listaDeErros);
+                }
+
+                if (produtoCliente.Id == 0) 
+                {
+                    await _produtoClienteRepository.Salvar(produtoCliente);
+                } 
+                else 
+                {
+                    await _produtoClienteRepository.Editar(produtoCliente);
+                }
+
+                return ControllerUtils.RetornoJsonResult(true, "Produto do Cliente salvo com sucesso!");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return ControllerUtils.RetornoJsonResult(ex);
             }
+            
         }
 
         [HttpDelete]
@@ -110,15 +63,37 @@ namespace PenielBikeControle.Controllers
         {
             try
             {
-                var result = await _produtoClienteRepository.Remover(id);
-                if (result)
+                await _produtoClienteRepository.Remover(id);
+                return ControllerUtils.RetornoJsonResult(true, "Sua venda foi removida com sucesso!");
+            }
+            catch (Exception ex)
+            {
+                return ControllerUtils.RetornoJsonResult(ex);
+            }
+        }
+
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> ObterProdutoClienteEdicao(int id)
+        {
+            try
+            {
+                var produtoCliente = await _produtoClienteRepository.GetById(id);
+
+                if (produtoCliente is not null)
                 {
-                    return ControllerUtils.RetornoJsonResult(true, "Sua venda foi removida com sucesso!");
+                    var viewModel = _mapperConfiguration.CreateMapper().Map<AdicionarProdutoClienteViewModel>(produtoCliente);
+
+                    var model = new ModalPadraoCadastroViewModel
+                    {
+                        ModoEdicao = true,
+                        ParamModel = viewModel,
+                        NomePartialView = "_ModalProdutoCliente"
+                    };
+                    return PartialView("_ModalCadastroPadrao", model);
                 }
-                else
-                {
-                    return ControllerUtils.RetornoJsonResult(false, "Venda não removida.");
-                }
+
+                return ControllerUtils.RetornoJsonResult(false, "Produto do cliente não encontrado");
             }
             catch (Exception ex)
             {

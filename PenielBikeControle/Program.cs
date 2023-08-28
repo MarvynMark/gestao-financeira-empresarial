@@ -1,6 +1,7 @@
 using PenielBikeControle.Data;
 using PenielBikeControle.Mappers.Clientes;
 using PenielBikeControle.Mappers.Funcionarios;
+using PenielBikeControle.Mappers.ProdutosCliente;
 using PenielBikeControle.Repositories;
 using PenielBikeControle.Repositories.Iterfaces;
 
@@ -23,6 +24,9 @@ builder.Services.AddScoped<FuncionarioMapperConfiguration>();
 
 builder.Services.AddScoped<ClienteMapper>();
 builder.Services.AddScoped<ClienteMapperConfiguration>();
+
+builder.Services.AddScoped<ProdutoClienteMapper>();
+builder.Services.AddScoped<ProdutoClienteMapperConfiguration>();
 
 
 

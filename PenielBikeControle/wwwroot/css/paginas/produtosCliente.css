@@ -1,0 +1,12 @@
+#modalProdutoCliente .modal-dialog {
+    max-width: 30%; 
+    width: 100%; 
+}
+#modalProdutoEdicaoCliente .modal-dialog {
+    max-width: 30%; 
+    width: 100%; 
+}
+
+.select2-container {
+    width: 100% !important; 
+}
