@@ -9,7 +9,7 @@ namespace PenielBikeControle.Models
 
         [Required(ErrorMessage = "Informe o nome do funcionário.")]
         [StringLength(100)]
-        [Display(Name = "Nome")]
+        [Display(Name = "Funcionário")]
         public string Nome { get; set; }
 
         [Range(typeof(DateOnly), "1900-01-01", "9999-01-01", ErrorMessage = "Data de nascimento inválida.")]
