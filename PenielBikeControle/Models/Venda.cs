@@ -9,16 +9,24 @@ namespace PenielBikeControle.Models
         [Display(Name = "Código")]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Informe a data da venda")]
+        [Range(typeof(DateTime), "1900-01-01", "9999-01-01", ErrorMessage = "Data da venda inválida.")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm}", ApplyFormatInEditMode=true )]
         public DateTime Data { get; set; }
+
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Informe um cliente.")]
         public int ClienteId { get; set; }
+
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Informe um funcionário.")]
         public int FuncionarioId { get; set; }
 
-        [Display(Name = "Venda paga")]
+        [Required]
+        [Display(Name = "Venda paga?")]
         public bool VendaPaga { get; set; }
         
-        [Display(Name = "Produto entregue")]
+        [Required]
+        [Display(Name = "Produto entregue?")]
         public bool ProdutoEstoqueEntregue { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
@@ -29,7 +37,6 @@ namespace PenielBikeControle.Models
         public virtual Funcionario Funcionario { get; set; }
         public virtual Cliente Cliente { get; set; }
         
-        //public double ValorTotal { get; set; }
 
         public Venda() { }
 
@@ -46,6 +53,26 @@ namespace PenielBikeControle.Models
             ProdutoEstoqueEntregue = produtoEstoqueEntregue;
             DescontoTotal = descontoTotal;
             Removido = removido;
+        }
+
+        [Display(Name = "Desconto")]
+        public string DescontoTotalStr 
+        { 
+            get
+            {
+                return DescontoTotal.ToString("C2");
+            } 
+        }
+
+        [Display(Name = "Valor total")]
+        public string ValorTotalStr
+        { 
+            get
+            {
+                var valorTotalProdutos = ItensDaVenda?.Sum(i => i.ValorTotal) ?? 0;
+                var valorTotal = (valorTotalProdutos - DescontoTotal).ToString("C");
+                return valorTotal;
+            } 
         }
     }
 }

@@ -1,77 +1,114 @@
 ﻿@model IEnumerable<PenielBikeControle.Models.Venda>
 
+<link rel="stylesheet" href="~/css/vendas/lista-vendas.css" />
 
-<!DOCTYPE html>
+<div class="div-botoes form-group row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4 div-botao-direita">
+        <a asp-action="Cadastro" class="btn-add-modal btn btn-info btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fa-solid fa-plus"></i>
+            </span>
+            <span class="text">Adicionar uma venda</span>
+        </a>
+    </div>
+</div>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Lista de Vendas</title>
-</head>
-<body>
-    <p>
-        <a asp-action="Cadastro">Cadastrar Venda</a>
-    </p>
-    <table class="table">
-        <thead>
+<input id="titulo-da-pagina" value="Lista de vendas" style="display: none;">
+<table class="table table-hover table-sm">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funcionario.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DescontoTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValorTotalStr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VendaPaga)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProdutoEstoqueEntregue)
+            </th>
+            <th style="width: 80px !important;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Data)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Cliente.Nome)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Funcionario.Nome)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DescontoTotal)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.VendaPaga)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProdutoEstoqueEntregue)
-                </th>
-                <th></th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Funcionario.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescontoTotalStr)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValorTotalStr)
+                </td>
+                <td style="text-align: center;">
+                    @if (item.VendaPaga) 
+                    {
+                        <i class="fa-solid fa-circle-check" data-toggle="tooltip" data-placement="right" title="Sim"></i>
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-circle-xmark" data-toggle="tooltip" data-placement="right" title="Não"></i>
+                    }
+                </td>
+                <td>
+                    @if (item.ProdutoEstoqueEntregue) 
+                    {
+                        <i class="fa-solid fa-circle-check" style="color: #08e2ac; font-size: 20px;" data-toggle="tooltip" data-placement="right" title="Sim"></i>
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-circle-xmark" style="color: #f57f7f; font-size: 20px;" data-toggle="tooltip" data-placement="right" title="Não"></i>
+                    }
+                </td>
+                <td class="row">
+                    <a href="#" data-id-venda="@item.Id" class="visualizarVenda" style="margin-right: 15px">
+                        <i class="fa-regular fa-eye"></i>
+                    </a>
+                    <a href="#" data-id-venda="@item.Id" class="editarVenda" style="margin-right: 15px">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                    <a href="#" data-id-venda="@item.Id" class="removerVenda">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Data)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Cliente.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Funcionario.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DescontoTotal)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.VendaPaga)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProdutoEstoqueEntregue)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</body>
-</html>
+        }
+    </tbody>
+</table>
+
+<div id="modalVendaVisualizacao" class="modal fade">
+</div>
+
+<div id="modalVendaEdicao" class="modal fade">
+</div>
+
+@section Scripts {
+    <script src="~/js/vendas/lista-vendas.js" asp-append-version="true"></script>
+}

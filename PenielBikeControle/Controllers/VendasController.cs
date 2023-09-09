@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PenielBikeControle.Data;
+using PenielBikeControle.Mappers.Vendas;
 using PenielBikeControle.Models;
+using PenielBikeControle.Models.DTOs.Vendas;
 using PenielBikeControle.Models.ViewModels;
 using PenielBikeControle.Repositories.Iterfaces;
 using PenielBikeControle.Utils;
@@ -12,22 +14,24 @@ namespace PenielBikeControle.Controllers
     {
         private readonly DataContext _dataContext;
         private readonly IVendaRepository _vendaRepository;
-        private readonly IProdutoEstoqueRepository _protudoEstoqueRepository;
+        private readonly IProdutoEstoqueRepository _produtoEstoqueRepository;
         private readonly IClienteRepository _clienteRepository;
         private readonly IFuncionarioRepository _funcionarioRepository;
         private readonly IItemVendaRepository _itemVendaRepository;
         private readonly IProdutoClienteRepository _produtoClienteRepository;
+        private readonly VendaMapperConfiguration _mapperConfiguration;
 
 
-        public VendasController(DataContext dataContext, IVendaRepository vendaRepository, IProdutoEstoqueRepository protudoEstoqueRepository, IClienteRepository clienteRepository, IFuncionarioRepository funcionarioRepository, IItemVendaRepository itemVendaRepository, IProdutoClienteRepository produtoClienteRepository)
+        public VendasController(DataContext dataContext, IVendaRepository vendaRepository, IProdutoEstoqueRepository produtoEstoqueRepository, IClienteRepository clienteRepository, IFuncionarioRepository funcionarioRepository, IItemVendaRepository itemVendaRepository, IProdutoClienteRepository produtoClienteRepository, VendaMapperConfiguration mapperConfiguration)
         {
             _dataContext = dataContext;
             _vendaRepository = vendaRepository;
-            _protudoEstoqueRepository = protudoEstoqueRepository;
+            _produtoEstoqueRepository = produtoEstoqueRepository;
             _clienteRepository = clienteRepository;
             _funcionarioRepository = funcionarioRepository;
             _itemVendaRepository = itemVendaRepository;
             _produtoClienteRepository = produtoClienteRepository;
+            _mapperConfiguration = mapperConfiguration;
         }
 
 
@@ -50,12 +54,6 @@ namespace PenielBikeControle.Controllers
             }
         }
 
-        // GET: VendaController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
         // GET: VendaController/Create
         public async Task<ActionResult> Cadastro()
         {
@@ -65,88 +63,54 @@ namespace PenielBikeControle.Controllers
 
         // POST: VendaController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Cadastro(VendaViewModel vendaViewModel)
+        //[ValidateAntiForgeryToken]
+        public async Task<JsonResult> Salvar(VendaDTO vendaDTO)
         {
-            // TODO: Criar validação de dados
-            //if (!ModelState.IsValid) 
-            //{
-            //    return View(await PreencheViewModel());
-            //}
-            using (var dtContextTransaction = _dataContext.Database.BeginTransaction())
-            {
-                try
-                {
-                    decimal descontoTotal = 0;
-                    Venda venda = new()
-                    {
-                        DescontoTotal = vendaViewModel.Venda.DescontoTotal,
-                        FuncionarioId = vendaViewModel.FuncionarioId,
-                        ClienteId = vendaViewModel.ClienteId,
-                        Data = vendaViewModel.Venda.Data,
-                        VendaPaga = vendaViewModel.Venda.VendaPaga,
-                        ProdutoEstoqueEntregue = vendaViewModel.Venda.ProdutoEstoqueEntregue
-                    };
-
-                    if (!String.IsNullOrEmpty(vendaViewModel.DescontoTotal))
-                    {
-                        decimal.TryParse(vendaViewModel.DescontoTotal, out descontoTotal);
-                        venda.DescontoTotal = descontoTotal;
-                    }
-
-                    var vendaSalva = await _vendaRepository.Salvar(venda);
-
-                    if (vendaSalva != null)
-                    {
-                        foreach (var item in vendaViewModel.QtdeProdutosInput)
-                        {
-                            var prodQtde = int.Parse(item.Split(';')[0]);
-                            var prodId = int.Parse(item.Split(';')[1]);
-                            var produtoVendido = await _protudoEstoqueRepository.GetById(prodId);
-                            if (produtoVendido != null)
-                            {
-                                var itemVenda = new ItemVenda
-                                {
-                                    ProdutoEstoqueId = prodId,
-                                    VendaId = vendaSalva.Id,
-                                    ProdutoClienteId = vendaViewModel.ProdutoClienteId,
-                                    Quantidade = prodQtde,
-                                    ValorVendido = produtoVendido.PrecoFinal
-                                };
-                                await _itemVendaRepository.Salvar(itemVenda);
-                            }
-                        }
-                    }
-                    dtContextTransaction.Commit();
-                    return RedirectToAction(nameof(Cadastro));
-                }
-                catch (Exception e)
-                {
-                    dtContextTransaction.Rollback();
-                    // TODO: Tratar erro personalizado
-                    return RedirectToAction(nameof(Cadastro));
-                }
-            }
-        }
-
-        // GET: VendaController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: VendaController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
+            using var dtContextTransaction = _dataContext.Database.BeginTransaction();
             try
             {
-                return RedirectToAction(nameof(Index));
+                var venda = _mapperConfiguration.CreateMapper().Map<Venda>(vendaDTO);
+
+                var (ehValido, listaDeErros) = ControllerUtils.ValidaModel(venda);
+                if (!ehValido)
+                {
+                    return ControllerUtils.RetornoJsonResult(false, "Dados inválidos!", listaDeErros);
+                }
+
+                var itensVenda = _mapperConfiguration.CreateMapper().Map<List<ItemVenda>>(vendaDTO.ItensVenda);
+                if (!itensVenda.Any())
+                {
+                    return ControllerUtils.RetornoJsonResult(false, "Adicione ao menos um produto ao orçamento.");
+                }
+
+                var vendaSalva = await _vendaRepository.Salvar(venda);
+
+                if (vendaSalva is not null)
+                {
+                    foreach (var item in itensVenda)
+                    {
+                        item.VendaId = vendaSalva.Id;
+                        (ehValido, listaDeErros) = ControllerUtils.ValidaModel(item);
+                        if (!ehValido)
+                        {
+                            dtContextTransaction.Rollback();
+                            return ControllerUtils.RetornoJsonResult(false, "Dados inválidos!", listaDeErros);
+                        }
+
+                        await _itemVendaRepository.Salvar(item);
+                    }
+                    dtContextTransaction.Commit();
+                    return ControllerUtils.RetornoJsonResult(true, "Venda salva com sucesso!");
+                }
+                else 
+                {
+                    return ControllerUtils.RetornoJsonResult(false, "Venda não salva.");
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                dtContextTransaction.Rollback();
+                return ControllerUtils.RetornoJsonResult(ex);
             }
         }
 
@@ -174,9 +138,11 @@ namespace PenielBikeControle.Controllers
 
         private async Task<VendaViewModel> PreencheViewModel()
         {
-            VendaViewModel vendaViewModel = new VendaViewModel();
+            VendaViewModel vendaViewModel = new()
+            {
+                ListaDeProdutos = await _produtoEstoqueRepository.GetAll()
+            };
 
-            vendaViewModel.ListaDeProdutos = await _protudoEstoqueRepository.GetAll();
             var listaClientes = await _clienteRepository.GetAll();
             vendaViewModel.ListaDeClientes = listaClientes.Select(x => new SelectListItem
             {
@@ -193,12 +159,41 @@ namespace PenielBikeControle.Controllers
             vendaViewModel.ListaProdutosCliente = listaProdutosCliente.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
-                Text = $"{x.Nome}, {x.Marca}, {x.Modelo}"
+                Text = $"{x.Nome} - {x.Marca} - {x.Modelo}"
             });
 
             vendaViewModel.Venda.Data = DateTime.Now;
 
             return vendaViewModel;
+        }
+
+        public async Task<ActionResult> ObterVenda(ObterVendaDTO obterVendaDTO) 
+        {
+            try
+            {
+                var venda = await _vendaRepository.GetById(obterVendaDTO.VendaId);
+
+                if (venda is not null)
+                {
+                    var viewModel = _mapperConfiguration.CreateMapper().Map<VendaVisualizacaoViewModel>(venda);
+                    viewModel.ModoEdicao = obterVendaDTO.ModoEdicao;
+
+                    var model = new ModalPadraoCadastroViewModel
+                    {
+                        ModoEdicao = obterVendaDTO.ModoEdicao,
+                        ModoVisualizacao = !obterVendaDTO.ModoEdicao,
+                        ParamModel = viewModel,
+                        NomePartialView = "_ModalVendaVisualizacao"
+                    };
+                    return PartialView("_ModalCadastroPadrao", model);
+                }
+
+                return ControllerUtils.RetornoJsonResult(false, "Venda não encontrada!");
+            }
+            catch (Exception ex)
+            {
+                return ControllerUtils.RetornoJsonResult(ex);
+            }
         }
     }
 }

@@ -1,0 +1,8 @@
+#modalVendaVisualizacao .modal-dialog {
+    max-width: 50%; 
+    width: 100%; 
+}
+#modalVendaEdicao .modal-dialog {
+    max-width: 50%; 
+    width: 100%; 
+}

@@ -2,10 +2,7 @@
 
 <link rel="stylesheet" href="~/css/vendas/cadastro-vendas.css" />
 
-<!-- Page Heading -->
-@*<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Venda</h1>
-</div>*@
+
 <input id="titulo-da-pagina" value="Cadastro de Vendas" style="display: none;">
 
 <div class="row">
@@ -13,72 +10,68 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Dados da Venda</h6>
-
             </div>
             <div class="form-group">
                 <div class="col-md-12">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
 
-                    <form asp-action="Cadastro">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label asp-for="FuncionarioId" class="control-label"></label>
+                            <select asp-for="FuncionarioId" class="form-control form-control-sm select select-func"
+                                asp-items="Model.ListaDeFuncionarios">
+                                <option></option>
+                            </select>
+                            <span asp-validation-for="FuncionarioId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label asp-for="ClienteId" class="control-label"></label>
+                            <select asp-for="ClienteId" class="form-control form-control-sm select select-cli"
+                                asp-items="Model.ListaDeClientes">
+                                <option></option>
+                            </select>
+                            <span asp-validation-for="ClienteId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label asp-for="ProdutoClienteId" class="control-label"></label>
+                            <select asp-for="ProdutoClienteId"
+                                class="form-control form-control-sm select select-prodCli"
+                                asp-items="Model.ListaProdutosCliente">
+                                <option></option>
+                            </select>
+                            <span asp-validation-for="ProdutoClienteId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label asp-for="Venda.Data" class="control-label"></label>
+                            <input asp-for="Venda.Data" class="form-control" />
+                            <span asp-validation-for="Venda.Data" class="text-danger"></span>
+                        </div>
+                        <div id="checks-vendaPaga-ProdEntregue" class="col-md-12 row">
+                            <div class="col-md-6 form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Venda.VendaPaga" />
+                                    @Html.DisplayNameFor(model => model.Venda.VendaPaga)
+                                </label>
+                            </div>
 
-                            <div class="col-md-12 form-group">
-                                <label asp-for="FuncionarioId" class="control-label"></label>
-                                <select asp-for="FuncionarioId" class="form-control form-control-sm select select-func" asp-items="Model.ListaDeFuncionarios"><option></option></select>
-                                <span asp-validation-for="FuncionarioId" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <label asp-for="ClienteId" class="control-label"></label>
-                                <select asp-for="ClienteId" class="form-control form-control-sm select select-cli" asp-items="Model.ListaDeClientes"><option></option></select>
-                                <span asp-validation-for="ClienteId" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <label asp-for="ProdutoClienteId" class="control-label"></label>
-                                <select asp-for="ProdutoClienteId" class="form-control form-control-sm select select-prodCli" asp-items="Model.ListaProdutosCliente"><option></option></select>
-                                <span asp-validation-for="ProdutoClienteId" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <label asp-for="Venda.Data" class="control-label"></label>
-                                <input asp-for="Venda.Data" class="form-control" />
-                                <span asp-validation-for="Venda.Data" class="text-danger"></span>
-                            </div>
-                            <div id="checks-vendaPaga-ProdEntregue" class="col-md-12 row">
-                                <div class="col-md-6 form-group form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" asp-for="Venda.VendaPaga" />
-                                        @Html.DisplayNameFor(model => model.Venda.VendaPaga)
-                                    </label>
-                                </div>
-
-                                <div class="col-md-6 form-group form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" asp-for="Venda.ProdutoEstoqueEntregue" />
-                                        @Html.DisplayNameFor(model => model.Venda.ProdutoEstoqueEntregue)
-                                    </label>
-                                </div>
-                            </div>
-                            <div id="divBtnSalvar" class="col-md-12">
-                                <div class="form-group">
-                                    @*<input id="btnSalvar" type="submit" value="Salvar Venda" class="btn btn-success btn-icon-split" />*@
-                                    <button id="btnSalvar" type="submit" class="btn btn-success btn-icon-split">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-check"></i>
-                                        </span>
-                                        <span class="text">Salvar venda</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-12 form-group" style="display: none;">
-                                <select asp-for="QtdeProdutosInput" class="form-control form-control-sm"><option></option></select>
-                                <span asp-validation-for="QtdeProdutosInput" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <input asp-for="DescontoTotal" class="form-control" />
-                                @* <span asp-validation-for="Venda.DescontoTotal" class="text-danger"></span> *@
+                            <div class="col-md-6 form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Venda.ProdutoEstoqueEntregue" />
+                                    @Html.DisplayNameFor(model => model.Venda.ProdutoEstoqueEntregue)
+                                </label>
                             </div>
                         </div>
-                    </form>
-
+                        <div id="divBtnSalvar" class="col-md-12">
+                            <div class="form-group">
+                                <button id="btnSalvar" type="submit" class="btn btn-success btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                    <span class="text">Salvar venda</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -97,16 +90,18 @@
                             <select id="selectProduto" class="form-control form-control-sm select select-prod">
                                 <option></option>
                                 @{
-                                    foreach (var prod in Model.ListaDeProdutos)
+                                    foreach (var produto in Model.ListaDeProdutos)
                                     {
-                                        <option data-preco="@prod.PrecoFinal" data-precoMaoDeObra="@prod.PrecoMaoDeObra" value="@prod.Id">@prod.Nome, @prod.Marca, @prod.Modelo</option>
+                                        <option data-preco="@produto.PrecoFinal" data-precoMaoDeObra="@produto.PrecoMaoDeObra"
+                                            value="@produto.Id">@produto.ProdutoCompleto</option>
                                     }
                                 }
                             </select>
                         </div>
                         <div class="col-md-2 form-group">
                             <label asp-for="Quantidade" class="control-label"></label>
-                            <select id="selectQtde" asp-for="Quantidade" class="form-control form-control-sm select-one">
+                            <select id="selectQtde" asp-for="Quantidade"
+                                class="form-control form-control-sm select-one">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -122,7 +117,6 @@
 
                         <div id="divBtnAddProduto" class="col-md-4 form-group">
                             <div class="form-group">
-                                @*<input id="btnAddProduto" type="submit" value="Adicionar Venda" class="btn btn-info">*@
                                 <button id="btnAddProduto" type="submit" class="btn btn-info btn-icon-split">
                                     <span class="icon text-white-50">
                                         <i class="fa-solid fa-plus"></i>
@@ -166,19 +160,22 @@
                         <div class="col-md-4 form-group">
                             <div class="form-group col-md-6">
                                 <label for="subTotalVenda">SUBTOTAL</label>
-                                <input id="subTotalVenda" type="text" class="form-control bg-light small input-resumo" value="R$ 0,00" disabled>
+                                <input id="subTotalVenda" type="text" class="form-control bg-light small input-resumo"
+                                    value="R$ 0,00" disabled>
                             </div>
                         </div>
                         <div class="col-md-4 form-group">
                             <div class="form-group col-md-6">
                                 <label for="descontoVenda">DESCONTO</label>
-                                <input id="descontoVenda" type="text" class="form-control bg-light small input-resumo" value="R$ 0,00" disabled><span id="msgAlertaDesconto"></span>
+                                <input id="descontoVenda" type="text" class="form-control bg-light small input-resumo"
+                                    value="R$ 0,00" disabled><span id="msgAlertaDesconto"></span>
                             </div>
                         </div>
                         <div class="col-md-4 form-group">
                             <div class="form-group col-md-6">
                                 <label id="lbTotalVenda" for="totalVenda">TOTAL</label>
-                                <input id="totalVenda" type="text" class="form-control bg-light small input-resumo" value="R$ 0,00" disabled>
+                                <input id="totalVenda" type="text" class="form-control bg-light small input-resumo"
+                                    value="R$ 0,00" disabled>
                             </div>
                         </div>
                     </div>
@@ -190,8 +187,5 @@
 
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script src="~/js/vendas/cadastro-vendas.js"></script>
+    <script src="~/js/vendas/cadastro-vendas.js" asp-append-version="true"></script>
 }

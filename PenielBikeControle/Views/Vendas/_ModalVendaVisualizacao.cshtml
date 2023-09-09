@@ -1,0 +1,188 @@
+@model PenielBikeControle.Models.ViewModels.VendaVisualizacaoViewModel
+
+@{
+    var disabledStr = !Model.ModoEdicao ? "disabled" : "";
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label asp-for="Funcionario" class="control-label"></label>
+            @if (Model.ModoEdicao)
+            {
+                <input asp-for="Funcionario" class="form-control" />
+            }
+            else
+            {
+                <input asp-for="Funcionario" class="form-control" disabled />
+            }
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="Cliente" class="control-label"></label>
+            @if (Model.ModoEdicao)
+            {
+                <input asp-for="Cliente" class="form-control" />
+            }
+            else
+            {
+                <input asp-for="Cliente" class="form-control" disabled />
+            }
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="ProdutoDoCliente" class="control-label"></label>
+            @if (Model.ModoEdicao)
+            {
+                <input asp-for="ProdutoDoCliente" class="form-control" />
+            }
+            else
+            {
+                <input asp-for="ProdutoDoCliente" class="form-control" disabled />
+            }
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="DataDaVenda" class="control-label"></label>
+            @if (Model.ModoEdicao)
+            {
+                <input asp-for="DataDaVenda" class="form-control" />
+            }
+            else
+            {
+                <input asp-for="DataDaVenda" class="form-control" disabled />
+            }
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="Desconto" class="control-label"></label>
+            @if (Model.ModoEdicao)
+            {
+                <input asp-for="Desconto" class="form-control" />
+            }
+            else
+            {
+                <input asp-for="Desconto" class="form-control" disabled />
+            }
+        </div>
+        <div class="col-md-6 form-group">
+            <label asp-for="ValorTotal" class="control-label"></label>
+            @if (Model.ModoEdicao)
+            {
+                <input asp-for="ValorTotal" class="form-control" />
+            }
+            else
+            {
+                <input asp-for="ValorTotal" class="form-control" disabled />
+            }
+        </div>
+
+        <div class="col-md-3 form-group">
+            <label class="form-check-label">
+                @* <label>Venda paga?</label> *@
+                @Html.DisplayNameFor(model => model.VendaPaga)
+                @if (Model.ModoEdicao)
+                {
+                    <input class="form-check-input" asp-for="VendaPaga" style="margin-left: 10px;" />   
+                }
+                else
+                {
+                    @if (Model.VendaPaga)
+                    {
+                        <i class="fa-solid fa-circle-check" data-toggle="tooltip" data-placement="right" title="Sim" style="margin-left: 5px;"></i>
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-circle-xmark" data-toggle="tooltip" data-placement="right" title="Não" style="margin-left: 5px;"></i>
+                    }
+                }
+            </label>   
+        </div>
+
+        <div class="col-md-3 form-group">
+            <label class="form-check-label">
+                @* <label>Produto entregue paga?</label> *@
+                @Html.DisplayNameFor(model => model.ProdutoEntregue)
+                @if (Model.ModoEdicao)
+                {   
+                    <input class="form-check-input" asp-for="ProdutoEntregue" style="margin-left: 10px;"/>
+                }
+                else
+                {
+                    @if (Model.ProdutoEntregue)
+                    {
+                        <i class="fa-solid fa-circle-check" data-toggle="tooltip" data-placement="right" title="Sim" style="margin-left: 5px;"></i>
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-circle-xmark" data-toggle="tooltip" data-placement="right" title="Não" style="margin-left: 5px;"></i>
+                    }
+                }
+            </label>   
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 table-responsive-sm" style="margin-top: 15px;">
+    <label style="font-weight: bold;">PRODUTOS VENDIDOS</label>
+    <table id="tableVendaModalVisualizacao" class="table table-sm table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    Código
+                </th>
+                <th>
+                    Produto
+                </th>
+                <th>
+                    Valor unitário
+                </th>
+                <th>
+                    Valor mão de obra
+                </th>
+                <th>
+                    Quantidade
+                </th>
+                <th>
+                    Valor total
+                </th>
+                @if (Model.ModoEdicao)
+                {
+                    <th style="width: 50px;"></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ItensVendidos)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProdutoEstoque.ProdutoCompleto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ValorVendido)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProdutoEstoque.PrecoMaoDeObra)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantidade)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ValorTotal)
+                    </td>
+                    @if (Model.ModoEdicao)
+                    {
+                        <td>
+                            <a href="#" data-id-venda="@item.Id" class="editarItemVenda" style="margin-right: 10px">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                            <a href="#" data-id-venda="@item.Id" class="removerItemVenda">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
