@@ -175,38 +175,6 @@
         return produto;
     }
 
-    // function FechaModal(modalId) {
-    //     $('#' + modalId).modal('hide');
-    // }
-
-    // function AtualizaPagina(timeout = 0) {
-    //     setTimeout(function () {
-    //         location.reload();
-    //     }, timeout);
-    // }
-
-    function ValidaFomularioProduto() {
-        return true
-        let precoCusto = $(inputPrecoCusto).val().replace('R$ ', '');
-        let precoVenda = $(inputPrecoVenda).val().replace('R$ ', '');
-        let precoMaoDeObra = $(inputPrecoMaoDeObra).val().replace('R$ ', '');
-
-        if ($(inputNome).val() == "") {
-            return false;
-        }
-        if ($(inputPrecoCusto).val() == "") {
-            return false;
-        }
-        if (parseInt($(inputQtdeEstoque).val()) == 0 || parseInt($(inputQtdeEstoque).val()) < 0) {
-            return false;
-        }
-        if (parseInt(precoCusto) < 1 || parseInt(precoVenda) < 1) {
-            return false;
-        }
-
-        return true;
-    }
-
     function ObterProdutoEdicao(el) {
         let id = el.dataset.idProduto;
 
@@ -220,8 +188,14 @@
                 //$("#resultado").html("ENVIANDO...");
             }
         }).done(function (result) {
-            $("#modalEdicaoProduto").html(result);
-            $("#modalEdicaoProduto").modal("show");
+            if (result.sucesso == false) {
+                Global.emitirAlertaCentralFixo('error', 'Erro ao buscar protudo', result.mensagem);
+            } else {
+                $("#modalEdicaoProduto").html(result);
+                $("#modalEdicaoProduto").modal("show");
+                Global.maskMoney(inputMoeda, 200);
+            }
+            
         }).fail(function (jqXHR, textStatus, result) {
             Global.emitirAlertaCentralFixo('error', 'Erro ao buscar protudo', result.mensagem);
         });

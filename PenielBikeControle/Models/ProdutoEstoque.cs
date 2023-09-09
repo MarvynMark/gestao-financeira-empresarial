@@ -89,5 +89,22 @@ namespace PenielBikeControle.Models
                 return PrecoMaoDeObra?.ToString("C2");
             } 
         }
+
+        public string ProdutoCompleto
+        {
+            get
+            {
+                string nomeCompleto = Nome;
+                if (!String.IsNullOrWhiteSpace(Marca)) 
+                {
+                    nomeCompleto += $" - {Marca}";
+                }
+                if (!String.IsNullOrWhiteSpace(Modelo)) 
+                {
+                    nomeCompleto += $" - {Modelo}";
+                }
+                return nomeCompleto;
+            }    
+        }
     }
 }
