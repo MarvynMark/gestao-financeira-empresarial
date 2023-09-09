@@ -46,3 +46,22 @@ body {
   display: flex;
   justify-content: flex-end;
 }
+
+.ajust-div-row {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.fa-circle-check {
+  color: #08e2ac; 
+  font-size: 20px;
+}
+
+.fa-circle-xmark {
+  color: #f57f7f; 
+  font-size: 20px;
+}
+
+.table {
+  text-align: center;
+}

@@ -31,6 +31,8 @@
             theme: "classic",
             tags: true
         })
+        
+        $('[data-toggle="tooltip"]').tooltip();
     }
 
 

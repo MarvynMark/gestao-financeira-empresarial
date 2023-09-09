@@ -137,6 +137,17 @@ var Global = (function () {
         value=value.replace(/(\d{3})(\d{1,2})$/,"$1-$2") //Coloca um hífen entre o terceiro e o quarto dígitos
         return value
     }
+
+    function maskMoney(className, timeout = 0) {
+        setTimeout(function () {
+            $(className).maskMoney({ prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true });
+
+            $(className).each(function(el) {
+                $(this).focus();
+                $(this).blur();
+            });
+        }, timeout);
+    }
   
     return {
         emitirAlertaFlutuante: emitirAlertaFlutuante,
@@ -147,6 +158,7 @@ var Global = (function () {
         fechaModal: fechaModal,
         emitirAlertaDeConfirmacaoDeRemocao: emitirAlertaDeConfirmacaoDeRemocao,
         validaCpf: validaCpf,
-        cpfEhValido: cpfEhValido
+        cpfEhValido: cpfEhValido,
+        maskMoney: maskMoney
     };
   })();
