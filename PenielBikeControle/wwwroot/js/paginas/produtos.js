@@ -85,8 +85,7 @@
     }
 
     function SalvarProduto(modal) {
-        if (ValidaFomularioProduto()) {
-
+       
             $.ajax({
                 url: "/ProdutosEstoque/Cadastro",
                 type: 'post',
@@ -109,7 +108,7 @@
             }).fail(function (jqXHR, textStatus, msg) {
                 Global.emitirAlertaCentralFixo('error', 'Erro ao salvar produto', msg);
             });
-        }
+        
     }
 
     function EditarProduto(modal) {

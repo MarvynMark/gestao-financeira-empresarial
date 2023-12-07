@@ -7,37 +7,18 @@
 <div class="col-md-12">
     <div class="row">
         <div class="col-md-6 form-group">
+            <input asp-for="VendaId" style="display: none;" />
+
             <label asp-for="Funcionario" class="control-label"></label>
-            @if (Model.ModoEdicao)
-            {
-                <input asp-for="Funcionario" class="form-control" />
-            }
-            else
-            {
-                <input asp-for="Funcionario" class="form-control" disabled />
-            }
+            <input asp-for="Funcionario" class="form-control" disabled />
         </div>
         <div class="col-md-6 form-group">
             <label asp-for="Cliente" class="control-label"></label>
-            @if (Model.ModoEdicao)
-            {
-                <input asp-for="Cliente" class="form-control" />
-            }
-            else
-            {
-                <input asp-for="Cliente" class="form-control" disabled />
-            }
+            <input asp-for="Cliente" class="form-control" disabled />
         </div>
         <div class="col-md-6 form-group">
             <label asp-for="ProdutoDoCliente" class="control-label"></label>
-            @if (Model.ModoEdicao)
-            {
-                <input asp-for="ProdutoDoCliente" class="form-control" />
-            }
-            else
-            {
-                <input asp-for="ProdutoDoCliente" class="form-control" disabled />
-            }
+            <input asp-for="ProdutoDoCliente" class="form-control" disabled />
         </div>
         <div class="col-md-6 form-group">
             <label asp-for="DataDaVenda" class="control-label"></label>
@@ -63,14 +44,7 @@
         </div>
         <div class="col-md-6 form-group">
             <label asp-for="ValorTotal" class="control-label"></label>
-            @if (Model.ModoEdicao)
-            {
-                <input asp-for="ValorTotal" class="form-control" />
-            }
-            else
-            {
-                <input asp-for="ValorTotal" class="form-control" disabled />
-            }
+            <input asp-for="ValorTotal" class="form-control" disabled />
         </div>
 
         <div class="col-md-3 form-group">
@@ -159,7 +133,7 @@
                         @Html.DisplayFor(modelItem => item.ProdutoEstoque.ProdutoCompleto)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ValorVendido)
+                        @Html.DisplayFor(modelItem => item.ValorItem)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ProdutoEstoque.PrecoMaoDeObra)

@@ -12,7 +12,7 @@ namespace PenielBikeControle.Migrations
                 name: "PrecoMaoDeObra",
                 table: "ProdutosEstoque",
                 type: "double",
-                nullable: false,
+                nullable: true,
                 defaultValue: 0.0);
 
             migrationBuilder.AddColumn<int>(

@@ -20,7 +20,7 @@ namespace PenielBikeControle.Migrations
                 name: "PrecoMaoDeObra",
                 table: "ProdutosEstoque",
                 type: "decimal(10,2)",
-                nullable: false,
+                nullable: true,
                 oldClrType: typeof(double),
                 oldType: "double");
 
@@ -63,7 +63,7 @@ namespace PenielBikeControle.Migrations
                 name: "PrecoMaoDeObra",
                 table: "ProdutosEstoque",
                 type: "double",
-                nullable: false,
+                nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "decimal(10,2)");
 

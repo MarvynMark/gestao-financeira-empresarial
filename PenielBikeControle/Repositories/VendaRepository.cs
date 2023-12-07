@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PenielBikeControle.Data;
 using PenielBikeControle.Models;
+using PenielBikeControle.Models.DTOs.Vendas;
 using PenielBikeControle.Repositories.Iterfaces;
 
 namespace PenielBikeControle.Repositories
@@ -43,19 +44,34 @@ namespace PenielBikeControle.Repositories
                 
                 var result = await _context.SaveChangesAsync();
 
-                if (result != 0) 
-                {
-                    return true;
-                }
-                else 
-                {
-                    return false; 
-                }
+                return result != 0;
             }
             else 
             {
                 return false;
             }
+        }
+
+        public async Task<bool> Editar(EdicaoVendaDTO edicaoVendaDTO)
+        {
+            var venda = await _context.Vendas.SingleOrDefaultAsync(x => x.Id == edicaoVendaDTO.VendaId);
+
+            if (venda is not null) 
+            {
+                venda.VendaPaga = edicaoVendaDTO.VendaPaga;
+                venda.ProdutoEstoqueEntregue = edicaoVendaDTO.ProdutoEntregue;
+                venda.Data = edicaoVendaDTO.DataDaVenda;
+                venda.DescontoTotal = edicaoVendaDTO.Desconto;
+
+                _context.Update(venda);
+                var result = await _context.SaveChangesAsync();
+
+                return result != 0;
+            }
+            else
+            {
+                return false;
+            }   
         }
     }
 }

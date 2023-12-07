@@ -23,6 +23,7 @@ namespace PenielBikeControle.Mappers.Vendas
             VendaDtoToVenda(profile);
             VendaDtoToItensVenda(profile);
             VendaVisualizacaoViewModelToVenda(profile);
+            EdicaoVendaDtoToVenda(profile);
         }
 
         private static void VendaDtoToVenda(IMapperConfigurationExpression profile)
@@ -42,7 +43,7 @@ namespace PenielBikeControle.Mappers.Vendas
                 .ForMember(dest => dest.ProdutoEstoqueId, map => map.MapFrom(source => ObtemValorExato(source, 0)))
                 .ForMember(dest => dest.Quantidade, map => map.MapFrom(source => ObtemValorExato(source, 1)))
                 .ForMember(dest => dest.ProdutoClienteId, map => map.MapFrom(source => ObtemValor(source, 2)))
-                .ForMember(dest => dest.ValorVendido, map => map.MapFrom(source => ObtemValorProduto(source)))
+                .ForMember(dest => dest.ValorItem, map => map.MapFrom(source => ObtemValorProduto(source)))
                 .ForMember(dest => dest.ValorTotal, map => map.MapFrom(source => ObtemValorTotal(source)))
                 ;
         }
@@ -100,6 +101,7 @@ namespace PenielBikeControle.Mappers.Vendas
         private void VendaVisualizacaoViewModelToVenda(IMapperConfigurationExpression profile)
         {
             profile.CreateMap<Venda, VendaVisualizacaoViewModel>()
+                .ForMember(dest => dest.VendaId, map => map.MapFrom(source => source.Id))
                 .ForMember(dest => dest.Funcionario, map => map.MapFrom(source => source.Funcionario.Nome))
                 .ForMember(dest => dest.Cliente, map => map.MapFrom(source => source.Cliente.Nome))
                 .ForMember(dest => dest.DataDaVenda, map => map.MapFrom(source => source.Data.ToString()))
@@ -120,5 +122,14 @@ namespace PenielBikeControle.Mappers.Vendas
             dest.ItensVendidos = itensVendidos;
         }
 
+        private static void EdicaoVendaDtoToVenda(IMapperConfigurationExpression profile)
+        {
+            profile.CreateMap<EdicaoVendaDTO, Venda>()
+            .ForMember(dest => dest.Id, map => map.MapFrom(source => source.VendaId))
+            .ForMember(dest => dest.Data, map => map.MapFrom(source => source.DataDaVenda))
+            .ForMember(dest => dest.VendaPaga, map => map.MapFrom(source => source.VendaPaga))
+            .ForMember(dest => dest.ProdutoEstoqueEntregue, map => map.MapFrom(source => source.ProdutoEntregue))
+            .ForMember(dest => dest.DescontoTotal, map => map.MapFrom(source => source.Desconto));
+        }
     }
 }

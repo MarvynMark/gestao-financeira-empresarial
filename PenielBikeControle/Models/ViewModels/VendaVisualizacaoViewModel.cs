@@ -6,6 +6,11 @@ namespace PenielBikeControle.Models.ViewModels
     {
         public VendaVisualizacaoViewModel() {}
 
+        public int VendaId { get; set; }
+        public int ProdutoClienteId { get; set; }
+        public int ClienteId { get; set; }
+        public int FuncionarioIdId { get; set; }
+
         [Display(Name = "Funcionário")]
         public string Funcionario { get; set; } = string.Empty;
         public string Cliente { get; set; } = string.Empty;

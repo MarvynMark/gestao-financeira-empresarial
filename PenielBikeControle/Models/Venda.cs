@@ -74,5 +74,14 @@ namespace PenielBikeControle.Models
                 return valorTotal;
             } 
         }
+
+        [Display(Name = "Data")]
+        public string DataStr
+        {
+            get 
+            { 
+                return Data.ToString("dd/MM/yyyy HH:mm"); 
+            }
+        }
     }
 }

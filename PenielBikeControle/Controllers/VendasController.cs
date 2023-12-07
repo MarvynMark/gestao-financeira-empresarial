@@ -195,5 +195,25 @@ namespace PenielBikeControle.Controllers
                 return ControllerUtils.RetornoJsonResult(ex);
             }
         }
+
+        public async Task<JsonResult> SalvarEdicao(EdicaoVendaDTO edicaoVendaDTO)
+        {
+            try
+            {
+                var result = await _vendaRepository.Editar(edicaoVendaDTO);
+                if (result) 
+                {
+                    return ControllerUtils.RetornoJsonResult(true, "Edição da venda salva com sucesso!");
+                }
+                else
+                {
+                    return ControllerUtils.RetornoJsonResult(false, "Falha na edição da venda");
+                }
+            }
+            catch (Exception ex)
+            {
+                return ControllerUtils.RetornoJsonResult(ex);
+            }
+        }
     }
 }

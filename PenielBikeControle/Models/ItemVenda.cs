@@ -24,14 +24,20 @@ namespace PenielBikeControle.Models
 
         [Required]
         [Column(TypeName = "decimal(10,2)")]
-        public decimal ValorVendido { get; set; }
+        public decimal ValorItem { get; set; }
+
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal ValorMaoDeObra { get; set; }
+
+        [Column(TypeName = "decimal(10,2)")]
         public decimal ValorTotal { get; set; }
+        public bool Removido { get; set; }
         public virtual ProdutoEstoque ProdutoEstoque { get; set; }
         public virtual Venda Venda { get; set; }
         public virtual ProdutoCliente? ProdutoCliente { get; set; }
         public ItemVenda() { }
 
-        public ItemVenda(int id, Venda venda, int vendaId, ProdutoEstoque produtoEstoque, int produtoEstoqueId, ProdutoCliente? produtoCliente, int? produtoClienteId, int quantidade, decimal valorVendido, decimal valorTotal)
+        public ItemVenda(int id, Venda venda, int vendaId, ProdutoEstoque produtoEstoque, int produtoEstoqueId, ProdutoCliente? produtoCliente, int? produtoClienteId, int quantidade, decimal valorItem, decimal valorTotal, bool removido, decimal valorMaoDeObra)
         {
             Id = id;
             Venda = venda;
@@ -41,8 +47,10 @@ namespace PenielBikeControle.Models
             ProdutoCliente = produtoCliente;
             ProdutoClienteId = produtoClienteId;
             Quantidade = quantidade;
-            ValorVendido = valorVendido;
+            ValorItem = valorItem;
             ValorTotal = valorTotal;
+            Removido = removido;
+            ValorMaoDeObra = valorMaoDeObra;
         }
     }
 }

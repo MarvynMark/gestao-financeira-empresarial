@@ -3,9 +3,15 @@
     const btnEditar = '.editarVenda';
     const btnVisualizar = '.visualizarVenda';
     const btnSalvar = '.btn-salvar';
-    const modalEdicao = '#modalVendaEdicao';
     const modalVisualizacao = '#modalVendaVisualizacao';
     const tableVisualizaocao = '#tableVendaModalVisualizacao';
+    const inputId = '#VendaId';
+    const inputDataVenda = '#DataDaVenda';
+    const inputDesconto = '#Desconto';
+    const checkVendaPaga = '#VendaPaga';
+    const checkProdutoEntregue = '#ProdutoEntregue';
+    
+
 
     IniciaElementos();
 
@@ -61,6 +67,87 @@
 
             $('[data-toggle="tooltip"]').tooltip();
         }, 200);
+    }
+
+    function obtemDadosDaVenda() {
+        let modal = document.getElementById(modalVisualizacao.replace('#', ''));
+
+        let id = modal.querySelector(inputId).value;
+        let dataDaVenda = modal.querySelector(inputDataVenda).value;
+        let desconto = modal.querySelector(inputDesconto).value.replace("R$ ", '');
+        let vendaPaga = modal.querySelector(checkVendaPaga).value;
+        let produtoEntregue = modal.querySelector(checkProdutoEntregue).value;
+
+        let venda = {
+            VendaId: id,
+            DataDaVenda: dataDaVenda,
+            Desconto: desconto,
+            VendaPaga: vendaPaga,
+            ProdutoEntregue: produtoEntregue
+        }
+
+        return venda;
+    }
+
+    function Remover(el) {
+        let id = el.dataset.idVenda;
+
+        Swal.fire({
+            title: 'Tem certeza que deseja remover esta venda?',
+            text: "Você não poderá reverter isso!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, remover!',
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/Vendas/Remover",
+                    type: 'delete',
+                    data: {
+                        id: id
+                    },
+                    beforeSend: function () {
+                        //$("#resultado").html("ENVIANDO...");
+                    }
+                }).done(function (result) {
+                    if (result.sucesso) {
+                        Global.emitirAlertaCentralFixo('success', 'Removido!', result.mensagem);
+                        Global.atualizaPagina(3000);
+                    } else {
+                        Global.emitirAlertaCentralFixo('error', 'Erro ao remover a venda', result.mensagem);    
+                    }
+                }).fail(function (jqXHR, textStatus, result) {
+                    Global.emitirAlertaCentralFixo('error', 'Erro ao remover a venda', result.mensagem);
+                });
+            }
+        });
+    }
+
+    function Salvar() {
+        let data = obtemDadosDaVenda();
+
+        $.ajax({
+            url: "/Vendas/SalvarEdicao",
+            type: 'post',
+            data: {
+                edicaoVendaDTO: data
+            },
+            beforeSend: function () {
+                //$("#resultado").html("ENVIANDO...");
+            }
+        }).done(function (result) {
+            if (result.sucesso) {
+                Global.emitirAlertaFlutuante('success', result.mensagem);
+                Global.atualizaPagina(3000);
+            } else {
+                Global.emitirAlertaDeAtencao(result.mensagem);
+            }
+        }).fail(function (jqXHR, textStatus, msg) {
+            Global.emitirAlertaCentralFixo('error', 'Erro ao editar a venda', msg);
+        });
     }
 
 })();
