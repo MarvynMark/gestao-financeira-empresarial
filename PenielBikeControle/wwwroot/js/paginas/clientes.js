@@ -1,6 +1,7 @@
 (function () {
     const inputNome = '#Nome';
     const inputCpf = '.cpf';
+    const inputTelefone = '#Telefone';
     const inputEndereco = '#Endereco';
     const inputDataNascimento = '#DataDeNascimentoStr';
     const btnSalvar = '.btn-salvar';
@@ -37,6 +38,10 @@
 
         $(document).on('keyup', inputCpf, function() {
             Global.validaCpf(this);
+        });
+
+        $(document).on('keyup', inputTelefone, function() {
+            this.value = Global.phoneMask(this.value);
         });
     }
 
@@ -75,12 +80,14 @@
         let dataNascimento = modal.querySelector(inputDataNascimento).value;
         let cpf = modal.querySelector(inputCpf).value;
         let endereco = modal.querySelector(inputEndereco).value;
+        let telefone = modal.querySelector(inputTelefone).value.replace(/[\(\)\-\s]/g, "");;
 
         let cliente = {
             Id: id,
             Nome: nome,
             DataDeNascimentoStr: dataNascimento,
             Cpf: cpf,
+            Telefone: telefone,
             Endereco: endereco
         }
 

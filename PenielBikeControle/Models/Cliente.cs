@@ -20,6 +20,9 @@ namespace PenielBikeControle.Models
         [Display(Name = "CPF")]
         public string? Cpf { get; set; }
 
+        [StringLength(11)]
+        public string? Telefone { get; set; }
+
         [StringLength(255)]
         [Display(Name = "Endereço")]
         public string? Endereco { get; set; }
@@ -28,15 +31,48 @@ namespace PenielBikeControle.Models
 
         public Cliente() { }
         
-        public Cliente(int id, string nome, DateOnly dataDeNascimento, string? cpf, string? endereco, IList<ProdutoCliente>? produtosCliente, bool removido)
+        public Cliente(int id, string nome, DateOnly dataDeNascimento, string? cpf, string? telefone, string? endereco, IList<ProdutoCliente>? produtosCliente, bool removido)
         {
             Id = id;
             Nome = nome;
             DataDeNascimento = dataDeNascimento;
             Cpf = cpf;
+            Telefone = telefone;
             Endereco = endereco;
             ProdutosCliente = produtosCliente;
             Removido = removido;
+        }
+
+        public string TelefoneStr
+        {
+            get 
+            {
+                if (Telefone is not null)
+                {
+                    if (Telefone.Length == 10)
+                    {
+                        return string.Format("({0}) {1}-{2}",
+                                Telefone[..2],
+                                Telefone.Substring(2, 4),
+                                Telefone[6..]);
+                    }
+                    else if (Telefone.Length == 11)
+                    {
+                         return string.Format("({0}) {1}-{2}",
+                                Telefone[..2],
+                                Telefone.Substring(2, 5),
+                                Telefone[7..]);
+                    }
+                    else
+                    {
+                        return Telefone;
+                    }
+                }
+                else
+                {
+                    return string.Empty;
+                }   
+            }
         }
     }
 }

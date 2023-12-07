@@ -37,12 +37,15 @@
                 @Html.DisplayNameFor(model => model.Cliente.Nome)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Cliente.Telefone)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Cliente.Cpf)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Cliente.Endereco)
             </th>
-            <th></th>
+            <th style="width: 50px;"></th>
         </tr>
     </thead>
     <tbody>
@@ -54,6 +57,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TelefoneStr)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Cpf)

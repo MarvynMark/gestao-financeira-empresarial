@@ -16,6 +16,8 @@ namespace PenielBikeControle.Models.ViewModels
         [Display(Name = "CPF")]
         public string? Cpf { get; set; }
 
+        public string? Telefone { get; set; }
+
         [Display(Name = "Endereço")]
         public string? Endereco { get; set; }
 
@@ -23,12 +25,13 @@ namespace PenielBikeControle.Models.ViewModels
         {
         }
 
-        public AdicionarClienteViewModel(string nome, string dataDeNascimentoStr, string? endereco, string? cpf)
+        public AdicionarClienteViewModel(string nome, string dataDeNascimentoStr, string? endereco, string? cpf, string? telefone)
         {
                 Nome = nome;
                 DataDeNascimentoStr = dataDeNascimentoStr;
                 Endereco = endereco;
                 Cpf = cpf;
+                Telefone = telefone;
         }
     }
 }

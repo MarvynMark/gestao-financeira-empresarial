@@ -18,6 +18,7 @@ namespace PenielBikeControle.Mappers.Clientes
                 .ForMember(dest => dest.Id, map => map.MapFrom(source => source.Id))
                 .ForMember(dest => dest.Nome, map => map.MapFrom(source => source.Nome))
                 .ForMember(dest => dest.Cpf, map => map.MapFrom(source => source.Cpf))
+                .ForMember(dest => dest.Telefone, map => map.MapFrom(source => source.Telefone))
                 .ForMember(dest => dest.Endereco, map => map.MapFrom(source => source.Endereco))
                 .ForMember(dest => dest.DataDeNascimento, map => map.MapFrom(source => ConverterData(source.DataDeNascimentoStr)));
         }
@@ -34,6 +35,7 @@ namespace PenielBikeControle.Mappers.Clientes
                 .ForMember(dest => dest.Id, map => map.MapFrom(source => source.Id))
                 .ForMember(dest => dest.Nome, map => map.MapFrom(source => source.Nome))
                 .ForMember(dest => dest.Cpf, map => map.MapFrom(source => source.Cpf))
+                .ForMember(dest => dest.Telefone, map => map.MapFrom(source => source.Telefone))
                 .ForMember(dest => dest.Endereco, map => map.MapFrom(source => source.Endereco))
                 .ForMember(dest => dest.DataDeNascimentoStr, map => map.MapFrom(source => source.DataDeNascimento.ToString("yyyy-MM-dd")));
         }
