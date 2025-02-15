@@ -80,7 +80,7 @@
         let dataNascimento = modal.querySelector(inputDataNascimento).value;
         let cpf = modal.querySelector(inputCpf).value;
         let endereco = modal.querySelector(inputEndereco).value;
-        let telefone = modal.querySelector(inputTelefone).value.replace(/[\(\)\-\s]/g, "");;
+        let telefone = modal.querySelector(inputTelefone).value.replace(/[\(\)\-\s]/g, "");
 
         let cliente = {
             Id: id,

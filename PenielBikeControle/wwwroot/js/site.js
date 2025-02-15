@@ -16,21 +16,28 @@
     }
 
     function aplicaEstiloAosElementos() {
-        $('.table').DataTable();
+        if ($('.table').length > 0) {
+            $('.table').DataTable();
+        }
 
-        $(".select").select2({
-            placeholder: 'Selecione...',
-            theme: "classic",
-            language: {
-                noResults: function () {
-                    return "Informação não encontrada!";
+        if ($(".select").length > 0) {
+            $(".select").select2({
+                placeholder: 'Selecione...',
+                theme: "classic",
+                language: {
+                    noResults: function () {
+                        return "Informação não encontrada!";
+                    }
                 }
-            }
-        })
-        $(".select-one").select2({
-            theme: "classic",
-            tags: true
-        })
+            })
+        }
+        
+        if ($(".select-one").length > 0) {
+            $(".select-one").select2({
+                theme: "classic",
+                tags: true
+            })
+        }
         
         $('[data-toggle="tooltip"]').tooltip();
     }
@@ -41,7 +48,9 @@
         let elTituloDaPagina = $(tituloDaPagina);
         let elTituloDaPaginaLayout = document.getElementById(tituloDaPaginaLayout)
 
-        elTituloDaPaginaLayout.innerHTML = elTituloDaPagina.val();
+        if (elTituloDaPaginaLayout != null) {
+            elTituloDaPaginaLayout.innerHTML = elTituloDaPagina.val();
+        }
     }
 
     function fecharModal(btnClicado) {
