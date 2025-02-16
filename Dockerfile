@@ -9,7 +9,8 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["PenielBikeControle/PenielBikeControle.csproj", "PenielBikeControle/"]
 RUN dotnet restore "PenielBikeControle/PenielBikeControle.csproj"
-COPY . .
+
+COPY ["PenielBikeControle/", "PenielBikeControle/"]
 WORKDIR "/src/PenielBikeControle"
 RUN dotnet build "PenielBikeControle.csproj" -c Release -o /app/build
 
