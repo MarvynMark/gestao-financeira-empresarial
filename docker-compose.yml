@@ -12,7 +12,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
-      - SUA_REDE
+      - AutoMarkNet
 
   app:
     image: peniel-bike-img
@@ -27,10 +27,12 @@ services:
     depends_on:
       - db
     networks:
-      - SUA_REDE
+      - AutoMarkNet
 
 volumes:
   mysql-data:
 
 networks:
-  SUA_REDE:
+  AutoMarkNet:
+    name: AutoMarkNet
+    external: true
