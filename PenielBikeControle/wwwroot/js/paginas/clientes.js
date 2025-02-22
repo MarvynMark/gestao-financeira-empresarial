@@ -57,6 +57,7 @@
             url: '/Clientes/Salvar',
             type: 'post',
             data: cliente,
+            headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
             beforeSend: function () {
             }
         }).done(function (result) {

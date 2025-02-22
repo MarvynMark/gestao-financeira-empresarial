@@ -11,14 +11,15 @@ using PenielBikeControle.Data;
 namespace PenielBikeControle.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230122191221_EdicaoNaEstruturaDeEntidades")]
-    partial class EdicaoNaEstruturaDeEntidades
+    [Migration("20250218001849_InitialCreate")]
+    partial class InitialCreate
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.13")
+                .HasAnnotation("ProductVersion", "7.0.20")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("PenielBikeControle.Models.Cliente", b =>
@@ -28,21 +29,61 @@ namespace PenielBikeControle.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Cpf")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(14)
+                        .HasColumnType("varchar(14)");
 
                     b.Property<DateOnly>("DataDeNascimento")
                         .HasColumnType("date");
 
                     b.Property<string>("Endereco")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("Removido")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Telefone")
+                        .HasMaxLength(11)
+                        .HasColumnType("varchar(11)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("PenielBikeControle.Models.Funcionario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Cpf")
+                        .HasMaxLength(14)
+                        .HasColumnType("varchar(14)");
+
+                    b.Property<DateOnly>("DataDeNascimento")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Endereco")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("Removido")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Funcionarios");
                 });
 
             modelBuilder.Entity("PenielBikeControle.Models.ItemVenda", b =>
@@ -56,6 +97,21 @@ namespace PenielBikeControle.Migrations
 
                     b.Property<int>("ProdutoEstoqueId")
                         .HasColumnType("int");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Removido")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<decimal>("ValorItem")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("ValorMaoDeObra")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("ValorTotal")
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("VendaId")
                         .HasColumnType("int");
@@ -81,17 +137,24 @@ namespace PenielBikeControle.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("Marca")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Modelo")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("Removido")
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
@@ -107,26 +170,36 @@ namespace PenielBikeControle.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("Marca")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Modelo")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<double>("PrecoCusto")
-                        .HasColumnType("double");
+                    b.Property<decimal>("PrecoCusto")
+                        .HasColumnType("decimal(10,2)");
 
-                    b.Property<double>("PrecoFinal")
-                        .HasColumnType("double");
+                    b.Property<decimal>("PrecoFinal")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal?>("PrecoMaoDeObra")
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("QtdeEmEstoque")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Removido")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("TipoProdutoId")
                         .HasColumnType("int");
@@ -146,11 +219,90 @@ namespace PenielBikeControle.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<bool>("Removido")
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
                     b.ToTable("TiposProduto");
+                });
+
+            modelBuilder.Entity("PenielBikeControle.Models.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("Removido")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("PenielBikeControle.Models.Venda", b =>
@@ -165,49 +317,28 @@ namespace PenielBikeControle.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<double>("DescontoTotal")
-                        .HasColumnType("double");
+                    b.Property<decimal>("DescontoTotal")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<int>("FuncionarioId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("ProdutoEstoqueEntregue")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("Removido")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("VendaPaga")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("VendedorId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteId");
 
-                    b.HasIndex("VendedorId");
+                    b.HasIndex("FuncionarioId");
 
                     b.ToTable("Vendas");
-                });
-
-            modelBuilder.Entity("PenielBikeControle.Models.Vendedor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Cpf")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateOnly>("DataDeNascimento")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Endereco")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Vendedores");
                 });
 
             modelBuilder.Entity("PenielBikeControle.Models.ItemVenda", b =>
@@ -265,15 +396,15 @@ namespace PenielBikeControle.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PenielBikeControle.Models.Vendedor", "Vendedor")
+                    b.HasOne("PenielBikeControle.Models.Funcionario", "Funcionario")
                         .WithMany()
-                        .HasForeignKey("VendedorId")
+                        .HasForeignKey("FuncionarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cliente");
 
-                    b.Navigation("Vendedor");
+                    b.Navigation("Funcionario");
                 });
 
             modelBuilder.Entity("PenielBikeControle.Models.Cliente", b =>

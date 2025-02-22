@@ -132,9 +132,8 @@
         $.ajax({
             url: "/Vendas/SalvarEdicao",
             type: 'post',
-            data: {
-                edicaoVendaDTO: data
-            },
+            data: { edicaoVendaDTO: data },
+            headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
             beforeSend: function () {
                 //$("#resultado").html("ENVIANDO...");
             }

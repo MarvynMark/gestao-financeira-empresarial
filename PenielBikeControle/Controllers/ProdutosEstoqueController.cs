@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PenielBikeControle.Data;
 using PenielBikeControle.Models;
@@ -8,6 +9,7 @@ using PenielBikeControle.Utils;
 
 namespace PenielBikeControle.Controllers
 {
+    [Authorize]
     public class ProdutosEstoqueController : Controller
     {
         private readonly DataContext _dataContext;
@@ -76,7 +78,6 @@ namespace PenielBikeControle.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<JsonResult> Cadastro(ProdutoEstoqueViewModel produtoEstoqueViewModel)
         {
             var (EhValido, ListaDeErros) = ControllerUtils.ValidaModel(produtoEstoqueViewModel);
@@ -119,7 +120,6 @@ namespace PenielBikeControle.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<JsonResult> Editar(ProdutoEstoqueViewModel produtoEstoqueViewModel)
         {
             try
@@ -156,7 +156,6 @@ namespace PenielBikeControle.Controllers
         }
 
         [HttpDelete]
-        //[ValidateAntiForgeryToken]
         public async Task<JsonResult> Remover(int id)
         {
             try
@@ -178,7 +177,6 @@ namespace PenielBikeControle.Controllers
         }
 
         [HttpGet]
-        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> ObterProdutoEdicao(int id)
         {
             try

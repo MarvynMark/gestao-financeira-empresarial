@@ -134,6 +134,7 @@
             url: '/Vendas/Salvar',
             type: 'post',
             data: venda,
+            headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
             beforeSend: function () {
             }
         }).done(function (result) {

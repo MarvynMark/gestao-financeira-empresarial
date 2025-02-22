@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PenielBikeControle.Data;
 using PenielBikeControle.Mappers.Clientes;
@@ -9,6 +9,7 @@ using PenielBikeControle.Utils;
 
 namespace PenielBikeControle.Controllers
 {
+    [Authorize]
     public class ClientesController : Controller
     {
         private readonly DataContext _dataContext;
@@ -21,7 +22,6 @@ namespace PenielBikeControle.Controllers
             _mapperConfiguration = mapperConfiguration;
         }
 
-        // GET: ClienteController
         public async Task<ActionResult> Index()
         {
             var clientes = await _clienteRepository.GetAll();
@@ -31,9 +31,7 @@ namespace PenielBikeControle.Controllers
             return View(clienteViewModel);
         }
 
-        // POST: ClienteController/Create
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<JsonResult> Salvar(AdicionarClienteViewModel model)
         {
             try
@@ -64,7 +62,6 @@ namespace PenielBikeControle.Controllers
         }
 
         [HttpDelete]
-        //[ValidateAntiForgeryToken]
         public async Task<JsonResult> Remover(int id)
         {
             try

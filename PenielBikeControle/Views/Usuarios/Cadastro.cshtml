@@ -1,3 +1,5 @@
+@model PenielBikeControle.Models.ViewModels.CadastroUsuarioViewModel
+
 @{
     Layout = null;
 }
@@ -32,7 +34,6 @@
 
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
                 <div class="row">
                     <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
                     <div class="col-lg-7">
@@ -40,37 +41,34 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Criar uma conta</h1>
                             </div>
-                            <form class="user">
-                                <div class="form-group row">
+                            <form asp-action="Cadastro" method="post">
+                                <div class="row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="nomeUsuario"
-                                            placeholder="Nome do usuário">
+                                        <input asp-for="NomeUsuario" placeholder="Nome do usuário" class="form-control" />
+                                        <span asp-validation-for="NomeUsuario" class="text-danger"></span>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="login" placeholder="Login">
-                                        <span class="text-danger login-invalido-msg" style="display: none;">Caractere não permitido!</span>
-                                        @* <i class="fa-solid fa-circle-info tooltip-login" style=" font-size: 15px;" data-toggle="tooltip" data-placement="right" title="Não é permitido caracteres especiais nem espaços"></i> *@
+                                        <input asp-for="Login" placeholder="Login" class="form-control" />
+                                        <span asp-validation-for="Login" class="text-danger"></span>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="row">
                                     <div class="col-sm-12 mb-6 mb-sm-0">
-                                        <input type="email" class="form-control form-control-user" id="email"
-                                            placeholder="Endereço de Email">
+                                        <input asp-for="Email" type="email" placeholder="E-mail" class="form-control" />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="password" placeholder="Senha">
+                                        <input asp-for="Senha" type="password" placeholder="Senha" class="form-control"/>
+                                        <span asp-validation-for="Senha" class="text-danger"></span>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="confirmePassword" placeholder="Repetir Senha">
+                                        <input asp-for="SenhaConfirmacao" type="password" placeholder="Confimar a senha" class="form-control"/>
+                                        <span asp-validation-for="SenhaConfirmacao" class="text-danger"></span>
                                     </div>
                                 </div>
-                                <a href="#" id="btnRegistrarConta" class="btn btn-primary btn-user btn-block">
-                                    Registrar Conta
-                                </a>
+                                <button class="btn btn-primary btn-user btn-block" id="btnRegistrarConta" type="submit">Cadastrar</button>
                                 @* <a href="index.html" class="btn btn-google btn-user btn-block">
                                     <i class="fab fa-google fa-fw"></i> Register with Google
                                 </a>
@@ -83,7 +81,7 @@
                                 <a class="small" href="forgot-password.html">Esqueceu a senha?</a>
                             </div>
                             <div class="text-center">
-                                <a class="small" asp-area="" asp-controller="Login" asp-action="Index">Já tem uma conta? Login!</a>
+                                <a class="small" asp-area="" asp-controller="Login" asp-action="Index">Já tem uma conta? Faça Login!</a>
                             </div>
                         </div>
                     </div>

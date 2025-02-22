@@ -43,6 +43,7 @@
             url: '/ProdutosCliente/Salvar',
             type: 'post',
             data: produtoCliente,
+            headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
             beforeSend: function () {
             }
         }).done(function (result) {

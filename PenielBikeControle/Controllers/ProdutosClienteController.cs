@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using PenielBikeControle.Data;
 using PenielBikeControle.Mappers.ProdutosCliente;
 using PenielBikeControle.Models;
 using PenielBikeControle.Models.ViewModels;
@@ -10,6 +8,7 @@ using PenielBikeControle.Utils;
 
 namespace PenielBikeControle.Controllers
 {
+    [Authorize]
     public class ProdutosClienteController : Controller
     {
         private readonly IProdutoClienteRepository _produtoClienteRepository;
@@ -28,7 +27,6 @@ namespace PenielBikeControle.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<JsonResult> Salvar(ProdutoCliente produtoCliente)
         {
             try
@@ -58,7 +56,6 @@ namespace PenielBikeControle.Controllers
         }
 
         [HttpDelete]
-        //[ValidateAntiForgeryToken]
         public async Task<JsonResult> Remover(int id)
         {
             try
@@ -73,7 +70,6 @@ namespace PenielBikeControle.Controllers
         }
 
         [HttpGet]
-        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> ObterProdutoClienteEdicao(int id)
         {
             try

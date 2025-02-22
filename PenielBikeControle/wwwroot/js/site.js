@@ -83,4 +83,22 @@
     //         tags: true
     //     })
     // })
+
+    $(document).on('click', '#logout', function (e) {
+        e.preventDefault(); 
+        $.ajax({
+            url: "/Login/Logout",
+            type: "POST",
+            headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+            success: function (response) {
+                if (response.success) {
+                    window.location.href = response.redirectUrl; 
+                }
+            },
+            error: function (e) {
+                alert("Erro ao fazer logout. Tente novamente.");
+            }
+        });
+    });
+
 })();

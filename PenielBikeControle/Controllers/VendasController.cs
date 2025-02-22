@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PenielBikeControle.Data;
 using PenielBikeControle.Mappers.Vendas;
@@ -10,6 +11,7 @@ using PenielBikeControle.Utils;
 
 namespace PenielBikeControle.Controllers
 {
+    [Authorize]
     public class VendasController : Controller
     {
         private readonly DataContext _dataContext;
@@ -34,8 +36,6 @@ namespace PenielBikeControle.Controllers
             _mapperConfiguration = mapperConfiguration;
         }
 
-
-        // GET: VendaController
         public ActionResult Index()
         {
             return View();
@@ -54,16 +54,13 @@ namespace PenielBikeControle.Controllers
             }
         }
 
-        // GET: VendaController/Create
         public async Task<ActionResult> Cadastro()
         {
             var vendaViewModel = await PreencheViewModel();
             return View(vendaViewModel);
         }
 
-        // POST: VendaController/Create
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<JsonResult> Salvar(VendaDTO vendaDTO)
         {
             using var dtContextTransaction = _dataContext.Database.BeginTransaction();
@@ -115,7 +112,6 @@ namespace PenielBikeControle.Controllers
         }
 
         [HttpDelete]
-        //[ValidateAntiForgeryToken]
         public async Task<JsonResult> Remover(int id)
         {
             try

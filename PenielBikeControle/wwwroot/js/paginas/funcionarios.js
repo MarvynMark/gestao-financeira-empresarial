@@ -52,6 +52,7 @@
             url: '/Funcionarios/Salvar',
             type: 'post',
             data: funcionario,
+            headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
             beforeSend: function () {
             }
         }).done(function (result) {
@@ -105,7 +106,8 @@
                 $.ajax({
                     url: "/Funcionarios/Remover",
                     type: 'delete',
-                    data: { id: id }
+                    data: { id: id },
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 }).done(function (result) {
                     if (result.sucesso) {
                         Global.emitirAlertaCentralFixo('success', 'Removido!', result.mensagem);

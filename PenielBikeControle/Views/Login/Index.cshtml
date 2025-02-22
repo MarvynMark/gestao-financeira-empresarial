@@ -1,4 +1,6 @@
-﻿@{
+﻿@model PenielBikeControle.Models.ViewModels.LoginViewModel
+
+@{
     Layout = null;
 }
 
@@ -47,11 +49,12 @@
                                     </div>
                                     <form asp-action="Logar" asp-controller="Login" method="post">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user" id="usuario" name="usuario" aria-describedby="emailHelp"
-                                                placeholder="Insira o login ou e-mail">
+                                            <input asp-for="Login" type="text" placeholder="Insira o login ou e-mail" name="login" class="form-control form-control-user" />
+                                            <span asp-validation-for="Login" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user" id="senha" name="senha" placeholder="Senha">
+                                            <input asp-for="Senha" type="password" placeholder="Senha" name="senha" class="form-control form-control-user" />
+                                            <span asp-validation-for="Senha" class="text-danger"></span>
                                         </div>
                                         @*<div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -70,12 +73,12 @@
                                         </a> *@
                                     </form>
                                     <hr>
-                                    @*<div class="text-center">
+                                    <div class="text-center">
                                         <a class="small" href="forgot-password.html">Esqueceu a senha?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" asp-area="" asp-controller="Usuarios" asp-action="CadastroConta">Não tem uma conta? Crie uma agora!</a>
-                                    </div>*@
+                                        <a class="small" asp-area="" asp-controller="Usuarios" asp-action="Cadastro">Não tem uma conta? Crie uma agora!</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

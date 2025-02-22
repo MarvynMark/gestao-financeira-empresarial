@@ -34,9 +34,8 @@
         $.ajax({
             url: "/Usuarios/CadastrarConta",
             type: 'post',
-            data: {
-                usuarioDTO: dadosRegistro
-            },
+            data: { usuarioDTO: dadosRegistro },
+            headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
             beforeSend: function () {
                 //$("#resultado").html("ENVIANDO...");
             }

@@ -39,6 +39,7 @@
             url: '/TipoProdutoEstoque/Salvar',
             type: 'post',
             data: tipoProduto,
+            headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
             beforeSend: function () {
             }
         }).done(function (result) {
@@ -86,7 +87,8 @@
                 $.ajax({
                     url: "/TipoProdutoEstoque/Remover",
                     type: 'delete',
-                    data: { id: id }
+                    data: { id: id },
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 }).done(function (result) {
                     if (result.sucesso) {
                         Global.emitirAlertaCentralFixo('success', 'Removido!', result.mensagem);

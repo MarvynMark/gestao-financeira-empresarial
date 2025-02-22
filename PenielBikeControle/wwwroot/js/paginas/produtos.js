@@ -65,9 +65,8 @@
         $.ajax({
             url: "/TipoProdutoEstoque/Cadastro",
             type: 'post',
-            data: {
-                descricao: descricao
-            },
+            data: { descricao: descricao }, 
+            headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
             beforeSend: function () {
                 //$("#resultado").html("ENVIANDO...");
             }
@@ -89,9 +88,8 @@
             $.ajax({
                 url: "/ProdutosEstoque/Cadastro",
                 type: 'post',
-                data: {
-                    produtoEstoqueViewModel: obtemObjProduto(modal)
-                },
+                data: { produtoEstoqueViewModel: obtemObjProduto(modal) },
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 beforeSend: function () {
                     //$("#resultado").html("ENVIANDO...");
                 }
@@ -115,9 +113,8 @@
         $.ajax({
             url: "/ProdutosEstoque/Editar",
             type: 'post',
-            data: {
-                produtoEstoqueViewModel: obtemObjProduto(modal)
-            },
+            data: { produtoEstoqueViewModel: obtemObjProduto(modal) },
+            headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
             beforeSend: function () {
                 //$("#resultado").html("ENVIANDO...");
             }

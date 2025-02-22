@@ -93,7 +93,9 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>*@
 <body id="page-top">
-
+    <form id="CSRF">
+        @Html.AntiForgeryToken()
+    </form>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -175,11 +177,11 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                    aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Telas</span>
+                    <span>Cadastros</span>
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        @* <a class="collapse-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         <h6 class="collapse-header">Login Screens:</h6>
                         <a class="collapse-item" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
                         <a class="collapse-item" href="register.html">Register</a>
@@ -187,9 +189,9 @@
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Other Pages:</h6>
                         <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
+                        <a class="collapse-item" href="blank.html">Blank Page</a> *@
 
-                        <h6 class="collapse-header">Cadastros</h6>
+                        @* <h6 class="collapse-header">Cadastros</h6> *@
                         <a class="collapse-item" asp-area="" asp-controller="Funcionarios" asp-action="Index">Funcionários</a>
                         <a class="collapse-item" asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a>
                         <a class="collapse-item" asp-area="" asp-controller="ProdutosEstoque" asp-action="Index">Produtos</a>
@@ -436,9 +438,9 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a id="logout" class="dropdown-item" href="#">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+                                    Sair
                                 </a>
                             </div>
                         </li>
@@ -481,15 +483,17 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Você tem certeza?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Click em "Sair" se você realmente quer sair do sistema</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="Login" asp-action="Logout">
+                        Sair
+                    </a>
                 </div>
             </div>
         </div>

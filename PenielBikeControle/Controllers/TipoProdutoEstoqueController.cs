@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PenielBikeControle.Data;
 using PenielBikeControle.Models;
@@ -8,6 +8,7 @@ using PenielBikeControle.Utils;
 
 namespace PenielBikeControle.Controllers
 {
+    [Authorize]
     public class TipoProdutoEstoqueController : Controller
     {
         private readonly DataContext _dataContext;
@@ -19,7 +20,6 @@ namespace PenielBikeControle.Controllers
             _tipoProdutoRepository = tipoProdutoRepository;
         }
 
-        // GET: TipoProdutoController
         public async Task<ActionResult> Index()
         {
             var tiposDeProdutos = await _tipoProdutoRepository.GetAll();
@@ -28,9 +28,7 @@ namespace PenielBikeControle.Controllers
             return View(viewModel);
         }
 
-        // POST: TipoProdutoController/Create
         [HttpPost]
-        // [ValidateAntiForgeryToken]
         public async Task<JsonResult> Salvar(TipoProdutoEstoque tipoProduto)
         {
             
@@ -63,7 +61,6 @@ namespace PenielBikeControle.Controllers
         }
 
         [HttpDelete]
-        //[ValidateAntiForgeryToken]
         public async Task<JsonResult> Remover(int id)
         {
             try
@@ -85,7 +82,6 @@ namespace PenielBikeControle.Controllers
         }
 
         [HttpGet]
-        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> ObterTipoProdutoEdicao(int id)
         {
             try

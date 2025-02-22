@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PenielBikeControle.Data;
 using PenielBikeControle.Mappers.Funcionarios;
 using PenielBikeControle.Models;
@@ -8,6 +9,7 @@ using PenielBikeControle.Utils;
 
 namespace PenielBikeControle.Controllers
 {
+    [Authorize]
     public class FuncionariosController : Controller
     {
         private readonly DataContext _dataContext;
